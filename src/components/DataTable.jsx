@@ -6,39 +6,25 @@ const DataTable = () => {
   const [data, setData] = useState([]);
   const [newItem, setNewItem] = useState({ nome: '', acronimo: '' });
   const [editItemId, setEditItemId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  const pageSize = 2;
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData(currentPage);
+  }, [currentPage]);
 
-  const fetchData = () => {
-    const apiUrl = 'http://localhost:8080/instituto'; // Substitua pela URL correta da API
-
-    axios.get(apiUrl)
-      .then(response => {
-        const responseData = response.data.content;
-        setData(responseData);
-      })
-      .catch(error => {
-        console.error('Erro ao buscar os dados da API:', error);
-      });
+  const fetchData = async (page) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/instituto?page=${page}&size=${pageSize}`);
+      setData(response.data.content);
+    } catch (error) {
+      console.error('Erro ao buscar os dados da API:', error);
+    }
   };
 
   const handleInputChange = event => {
     const { name, value } = event.target;
     setNewItem({ ...newItem, [name]: value });
-  };
-
-  const handleSubmit = event => {
-    event.preventDefault();
-    axios.post('http://localhost:8080/instituto', newItem) // Substitua pela URL correta da API para criar novos itens
-      .then(() => {
-        fetchData();
-        setNewItem({ nome: '', acronimo: '' });
-      })
-      .catch(error => {
-        console.error('Erro ao criar novo cadastro:', error);
-      });
   };
 
   const handleEdit = id => {
@@ -49,7 +35,7 @@ const DataTable = () => {
     }
   };
 
-const handleEditSubmit = async event => {
+  const handleEditSubmit = async event => {
     event.preventDefault();
 
     try {
@@ -73,8 +59,9 @@ const handleEditSubmit = async event => {
       console.error('Erro ao salvar alteração:', error);
     }
   };
+
   const handleDelete = id => {
-    axios.delete(`http://localhost:8080/instituto/${id}`) // Substitua pela URL correta da API para deletar itens
+    axios.delete(`http://localhost:8080/instituto/${id}`)
       .then(() => {
         fetchData();
       })
@@ -83,8 +70,7 @@ const handleEditSubmit = async event => {
       });
   };
 
-
-    return (
+  return (
     <div className="container">
       <h2>Tabela de Dados</h2>
       <div className="form-container">
@@ -100,7 +86,7 @@ const handleEditSubmit = async event => {
           <button type="submit">{editItemId !== null ? 'Salvar Edição' : 'Adicionar'}</button>
         </form>
       </div>
-      <table>
+      <table className="data-table">
         <thead>
           <tr>
             <th>ID</th>
@@ -116,16 +102,27 @@ const handleEditSubmit = async event => {
               <td>{item.nome}</td>
               <td>{item.acronimo}</td>
               <td>
-                <button onClick={() => handleEdit(item.id)}>Editar</button>
-                <button onClick={() => handleDelete(item.id)}>Excluir</button>
+                <button className="edit-button" onClick={() => handleEdit(item.id)}>Editar</button>
+                <button className="delete-button" onClick={() => handleDelete(item.id)}>Excluir</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      <div className="pagination" align="center">
+        <button
+          onClick={() => setCurrentPage(currentPage - 1)}
+          disabled={currentPage === 0}
+        >
+          Anterior
+        </button>
+        <span>Página {currentPage + 1}</span>
+        <button onClick={() => setCurrentPage(currentPage + 1)}>
+          Próxima
+        </button>
+      </div>
     </div>
   );
 };
-
 
 export default DataTable;
