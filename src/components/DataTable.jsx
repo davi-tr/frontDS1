@@ -7,15 +7,18 @@ const DataTable = () => {
   const [newItem, setNewItem] = useState({ nome: '', acronimo: '' });
   const [editItemId, setEditItemId] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [totalElements, setTotalElements] = useState(false);
+  const [paginaFim, setPaginaFim] = useState(false);
   const pageSize = 2;
 
   useEffect(() => {
     fetchData(currentPage);
   }, [currentPage]);
 
+
   const fetchData = async (page) => {
     try {
-      const response = await axios.get(`http://localhost:8080/instituto?page=${page}&size=${pageSize}`);
+      const response = await axios.get(`http://localhost:8080/instituto?page=${page}`);
       setData(response.data.content);
     } catch (error) {
       console.error('Erro ao buscar os dados da API:', error);
@@ -34,6 +37,8 @@ const DataTable = () => {
       setEditItemId(id);
     }
   };
+
+  
 
   const handleEditSubmit = async event => {
     event.preventDefault();
@@ -60,6 +65,39 @@ const DataTable = () => {
     }
   };
 
+  const updateState =  async (page) => {
+
+    try {
+      const response = await axios.get(`http://localhost:8080/instituto?page=${page}`);
+      setTotalElements(response.data.empty);
+      console.log(response)
+      console.log(totalElements)
+    } catch (error) {
+      console.error('Erro ao buscar os dados da API:', error);
+    }
+
+    if (totalElements) {
+      setPaginaFim(true);
+    } else {
+      setPaginaFim(false);
+    }
+  };
+
+  
+  const handleNextPage = () => {
+    if (!paginaFim) {
+      setCurrentPage(currentPage + 1);
+      updateState(currentPage + 1);
+    }
+  };
+
+   const handlePreviousPage = () => {
+    if (currentPage >= 1) {
+      updateState(currentPage - 1);
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   const handleDelete = id => {
     axios.delete(`http://localhost:8080/instituto/${id}`)
       .then(() => {
@@ -72,7 +110,7 @@ const DataTable = () => {
 
   return (
     <div className="container">
-      <h2>Tabela de Dados</h2>
+      <h2 className="titulo">Tabela de Dados</h2>
       <div className="form-container">
         <form onSubmit={handleEditSubmit}>
           <label>
@@ -110,16 +148,20 @@ const DataTable = () => {
         </tbody>
       </table>
       <div className="pagination" align="center">
-        <button
-          onClick={() => setCurrentPage(currentPage - 1)}
-          disabled={currentPage === 0}
-        >
-          Anterior
-        </button>
+         <button className='page-button'
+           onClick={handlePreviousPage}
+           disabled={currentPage === 0}
+         >
+        Anterior
+      </button>
+
         <span>Página {currentPage + 1}</span>
-        <button onClick={() => setCurrentPage(currentPage + 1)}>
-          Próxima
-        </button>
+         <button className='page-button'
+          onClick={handleNextPage}
+          disabled={paginaFim}
+         >
+        Próxima
+      </button>
       </div>
     </div>
   );
