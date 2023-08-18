@@ -1,16 +1,45 @@
+
+
 .container {
     align-items: center;
     justify-content: center;
 }
 
+.seletor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    
+}
+.qtdItens{
+    margin: 0 5px;
+        padding: 5px 10px;
+        background-color: #fff;
+        color: #333;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        transition: ease-in-out 0.9s;
+}
+
+select.qtdItens option:checked{
+    box-shadow: 0 0 10px 100px #1882A8 inset;
+}
+
+.informe{
+        font-family: 'Roboto', sans-serif;
+}
 
 .titulo{
     color: #333;
     font-size: 40px;
     align-self: start;
+    font-family: 'Poppins', sans-serif;
+    font-style: bold;
 }
 
 .data-table {
+    font-family: 'Roboto', sans-serif;
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
@@ -21,9 +50,11 @@
     border: 1px solid #ddd;
     padding: 10px;
     text-align: left;
+    font-family: 'Roboto', sans-serif;
 }
 
 .edit-button{
+            font-family: 'Roboto', sans-serif;
         margin-right: 5px;
             padding: 5px 10px;
             background-color: orange;
@@ -32,6 +63,7 @@
             cursor: pointer;
 }
 .delete-button {
+            font-family: 'Roboto', sans-serif;
     margin-right: 5px;
     padding: 5px 10px;
     background-color: red;
@@ -45,25 +77,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
 }
 
-.page-button {
+.botao {
     margin: 0 5px;
     padding: 5px 10px;
     background-color: #fff;
     color: #333;
     border: 1px solid #ddd;
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
+    transition: background-color 0.9s, color 0.7s;
 }
 
-.page-button:hover {
-    background-color: #f0f0f0;
-}
 
-button:disabled,
-button[disabled] {
-    border: 1px solid #999999;
-    background-color: #cccccc;
-    color: #666666;
+.botao:hover {
+    background-color: green;
 }

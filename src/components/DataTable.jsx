@@ -8,18 +8,31 @@ const DataTable = () => {
   const [editItemId, setEditItemId] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalElements, setTotalElements] = useState(false);
+  const [itensPerPage,  setItensPerPage] = useState(3);
   const [paginaFim, setPaginaFim] = useState(false);
-  const pageSize = 2;
+
+  
+  const pages = Math.ceil(totalElements/itensPerPage)
+  const startIndex = currentPage * itensPerPage;
+  const endIndex = startIndex + itensPerPage
+  const currentItens = data.slice(startIndex, endIndex)
 
   useEffect(() => {
     fetchData(currentPage);
   }, [currentPage]);
 
+  useEffect(() =>{
+    setCurrentPage(0)
+  }, [itensPerPage])
 
-  const fetchData = async (page) => {
+  
+
+
+  const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/instituto?page=${page}`);
+      const response = await axios.get(`http://localhost:8080/instituto`);
       setData(response.data.content);
+      setTotalElements(response.data.totalElements)
     } catch (error) {
       console.error('Erro ao buscar os dados da API:', error);
     }
@@ -110,6 +123,7 @@ const DataTable = () => {
 
   return (
     <div className="container">
+      
       <h2 className="titulo">Tabela de Dados</h2>
       <div className="form-container">
         <form onSubmit={handleEditSubmit}>
@@ -134,7 +148,7 @@ const DataTable = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map(item => (
+          {currentItens.map(item => (
             <tr key={item.id}>
               <td>{item.id}</td>
               <td>{item.nome}</td>
@@ -147,22 +161,25 @@ const DataTable = () => {
           ))}
         </tbody>
       </table>
-      <div className="pagination" align="center">
-         <button className='page-button'
-           onClick={handlePreviousPage}
-           disabled={currentPage === 0}
-         >
-        Anterior
-      </button>
 
-        <span>Página {currentPage + 1}</span>
-         <button className='page-button'
-          onClick={handleNextPage}
-          disabled={paginaFim}
-         >
-        Próxima
-      </button>
+
+      <div className='pagination'>
+        {Array.from(Array(pages), (item, index) => {
+          return <button className= "botao" value={index} onClick={(e) => setCurrentPage(Number(e.target.value))}key={index}>{index+1}</button>
+        })}
+
       </div>
+        <div className='seletor'>
+        <p className='informe'>Quantidade de itens por pagina</p>
+        <select className='qtdItens' value={itensPerPage} onChange={(e) => setItensPerPage(Number(e.target.value))}>
+          <option value={3}>3</option>
+          <option value={5}>5</option>
+          <option value={8}>8</option>
+          <option value={10}>10</option>
+        </select>
+      </div>
+      
+
     </div>
   );
 };
