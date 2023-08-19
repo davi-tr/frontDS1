@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './DataTable.css';
 import DeleteConfirmationModal from './DeleteConfirmationModal.jsx';
-
+import AddInstituteModal from './AddInstituteModal.jsx';
 
 const DataTable = () => {
   const [data, setData] = useState([]);
@@ -14,6 +14,7 @@ const DataTable = () => {
   const [paginaFim, setPaginaFim] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [instituteToDelete, setInstituteToDelete] = useState(null);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   
   const pages = Math.ceil(totalElements/itensPerPage)
@@ -41,6 +42,17 @@ const DataTable = () => {
       console.error('Erro ao buscar os dados da API:', error);
     }
   };
+
+
+  const handleAddInstitute = async newInstitute => {
+    try {
+      await axios.post('http://localhost:8081/instituto', newInstitute);
+      fetchData();
+    } catch (error) {
+      console.error('Erro ao adicionar instituto:', error);
+    }
+  };
+
 
   const handleInputChange = event => {
     const { name, value } = event.target;
@@ -137,18 +149,8 @@ const DataTable = () => {
     <div className="container">
       
       <h2 className="titulo">Tabela de Dados</h2>
+      <button className="add-button" onClick={() => setShowAddModal(true)}>Adicionar Instituto</button>
       <div className="form-container">
-        <form onSubmit={handleEditSubmit}>
-          <label>
-            Nome:
-            <input type="text" name="nome" value={newItem.nome} onChange={handleInputChange} />
-          </label>
-          <label>
-            Acrônimo:
-            <input type="text" name="acronimo" value={newItem.acronimo} onChange={handleInputChange} />
-          </label>
-          <button type="submit">{editItemId !== null ? 'Salvar Edição' : 'Adicionar'}</button>
-        </form>
       </div>
       <table className="data-table">
         <thead>
@@ -167,7 +169,7 @@ const DataTable = () => {
               <td>{item.acronimo}</td>
               <td>
               <button className="edit-button" onClick={() => handleEdit(item.id)}>Editar</button>
-                <button className="delete-button" onClick={() => handleDeleteClick(item.id)}>Excluir</button>
+              <button className="delete-button" onClick={() => handleDeleteClick(item.id)}>Excluir</button>
               </td>
             </tr>
           ))}
@@ -196,6 +198,11 @@ const DataTable = () => {
         onClose={() => setShowDeleteModal(false)}
         onConfirm={handleConfirmDelete}
         itemId={instituteToDelete}
+      />
+      <AddInstituteModal
+        show={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onAdd={handleAddInstitute}
       />
     </div>
   );
