@@ -16,4 +16,4 @@ Currently, two official plugins are available:
 
 ##### Primeiro é necessario iniciarmos o backend para que seja possivel utilizarmos a API(por enquanto) ela esta disponivel em [DS1](https://github.com/davi-tr/DS1)
 
-##### Agora que iniciamos o backend podemos iniciar corretamente nosso front end, para isso basta utilizarmos os comandos ```npm install``` assim a gente consegue instalar todas as dependencias necessarias e por fim, utilizamos o comando ```npm run dev``` e pronto, nosso front foi inicializado.
+##### Agora que iniciamos o backend podemos iniciar corretamente nosso front end, para isso basta utilizarmos os comandos <br>```npm install``` assim a gente consegue instalar todas as dependencias necessarias e por fim, utilizamos o comando ```npm run dev``` e pronto, nosso front foi inicializado.
