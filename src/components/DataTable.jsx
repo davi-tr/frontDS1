@@ -46,7 +46,7 @@ const DataTable = () => {
   // Função para buscar os dados da API
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/instituto`);
+      const response = await axios.get(`http://localhost:8081/instituto`);
       setData(response.data.content);
       setTotalElements(response.data.totalElements);
     } catch (error) {
@@ -82,10 +82,12 @@ const DataTable = () => {
           acronimo: newItem.acronimo
         };
 
-        await axios.put(`http://localhost:8080/instituto`, editData);
+        await axios.put(`http://localhost:8081/instituto`, editData);
       } else {
-        // Lógica de criação aqui (usar API POST para adicionar um novo item)
-        await axios.post('http://localhost:8080/instituto', newItem);
+
+        // Lógica de criação aqui (usar API POST)
+        await axios.post('http://localhost:8081/instituto', newItem);
+
       }
       fetchData(); // Atualiza a lista após a edição ou adição
       setNewItem({ nome: '', acronimo: '' }); // Limpa os campos
@@ -98,7 +100,7 @@ const DataTable = () => {
   // Função para atualizar o estado e verificar se chegou ao fim das páginas
   const updateState = async page => {
     try {
-      const response = await axios.get(`http://localhost:8080/instituto?page=${page}`);
+      const response = await axios.get(`http://localhost:8081/instituto?page=${page}`);
       setTotalElements(response.data.empty);
     } catch (error) {
       console.error('Erro ao buscar os dados da API:', error);
@@ -129,8 +131,9 @@ const DataTable = () => {
 
   // Função para excluir um item
   const handleDelete = id => {
-    axios
-      .delete(`http://localhost:8080/instituto/${id}`)
+
+    axios.delete(`http://localhost:8081/instituto/${id}`)
+
       .then(() => {
         fetchData(); // Atualiza a lista após a exclusão
       })
