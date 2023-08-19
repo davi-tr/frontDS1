@@ -30,7 +30,7 @@ const DataTable = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/instituto`);
+      const response = await axios.get(`http://localhost:8081/instituto`);
       setData(response.data.content);
       setTotalElements(response.data.totalElements)
     } catch (error) {
@@ -65,10 +65,10 @@ const DataTable = () => {
           acronimo: newItem.acronimo
         };
 
-        await axios.put(`http://localhost:8080/instituto`, editData);
+        await axios.put(`http://localhost:8081/instituto`, editData);
       } else {
         // Lógica de criação aqui (usar API POST)
-        await axios.post('http://localhost:8080/instituto', newItem);
+        await axios.post('http://localhost:8081/instituto', newItem);
       }
       fetchData();
       setNewItem({ nome: '', acronimo: '' });
@@ -81,7 +81,7 @@ const DataTable = () => {
   const updateState =  async (page) => {
 
     try {
-      const response = await axios.get(`http://localhost:8080/instituto?page=${page}`);
+      const response = await axios.get(`http://localhost:8081/instituto?page=${page}`);
       setTotalElements(response.data.empty);
       console.log(response)
       console.log(totalElements)
@@ -112,7 +112,7 @@ const DataTable = () => {
   };
 
   const handleDelete = id => {
-    axios.delete(`http://localhost:8080/instituto/${id}`)
+    axios.delete(`http://localhost:8081/instituto/${id}`)
       .then(() => {
         fetchData();
       })
