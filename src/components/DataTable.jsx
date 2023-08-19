@@ -3,6 +3,7 @@ import axios from 'axios';
 import './DataTable.css';
 import DeleteConfirmationModal from './DeleteConfirmationModal.jsx';
 import AddInstituteModal from './AddInstituteModal.jsx';
+import EditInstituteModal from './EditInstituteModal.jsx';
 
 // Componente DataTable
 const DataTable = () => {
@@ -29,7 +30,13 @@ const DataTable = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [instituteToDelete, setInstituteToDelete] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
+
+   // Estado para controlar a abertura do modal de edição
+   const [showEditModal, setShowEditModal] = useState(false);
+
+   // Estado para armazenar o instituto em edição
+   const [editingInstitute, setEditingInstitute] = useState(null);
+ 
 
   // Calcula o número de páginas com base no número total de elementos e itens por página
   const pages = Math.ceil(totalElements / itensPerPage);
@@ -77,11 +84,12 @@ const DataTable = () => {
   };
 
   // Função para iniciar a edição de um item
-  const handleEdit = id => {
-    const itemToEdit = data.find(item => item.id === id);
-    if (itemToEdit) {
-      setNewItem({ nome: itemToEdit.nome, acronimo: itemToEdit.acronimo });
-      setEditItemId(id);
+  const handleEdit = async (id, editedData) => {
+    try {
+      await axios.put(`http://localhost:8081/instituto/${id}`, editedData);
+      fetchData(); // Atualize os dados após a edição
+    } catch (error) {
+      console.error('Erro ao editar instituto:', error);
     }
   };
 
@@ -210,12 +218,22 @@ const handleDeleteClick = (id)=> {
           <option value={10}>10</option>
         </select>
       </div>
+    
+
+     {/* Esse trecho de códio ta gerando tela branca. (sem ele a página abre, mas o pop up de ediçã não) */}
+      {/* <EditInstituteModal
+        show={showEditModal}
+       onClose={() => setShowEditModal(false)}
+       institute={editingInstitute}
+       onEdit={handleEdit}
+      /> */}
        <DeleteConfirmationModal
         show={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
         onConfirm={handleConfirmDelete}
         itemId={instituteToDelete}
       />
+
       <AddInstituteModal
         show={showAddModal}
         onClose={() => setShowAddModal(false)}
