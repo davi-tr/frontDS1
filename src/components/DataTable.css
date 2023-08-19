@@ -57,7 +57,7 @@ select.qtdItens option:checked{
             font-family: 'Roboto', sans-serif;
         margin-right: 5px;
             padding: 5px 10px;
-            background-color: orange;
+            background-color: yellow;
             color: #fff;
             border: none;
             cursor: pointer;
@@ -94,3 +94,41 @@ select.qtdItens option:checked{
 .botao:hover {
     background-color: green;
 }
+
+.modal-popup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+  }
+  
+  .modal-popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 300px; /* Defina a largura máxima desejada */
+    text-align: center;
+  }
+  
+  .modal-header h5 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .modal-body {
+    margin: 20px 0;
+    font-size: 16px;
+  }
+  
+  .modal-footer {
+    display: flex;
+    justify-content: center;
+  }

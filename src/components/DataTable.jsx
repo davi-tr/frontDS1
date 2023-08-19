@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './DataTable.css';
+import DeleteConfirmationModal from './DeleteConfirmationModal.jsx';
+
 
 const DataTable = () => {
   const [data, setData] = useState([]);
@@ -10,6 +12,8 @@ const DataTable = () => {
   const [totalElements, setTotalElements] = useState(false);
   const [itensPerPage,  setItensPerPage] = useState(3);
   const [paginaFim, setPaginaFim] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [instituteToDelete, setInstituteToDelete] = useState(null);
 
   
   const pages = Math.ceil(totalElements/itensPerPage)
@@ -111,14 +115,22 @@ const DataTable = () => {
     }
   };
 
-  const handleDelete = id => {
-    axios.delete(`http://localhost:8081/instituto/${id}`)
-      .then(() => {
-        fetchData();
-      })
-      .catch(error => {
-        console.error('Erro ao deletar cadastro:', error);
-      });
+  const handleDeleteClick = (id)=> {
+    setInstituteToDelete(id);
+    setShowDeleteModal(true);
+  };
+  const handleConfirmDelete = () => {
+    if (instituteToDelete) {
+      axios.delete(`http://localhost:8081/instituto/${instituteToDelete}`)
+        .then(() => {
+          fetchData();
+          setShowDeleteModal(false); // Feche o modal após a exclusão
+          setInstituteToDelete(null);
+        })
+        .catch(error => {
+          console.error('Erro ao deletar cadastro:', error);
+        });
+    }
   };
 
   return (
@@ -154,8 +166,8 @@ const DataTable = () => {
               <td>{item.nome}</td>
               <td>{item.acronimo}</td>
               <td>
-                <button className="edit-button" onClick={() => handleEdit(item.id)}>Editar</button>
-                <button className="delete-button" onClick={() => handleDelete(item.id)}>Excluir</button>
+              <button className="edit-button" onClick={() => handleEdit(item.id)}>Editar</button>
+                <button className="delete-button" onClick={() => handleDeleteClick(item.id)}>Excluir</button>
               </td>
             </tr>
           ))}
@@ -179,7 +191,12 @@ const DataTable = () => {
         </select>
       </div>
       
-
+      <DeleteConfirmationModal
+        show={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleConfirmDelete}
+        itemId={instituteToDelete}
+      />
     </div>
   );
 };
