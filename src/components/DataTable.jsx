@@ -175,15 +175,23 @@ const DataTable = () => {
   return (
     <div className="container">
       <h2 className="titulo">Tabela de Dados</h2>
-      <button className="add-button" onClick={() => setShowAddModal(true)}>Adicionar Instituto</button>
+
+      <button className="add-button" onClick={() => setShowAddModal(true)}>
+        <b>Adicionar Instituto</b></button><b>
+      </b>
       <div className="form-container">
         <form onSubmit={handleEditSubmit}>
+          <b>
+          </b>
           <label>
             Nome:
             <input type="text" name="nome" value={newItem.nome} onChange={handleInputChange} />
           </label>
-          <label>
-            Acrônimo:
+          <label><React.Fragment>
+            &nbsp;
+            &nbsp;
+            <span>Acrônimo:</span>
+          </React.Fragment>
             <input type="text" name="acronimo" value={newItem.acronimo} onChange={handleInputChange} />
           </label>
           <button type="submit">{editItemId !== null ? 'Salvar Edição' : 'Adicionar'}</button>
