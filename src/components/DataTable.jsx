@@ -133,7 +133,7 @@ const DataTable = () => {
     }
   };
 
-const handleDeleteClick = (id)=> {
+  const handleDeleteClick = (id) => {
     setInstituteToDelete(id);
     setShowDeleteModal(true);
   };
@@ -159,11 +159,15 @@ const handleDeleteClick = (id)=> {
         <form onSubmit={handleEditSubmit}>
           <label>
             Nome:
-            <input type="text" name="nome" value={newItem.nome} onChange={handleInputChange} />
+            <input type=" text" name="nome" value={newItem.nome} onChange={handleInputChange} />
           </label>
           <label>
-            Acrônimo:
-            <input type="text" name="acronimo" value={newItem.acronimo} onChange={handleInputChange} />
+            <React.Fragment>
+              &nbsp;
+              &nbsp;
+              &nbsp;
+              <span>Acrônimo:</span></React.Fragment>
+            <input type="text " name="acronimo" value={newItem.acronimo} onChange={handleInputChange} />
           </label>
           <button type="submit">{editItemId !== null ? 'Salvar Edição' : 'Adicionar'}</button>
         </form>
@@ -171,7 +175,7 @@ const handleDeleteClick = (id)=> {
       <table className="data-table">
         <thead>
           <tr>
-            <th>ID</th>
+            <th> ID</th>
             <th>Nome</th>
             <th>Acrônimo</th>
             <th>Ação</th>
@@ -184,7 +188,7 @@ const handleDeleteClick = (id)=> {
               <td>{item.nome}</td>
               <td>{item.acronimo}</td>
               <td>
-              <button className="edit-button" onClick={() => handleEdit(item.id)}>Editar</button>
+                <button className="edit-button" onClick={() => handleEdit(item.id)}>Editar</button>
                 <button className="delete-button" onClick={() => handleDeleteClick(item.id)}>Excluir</button>
               </td>
             </tr>
@@ -208,7 +212,7 @@ const handleDeleteClick = (id)=> {
           <option value={10}>10</option>
         </select>
       </div>
-       <DeleteConfirmationModal
+      <DeleteConfirmationModal
         show={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
         onConfirm={handleConfirmDelete}
