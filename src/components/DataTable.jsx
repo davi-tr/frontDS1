@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './DataTable.css';
-import DeleteConfirmationModal from './DeleteConfirmationModal.jsx';
-import AddInstituteModal from './AddInstituteModal.jsx';
-import EditInstituteModal from './EditInstituteModal.jsx';
+import DeleteConfirmationModal from './DeleteConfirmationModal.jsx'; // importação de arquivo com pop-up da tela de deleção
+import AddInstituteModal from './AddInstituteModal.jsx'; // importação de arquivo com pop-up da tela de edição
+import EditModal from './EditModal.jsx';
 
 // Componente DataTable
 const DataTable = () => {
@@ -30,13 +30,9 @@ const DataTable = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [instituteToDelete, setInstituteToDelete] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
-
-  // Estado para controlar a abertura do modal de edição
   const [showEditModal, setShowEditModal] = useState(false);
-
-  // Estado para armazenar o instituto em edição
   const [editingInstitute, setEditingInstitute] = useState(null);
-
+  
 
   // Calcula o número de páginas com base no número total de elementos e itens por página
   const pages = Math.ceil(totalElements / itensPerPage);
@@ -66,8 +62,6 @@ const DataTable = () => {
       console.error('Erro ao buscar os dados da API:', error);
     }
   };
-
-
   const handleAddInstitute = async newInstitute => {
     try {
       await axios.post('http://localhost:8081/instituto', newInstitute);
@@ -78,46 +72,49 @@ const DataTable = () => {
   };
 
   // Função para lidar com a mudança nos campos de entrada
+
   const handleInputChange = event => {
     const { name, value } = event.target;
     setNewItem({ ...newItem, [name]: value });
   };
 
   // Função para iniciar a edição de um item
-  const handleEdit = async (id, editedData) => {
+  const handleEdit = (institute) => {
+    setEditingInstitute(institute);
+    setShowEditModal(true);
+  };
+
+  const handleSaveEdit = async (editedInstitute) => {
     try {
-      await axios.put(`http://localhost:8081/instituto/${id}`, editedData);
-      fetchData(); // Atualize os dados após a edição
+      await axios.put(`http://localhost:8081/instituto/${editedInstitute.id}`, {
+        nome: editedInstitute.nome,
+        acronimo: editedInstitute.acronimo,
+      });
+      fetchData();
+      setShowAddModal(false);
+      setEditingInstitute(null);
     } catch (error) {
       console.error('Erro ao editar instituto:', error);
     }
   };
 
   // Função para lidar com a submissão de uma edição ou adição
-  const handleEditSubmit = async event => {
-    event.preventDefault();
-
+  const handleEditSubmit = async (editedData) => {
     try {
-      if (editItemId !== null) {
-        // Lógica de edição aqui (usar API PUT para atualizar um item existente)
-        const editData = {
-          id: editItemId,
-          nome: newItem.nome,
-          acronimo: newItem.acronimo
-        };
-
-        await axios.put(`http://localhost:8081/instituto`, editData);
+      if (editedData.id !== null) {
+        await axios.put(`http://localhost:8081/instituto/${editedData.id}`, {
+          nome: editedData.nome,
+          acronimo: editedData.acronimo,
+        });
       } else {
-
-        // Lógica de criação aqui (usar API POST)
-        await axios.post('http://localhost:8081/instituto', newItem);
-
+        await axios.post('http://localhost:8081/instituto', editedData);
       }
       fetchData(); // Atualiza a lista após a edição ou adição
-      setNewItem({ nome: '', acronimo: '' }); // Limpa os campos
-      setEditItemId(null); // Limpa o ID de edição
+      setEditingInstitute(null); // Limpa o objeto de edição
     } catch (error) {
       console.error('Erro ao salvar alteração:', error);
+    } finally {
+      setShowEditModal(false); // Fecha o modal de edição, seja após edição ou adição
     }
   };
 
@@ -153,7 +150,7 @@ const DataTable = () => {
     }
   };
 
-  const handleDeleteClick = (id) => {
+const handleDeleteClick = (id)=> {
     setInstituteToDelete(id);
     setShowDeleteModal(true);
   };
@@ -175,47 +172,26 @@ const DataTable = () => {
   return (
     <div className="container">
       <h2 className="titulo">Tabela de Dados</h2>
-
-      <button className="add-button" onClick={() => setShowAddModal(true)}>
-        <b>Adicionar Instituto</b></button><b>
-      </b>
+      <button className="add-button" onClick={() => setShowAddModal(true)}>Adicionar Instituto</button>
       <div className="form-container">
-        <form onSubmit={handleEditSubmit}>
-          <b>
-          </b>
-          <label>
-            Nome:
-            <input type="text" name="nome" value={newItem.nome} onChange={handleInputChange} />
-          </label>
-          <label><React.Fragment>
-            &nbsp;
-            &nbsp;
-            <span>Acrônimo:</span>
-          </React.Fragment>
-            <input type="text" name="acronimo" value={newItem.acronimo} onChange={handleInputChange} />
-          </label>
-          <button type="submit">{editItemId !== null ? 'Salvar Edição' : 'Adicionar'}</button>
-        </form>
       </div>
       <table className="data-table">
         <thead>
           <tr>
-
-            <th className='id'>ID</th>
+            <th>ID</th>
             <th>Nome</th>
             <th>Acrônimo</th>
-            <th className='opcoes'>Ação</th>
+            <th>Ação</th>
           </tr>
         </thead>
         <tbody>
           {currentItens.map(item => (
-            <tr className='linha' key={item.id}>
-            
-              <td className='id'>{item.id}</td>
-              <td className='nome'>{item.nome}</td>
-              <td className='acronimo'>{item.acronimo}</td>
-              <td className='opcoes'>
-              <button className="edit-button" onClick={() => handleEdit(item.id)}>Editar</button>
+            <tr key={item.id}>
+              <td>{item.id}</td>
+              <td>{item.nome}</td>
+              <td>{item.acronimo}</td>
+              <td>
+              <button className="edit-button" onClick={() => handleEdit(item)}>Editar</button>
               <button className="delete-button" onClick={() => handleDeleteClick(item.id)}>Excluir</button>
               </td>
             </tr>
@@ -239,17 +215,23 @@ const DataTable = () => {
           <option value={10}>10</option>
         </select>
       </div>
-      <DeleteConfirmationModal
+       <DeleteConfirmationModal
         show={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
         onConfirm={handleConfirmDelete}
         itemId={instituteToDelete}
       />
-
       <AddInstituteModal
         show={showAddModal}
         onClose={() => setShowAddModal(false)}
         onAdd={handleAddInstitute}
+      />
+       <EditModal
+        show={showEditModal} // Alterado de showAddModal para showEditModal
+        onClose={() => setShowEditModal(false)}
+        institute={editingInstitute}
+        onSave={handleSaveEdit}
+        onCancel={() => setShowEditModal(false)}
       />
     </div>
   );
