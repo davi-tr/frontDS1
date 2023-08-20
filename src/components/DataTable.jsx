@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './DataTable.css';
 import DeleteConfirmationModal from './DeleteConfirmationModal.jsx';
-
+import AddInstituteModal from './AddInstituteModal.jsx';
+import EditInstituteModal from './EditInstituteModal.jsx';
 
 // Componente DataTable
 const DataTable = () => {
@@ -28,6 +29,14 @@ const DataTable = () => {
   const [paginaFim, setPaginaFim] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [instituteToDelete, setInstituteToDelete] = useState(null);
+  const [showAddModal, setShowAddModal] = useState(false);
+
+   // Estado para controlar a abertura do modal de edição
+   const [showEditModal, setShowEditModal] = useState(false);
+
+   // Estado para armazenar o instituto em edição
+   const [editingInstitute, setEditingInstitute] = useState(null);
+ 
 
   // Calcula o número de páginas com base no número total de elementos e itens por página
   const pages = Math.ceil(totalElements / itensPerPage);
@@ -58,6 +67,16 @@ const DataTable = () => {
     }
   };
 
+
+  const handleAddInstitute = async newInstitute => {
+    try {
+      await axios.post('http://localhost:8081/instituto', newInstitute);
+      fetchData();
+    } catch (error) {
+      console.error('Erro ao adicionar instituto:', error);
+    }
+  };
+
   // Função para lidar com a mudança nos campos de entrada
   const handleInputChange = event => {
     const { name, value } = event.target;
@@ -65,11 +84,12 @@ const DataTable = () => {
   };
 
   // Função para iniciar a edição de um item
-  const handleEdit = id => {
-    const itemToEdit = data.find(item => item.id === id);
-    if (itemToEdit) {
-      setNewItem({ nome: itemToEdit.nome, acronimo: itemToEdit.acronimo });
-      setEditItemId(id);
+  const handleEdit = async (id, editedData) => {
+    try {
+      await axios.put(`http://localhost:8081/instituto/${id}`, editedData);
+      fetchData(); // Atualize os dados após a edição
+    } catch (error) {
+      console.error('Erro ao editar instituto:', error);
     }
   };
 
@@ -155,18 +175,8 @@ const handleDeleteClick = (id)=> {
   return (
     <div className="container">
       <h2 className="titulo">Tabela de Dados</h2>
+      <button className="add-button" onClick={() => setShowAddModal(true)}>Adicionar Instituto</button>
       <div className="form-container">
-        <form onSubmit={handleEditSubmit}>
-          <label>
-            Nome:
-            <input type="text" name="nome" value={newItem.nome} onChange={handleInputChange} />
-          </label>
-          <label>
-            Acrônimo:
-            <input type="text" name="acronimo" value={newItem.acronimo} onChange={handleInputChange} />
-          </label>
-          <button type="submit">{editItemId !== null ? 'Salvar Edição' : 'Adicionar'}</button>
-        </form>
       </div>
       <table className="data-table">
         <thead>
@@ -185,7 +195,7 @@ const handleDeleteClick = (id)=> {
               <td>{item.acronimo}</td>
               <td>
               <button className="edit-button" onClick={() => handleEdit(item.id)}>Editar</button>
-                <button className="delete-button" onClick={() => handleDeleteClick(item.id)}>Excluir</button>
+              <button className="delete-button" onClick={() => handleDeleteClick(item.id)}>Excluir</button>
               </td>
             </tr>
           ))}
@@ -208,11 +218,26 @@ const handleDeleteClick = (id)=> {
           <option value={10}>10</option>
         </select>
       </div>
+    
+
+     {/* Esse trecho de códio ta gerando tela branca. (sem ele a página abre, mas o pop up de ediçã não) */}
+      {/* <EditInstituteModal
+        show={showEditModal}
+       onClose={() => setShowEditModal(false)}
+       institute={editingInstitute}
+       onEdit={handleEdit}
+      /> */}
        <DeleteConfirmationModal
         show={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
         onConfirm={handleConfirmDelete}
         itemId={instituteToDelete}
+      />
+
+      <AddInstituteModal
+        show={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onAdd={handleAddInstitute}
       />
     </div>
   );
