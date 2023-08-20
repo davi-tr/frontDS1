@@ -31,12 +31,12 @@ const DataTable = () => {
   const [instituteToDelete, setInstituteToDelete] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
 
-   // Estado para controlar a abertura do modal de edição
-   const [showEditModal, setShowEditModal] = useState(false);
+  // Estado para controlar a abertura do modal de edição
+  const [showEditModal, setShowEditModal] = useState(false);
 
-   // Estado para armazenar o instituto em edição
-   const [editingInstitute, setEditingInstitute] = useState(null);
- 
+  // Estado para armazenar o instituto em edição
+  const [editingInstitute, setEditingInstitute] = useState(null);
+
 
   // Calcula o número de páginas com base no número total de elementos e itens por página
   const pages = Math.ceil(totalElements / itensPerPage);
@@ -153,7 +153,7 @@ const DataTable = () => {
     }
   };
 
-const handleDeleteClick = (id)=> {
+  const handleDeleteClick = (id) => {
     setInstituteToDelete(id);
     setShowDeleteModal(true);
   };
@@ -175,12 +175,32 @@ const handleDeleteClick = (id)=> {
   return (
     <div className="container">
       <h2 className="titulo">Tabela de Dados</h2>
-      <button className="add-button" onClick={() => setShowAddModal(true)}>Adicionar Instituto</button>
+
+      <button className="add-button" onClick={() => setShowAddModal(true)}>
+        <b>Adicionar Instituto</b></button><b>
+      </b>
       <div className="form-container">
+        <form onSubmit={handleEditSubmit}>
+          <b>
+          </b>
+          <label>
+            Nome:
+            <input type="text" name="nome" value={newItem.nome} onChange={handleInputChange} />
+          </label>
+          <label><React.Fragment>
+            &nbsp;
+            &nbsp;
+            <span>Acrônimo:</span>
+          </React.Fragment>
+            <input type="text" name="acronimo" value={newItem.acronimo} onChange={handleInputChange} />
+          </label>
+          <button type="submit">{editItemId !== null ? 'Salvar Edição' : 'Adicionar'}</button>
+        </form>
       </div>
       <table className="data-table">
         <thead>
           <tr>
+
             <th className='id'>ID</th>
             <th>Nome</th>
             <th>Acrônimo</th>
@@ -219,16 +239,7 @@ const handleDeleteClick = (id)=> {
           <option value={10}>10</option>
         </select>
       </div>
-    
-
-     {/* Esse trecho de códio ta gerando tela branca. (sem ele a página abre, mas o pop up de ediçã não) */}
-      {/* <EditInstituteModal
-        show={showEditModal}
-       onClose={() => setShowEditModal(false)}
-       institute={editingInstitute}
-       onEdit={handleEdit}
-      /> */}
-       <DeleteConfirmationModal
+      <DeleteConfirmationModal
         show={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
         onConfirm={handleConfirmDelete}
