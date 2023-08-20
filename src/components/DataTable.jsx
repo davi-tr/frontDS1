@@ -193,7 +193,7 @@ const handleDeleteClick = (id)=> {
               <td>{item.id}</td>
               <td>{item.nome}</td>
               <td>{item.acronimo}</td>
-              <td>
+              <td className='opcoes'>
               <button className="edit-button" onClick={() => handleEdit(item.id)}>Editar</button>
               <button className="delete-button" onClick={() => handleDeleteClick(item.id)}>Excluir</button>
               </td>
