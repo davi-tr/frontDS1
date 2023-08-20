@@ -91,7 +91,7 @@ const DataTable = () => {
         acronimo: editedInstitute.acronimo,
       });
       fetchData();
-      setShowAddModal(false);
+      setShowEditModal(false)
       setEditingInstitute(null);
     } catch (error) {
       console.error('Erro ao editar instituto:', error);
@@ -227,10 +227,10 @@ const handleDeleteClick = (id)=> {
         onAdd={handleAddInstitute}
       />
        <EditModal
-        show={showEditModal} // Alterado de showAddModal para showEditModal
+        show={showEditModal}
         onClose={() => setShowEditModal(false)}
         institute={editingInstitute}
-        onSave={handleSaveEdit}
+        onSave={handleSaveEdit} // Certifique-se de que está passando a função correta aqui
         onCancel={() => setShowEditModal(false)}
       />
     </div>

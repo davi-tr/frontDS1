@@ -55,6 +55,15 @@ select.qtdItens option:checked {
     font-family: 'Roboto', sans-serif;
 }
 
+.edit-button {
+    font-family: 'Roboto', sans-serif;
+    margin-right: 5px;
+    padding: 5px 10px;
+    background-color: yellow;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
 
 .delete-button {
     font-family: 'Roboto', sans-serif;
@@ -227,17 +236,17 @@ td.opcoes{
 
   
 .field {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  .field label {
-    width: 100px;
-    margin-right: 10px;
-  }
-  
-  .field input {
-    flex: 1;
-    padding: 5px;
-  }
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.field label {
+  width: 100px;
+  margin-right: 10px;
+}
+
+.field input {
+  flex: 1;
+  padding: 5px;
+}
