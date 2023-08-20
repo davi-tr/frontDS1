@@ -91,6 +91,7 @@ select.qtdItens option:checked{
     transform: scale(1.1);
 }
 
+
 .edit-button:active{
     opacity: .5s;
 }
