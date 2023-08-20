@@ -85,7 +85,7 @@ select.qtdItens option:checked{
 }
 .edit-button:hover,
 .edit-button:active{
-    background-color: initial;
+    background-color: white;
         background-position: 0 0;
         color: orange;
     transform: scale(1.1);
@@ -125,7 +125,7 @@ margin: 0.5rem;
 
 .delete-button:hover,
 .delete-button:active {
-    background-color: initial;
+    background-color: white;
     background-position: 0 0;
     color: red;
     transform: scale(1.1);
