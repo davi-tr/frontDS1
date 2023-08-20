@@ -181,18 +181,19 @@ const handleDeleteClick = (id)=> {
       <table className="data-table">
         <thead>
           <tr>
-            <th>ID</th>
+            <th className='id'>ID</th>
             <th>Nome</th>
             <th>Acrônimo</th>
-            <th>Ação</th>
+            <th className='opcoes'>Ação</th>
           </tr>
         </thead>
         <tbody>
           {currentItens.map(item => (
-            <tr key={item.id}>
-              <td>{item.id}</td>
-              <td>{item.nome}</td>
-              <td>{item.acronimo}</td>
+            <tr className='linha' key={item.id}>
+            
+              <td className='id'>{item.id}</td>
+              <td className='nome'>{item.nome}</td>
+              <td className='acronimo'>{item.acronimo}</td>
               <td className='opcoes'>
               <button className="edit-button" onClick={() => handleEdit(item.id)}>Editar</button>
               <button className="delete-button" onClick={() => handleDeleteClick(item.id)}>Excluir</button>

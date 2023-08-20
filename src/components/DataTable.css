@@ -43,7 +43,7 @@ select.qtdItens option:checked{
     font-family: 'Roboto', sans-serif;
     border-collapse: collapse;
     margin-top: 20px;
-    width: 90%;
+    width: 100%;
     justify-content: center;
     align-items: center;
 }
@@ -142,11 +142,35 @@ margin: 0.5rem;
     align-items: center;
 
 }
+
+th.id{
+  text-align: center;
+}
+
+td.id{
+  text-align: center;
+  width: 5rem;
+}
+
+th.opcoes{
+    text-align: center;
+    width: 20rem;
+}
+
+
 td.opcoes{
     display: flex;
-    width: auto;
+    width: 20rem;
     justify-content: center;
     align-items: center;
+}
+
+
+.linha:hover :not(.opcoes, .edit-button, .delete-button ){
+  transition: ease-in-out .3s;
+  background-color: grey;
+  cursor: pointer;
+  
 }
 
 .botao {
