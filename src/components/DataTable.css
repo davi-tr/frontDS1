@@ -415,3 +415,63 @@ tr:hover{
   flex: 1;
   padding: 5px;
 }
+
+/* Estilização da caixa de pesquisa com caixa de texto maior */
+.search-input input[type="text"] {
+  padding: 12px; /* Aumentando o preenchimento vertical */
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  width: 300px; /* Aumentando a largura */
+}
+
+
+/* Estilização do seletor de filtro */
+.search-input select.filter-select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+
+/* CSS para alinhar os botões e a barra de pesquisa na mesma linha */
+.search-and-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px; /* Adicione margem inferior para separar da tabela */
+}
+
+.edit-delete-buttons {
+  display: flex;
+}
+
+.search-input {
+  display: flex;
+  align-items: center;
+}
+
+.filter-select {
+  margin-right: 10px;
+}
+
+/* Adicione margem direita ao filtro e à barra de pesquisa para separá-los */
+input[type="text"],
+.filter-select {
+  margin-right: 10px;
+}
+
+/* Adicione estilo ao botão de pesquisa, se desejar */
+.search-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+/* Adicione qualquer estilo adicional que você desejar */
+
+
