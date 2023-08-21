@@ -240,7 +240,7 @@ const handleDeleteClick = (id)=> {
   // Renderiza a interface de usuário
   return (
     <div className="container">
-      <h2 className="titulo">Tabela de Dados</h2>
+      <h2 className="titulo">Institutos Cadastrados</h2>
       
       
       <div className="search-and-buttons">
