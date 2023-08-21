@@ -243,8 +243,8 @@ const handleDeleteClick = (id)=> {
       <h2 className="titulo">Tabela de Dados</h2>
       
       
-      <div className="edit-delete-buttons">
-      <div className="search-filter">
+      <div className="search-and-buttons">
+        {/* Filtro e barra de pesquisa à esquerda */}
         <div className="search-input">
           <select
             className="filter-select"
@@ -263,15 +263,18 @@ const handleDeleteClick = (id)=> {
           />
         </div>
 
+        {/* Botões "Adicionar Instituto", "Editar" e "Excluir" à direita */}
+        <div className="edit-delete-buttons">
+          <button className="add-button" onClick={() => setShowAddModal(true)}>Adicionar Instituto</button>
+          <button className="edit-button" disabled={!selectedInstitute} onClick={() => handleEdit(selectedInstitute)}>
+            Editar
+          </button>
+          <button className="delete-button" disabled={!selectedInstitute} onClick={() => handleDeleteClick(selectedInstitute.id)}>
+            Excluir
+          </button>
+        </div>
       </div>
-      <button className="add-button" onClick={() => setShowAddModal(true)}>Adicionar Instituto</button>
-        <button className="edit-button" disabled={!selectedInstitute} onClick={() => handleEdit(selectedInstitute)}>
-          Editar
-        </button>
-        <button className="delete-button" disabled={!selectedInstitute} onClick={() => handleDeleteClick(selectedInstitute.id)}>
-          Excluir
-        </button>
-      </div>
+
       <div className="form-container">
       </div>
       <table className="data-table">
