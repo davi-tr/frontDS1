@@ -86,7 +86,8 @@ const DataTable = () => {
 
   const handleSaveEdit = async (editedInstitute) => {
     try {
-      await axios.put(`http://localhost:8081/instituto/id=${editedInstitute.id}`, {
+      await axios.put(`http://localhost:8081/instituto`, {
+        id: editedInstitute.id,
         nome: editedInstitute.nome,
         acronimo: editedInstitute.acronimo,
       });
