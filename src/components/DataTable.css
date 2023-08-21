@@ -55,6 +55,15 @@ select.qtdItens option:checked {
     font-family: 'Roboto', sans-serif;
 }
 
+.edit-button {
+    font-family: 'Roboto', sans-serif;
+    margin-right: 5px;
+    padding: 5px 10px;
+    background-color: yellow;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
 
 .edit-button{
     margin: 0.5rem;
@@ -76,8 +85,8 @@ select.qtdItens option:checked {
   text-align: center;
   text-rendering: geometricprecision;
   text-transform: none;
-  user-select: none;
   -webkit-user-select: none;
+  user-select: none;
   touch-action: manipulation;
   vertical-align: middle;
   transition: ease-in-out 0.2s;
@@ -116,8 +125,8 @@ margin: 0.5rem;
   text-align: center;
   text-rendering: geometricprecision;
   text-transform: none;
-  user-select: none;
   -webkit-user-select: none;
+  user-select: none;
   touch-action: manipulation;
   vertical-align: middle;
   transition: ease-in-out 0.2s;
@@ -214,8 +223,6 @@ td.opcoes{
     justify-content: center;
 }
 
-/* AddInstituteModal.css */
-
 .add-modal-overlay {
     position: fixed;
     top: 0;
@@ -231,17 +238,18 @@ td.opcoes{
 
 .add-modal-container {
     background-color: white;
-    padding: 20px;
+    padding: 40px;
     border-radius: 5px;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-    width: 400px;
-    max-width: 90%;
+    width: 60%; /* Ajuste a largura conforme necessário */
+    max-width: 500px;
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
-/*centralizar o conteúdo do modal */
 .add-modal-content {
+    width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -251,7 +259,7 @@ td.opcoes{
 
 .add-modal-label {
     font-weight: bold;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 .add-modal-input {
@@ -266,8 +274,9 @@ td.opcoes{
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    justify-content: flex-end;
 }
+
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -296,17 +305,17 @@ td.opcoes{
 
   
 .field {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  .field label {
-    width: 100px;
-    margin-right: 10px;
-  }
-  
-  .field input {
-    flex: 1;
-    padding: 5px;
-  }
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.field label {
+  width: 100px;
+  margin-right: 10px;
+}
+
+.field input {
+  flex: 1;
+  padding: 5px;
+}

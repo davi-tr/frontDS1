@@ -86,12 +86,12 @@ const DataTable = () => {
 
   const handleSaveEdit = async (editedInstitute) => {
     try {
-      await axios.put(`http://localhost:8081/instituto/${editedInstitute.id}`, {
+      await axios.put(`http://localhost:8081/instituto/id=${editedInstitute.id}`, {
         nome: editedInstitute.nome,
         acronimo: editedInstitute.acronimo,
       });
       fetchData();
-      setShowAddModal(false);
+      setShowEditModal(false)
       setEditingInstitute(null);
     } catch (error) {
       console.error('Erro ao editar instituto:', error);
@@ -102,7 +102,7 @@ const DataTable = () => {
   const handleEditSubmit = async (editedData) => {
     try {
       if (editedData.id !== null) {
-        await axios.put(`http://localhost:8081/instituto/${editedData.id}`, {
+        await axios.put(`http://localhost:8081/instituto/id=${editedData.id}`, {
           nome: editedData.nome,
           acronimo: editedData.acronimo,
         });
@@ -168,6 +168,7 @@ const handleDeleteClick = (id)=> {
     }
   };
 
+  
   // Renderiza a interface de usuário
   return (
     <div className="container">
@@ -227,10 +228,10 @@ const handleDeleteClick = (id)=> {
         onAdd={handleAddInstitute}
       />
        <EditModal
-        show={showEditModal} // Alterado de showAddModal para showEditModal
+        show={showEditModal}
         onClose={() => setShowEditModal(false)}
         institute={editingInstitute}
-        onSave={handleSaveEdit}
+        onSave={handleSaveEdit} // Certifique-se de que está passando a função correta aqui
         onCancel={() => setShowEditModal(false)}
       />
     </div>
