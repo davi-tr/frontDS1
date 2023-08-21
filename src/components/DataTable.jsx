@@ -56,6 +56,7 @@ const DataTable = () => {
 
   const handleSelectInstitute = (institute) => {
     setSelectedInstitute(institute === selectedInstitute ? null : institute);
+
   };
 
   // Função para buscar os dados da API
@@ -174,6 +175,7 @@ const handleDeleteClick = (id)=> {
         });
     }
   };
+  
 
   
   // Renderiza a interface de usuário
@@ -193,8 +195,8 @@ const handleDeleteClick = (id)=> {
       </div>
       <table className="data-table">
         <thead>
-          <tr>
-            <th>ID</th>
+          <tr className='cabeca'>
+            <th className='id'>ID</th>
             <th>Nome</th>
             <th>Acrônimo</th>
   

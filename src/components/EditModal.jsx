@@ -52,8 +52,8 @@ const EditModal = ({ show, onClose, institute, onSave, onCancel }) => {
             />
           </div>
           <div className="modal-buttons">
-            <button onClick={onCancel}>Cancelar</button>
-            <button onClick={handleSave}>Salvar</button>
+            <button onClick={onCancel} className='cencelar'>Cancelar</button>
+            <button onClick={handleSave} className='salvar'>Salvar</button>
           </div>
         </div>
       </div>
