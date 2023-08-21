@@ -86,7 +86,7 @@ const DataTable = () => {
 
   const handleSaveEdit = async (editedInstitute) => {
     try {
-      await axios.put(`http://localhost:8081/instituto/${editedInstitute.id}`, {
+      await axios.put(`http://localhost:8081/instituto/id=${editedInstitute.id}`, {
         nome: editedInstitute.nome,
         acronimo: editedInstitute.acronimo,
       });
@@ -102,7 +102,7 @@ const DataTable = () => {
   const handleEditSubmit = async (editedData) => {
     try {
       if (editedData.id !== null) {
-        await axios.put(`http://localhost:8081/instituto/${editedData.id}`, {
+        await axios.put(`http://localhost:8081/instituto/id=${editedData.id}`, {
           nome: editedData.nome,
           acronimo: editedData.acronimo,
         });
