@@ -1,7 +1,7 @@
 .container {
-    align-items: center;
-    justify-content: center;
-}
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
 
 .seletor {
     display: flex;
@@ -30,29 +30,29 @@ select.qtdItens option:checked {
 }
 
 .titulo {
-    color: #333;
-    font-size: 40px;
-    align-self: start;
-    font-family: 'Poppins', sans-serif;
-    font-style: bold;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center; /* Centraliza o texto */
+    color: #333; /* Cor do texto */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Sombra de texto */
+}
+  
+.titulo:hover {
+color: #007bff; /* Cor do texto ao passar o mouse */
 }
 
-.data-table {
-    margin: auto;
-    font-family: 'Roboto', sans-serif;
-    border-collapse: collapse;
-    margin-top: 20px;
+  .data-table {
     width: 100%;
-    justify-content: center;
-    align-items: center;
-}
+    border-collapse: collapse;
+  }
 
-.data-table th,
-.data-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: left;
-    font-family: 'Roboto', sans-serif;
+.data-table th, .data-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+.data-table th {
+    background-color: #f2f2f2;
 }
 
 .edit-button {
@@ -94,10 +94,10 @@ select.qtdItens option:checked {
 }
 .edit-button:hover,
 .edit-button:active{
-    background-color: white;
-        background-position: 0 0;
-        color: orange;
-    transform: scale(1.1);
+background-color: white;
+background-position: 0 0;
+color: orange;
+transform: scale(1.1);
 }
 
 
@@ -168,16 +168,17 @@ td.opcoes{
   
 }
 
-.botao {
-    margin: 0 5px;
-    padding: 5px 10px;
-    background-color: #fff;
-    color: #333;
-    border: 1px solid #ddd;
+.add-button, .botao {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-right: 10px;
     cursor: pointer;
-    transition: background-color 0.9s, color 0.7s;
-}
-
+  }
+  .add-button:hover, .botao:hover {
+    background-color: #0056b3;
+  }
 
 .botao:hover {
     background-color: green;
