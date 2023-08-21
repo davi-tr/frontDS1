@@ -168,6 +168,7 @@ const handleDeleteClick = (id)=> {
     }
   };
 
+  
   // Renderiza a interface de usuário
   return (
     <div className="container">
