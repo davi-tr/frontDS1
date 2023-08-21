@@ -70,8 +70,7 @@ const DataTable = () => {
 
 
   useEffect(() => {
-    setCurrentPage(0); // Redefina a página para a primeira sempre que a pesquisa ou o filtro mudar
-    fetchData(); // Atualize os dados com base na pesquisa e no filtro
+    searchData(); // Chame a função searchData apenas quando a pesquisa mudar
   }, [searchText, filter]);
   
   
@@ -227,7 +226,7 @@ const handleDeleteClick = (id)=> {
   const searchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8081/instituto?page=0&size=${itensPerPage}&search=${searchText}&filter=${filter}`
+        `http://localhost:8081/instituto?search=${searchText}&filter=${filter}`
       );
       setData(response.data.content);
       setTotalElements(response.data.totalElements);
