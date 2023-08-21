@@ -36,13 +36,17 @@ const DataTable = () => {
   const [editingInstitute, setEditingInstitute] = useState(null);
   
 
-  // Calcula o número de páginas com base no número total de elementos e itens por página
-  const pages = Math.ceil(totalElements / itensPerPage);
-
+ 
   // Calcula o índice inicial e final dos itens na página atual
   const startIndex = currentPage * itensPerPage;
   const endIndex = startIndex + itensPerPage;
   const currentItens = data.slice(startIndex, endIndex);
+
+  const [searchText, setSearchText] = useState('');
+  const [filter, setFilter] = useState('all');
+  
+  const pages = searchText ? 1 : Math.ceil(totalElements / itensPerPage);
+
 
   // Função para buscar os dados da API com base na página atual
   useEffect(() => {
@@ -52,7 +56,25 @@ const DataTable = () => {
   // Atualiza a página de volta para a primeira sempre que a quantidade de itens por página é alterada
   useEffect(() => {
     setCurrentPage(0);
+    fetchData();
   }, [itensPerPage]);
+
+  // Função para buscar os dados da API com base na página atual
+  useEffect(() => {
+    if (searchText) {
+      searchData(); // Se a pesquisa estiver ativa, busque os resultados da pesquisa
+    } else {
+      fetchData(currentPage); // Caso contrário, busque os resultados com paginação
+    }
+  }, [currentPage, searchText]); // Atualize sempre que a página ou pesquisa mudar
+
+
+  useEffect(() => {
+    setCurrentPage(0); // Redefina a página para a primeira sempre que a pesquisa ou o filtro mudar
+    fetchData(); // Atualize os dados com base na pesquisa e no filtro
+  }, [searchText, filter]);
+  
+  
 
   const handleSelectInstitute = (institute) => {
     setSelectedInstitute(institute === selectedInstitute ? null : institute);
@@ -60,15 +82,19 @@ const DataTable = () => {
   };
 
   // Função para buscar os dados da API
-  const fetchData = async () => {
+  const fetchData = async (page) => {
     try {
-      const response = await axios.get(`http://localhost:8081/instituto`);
+      const response = await axios.get(
+        `http://localhost:8081/instituto?page=${page}&size=${itensPerPage}&search=${searchText}&filter=${filter}`
+      );
       setData(response.data.content);
       setTotalElements(response.data.totalElements);
     } catch (error) {
       console.error('Erro ao buscar os dados da API:', error);
     }
   };
+  
+  
   const handleAddInstitute = async newInstitute => {
     try {
       await axios.post('http://localhost:8081/instituto', newInstitute);
@@ -127,21 +153,23 @@ const DataTable = () => {
   };
 
   // Função para atualizar o estado e verificar se chegou ao fim das páginas
-  const updateState = async page => {
+  const updateState = async (page) => {
     try {
-      const response = await axios.get(`http://localhost:8081/instituto?page=${page}`);
-      setTotalElements(response.data.empty);
+      const response = await axios.get(
+        `http://localhost:8081/instituto?page=${page}&size=${itensPerPage}&search=${searchText}&filter=${filter}`
+      );
+      setTotalElements(response.data.totalElements);
     } catch (error) {
       console.error('Erro ao buscar os dados da API:', error);
     }
-
+  
     if (totalElements) {
       setPaginaFim(true); // Se não houver mais elementos, marca como o fim das páginas
     } else {
       setPaginaFim(false);
     }
   };
-
+  
   // Função para avançar para a próxima página
   const handleNextPage = () => {
     if (!paginaFim) { // Verifica se não chegou ao fim das páginas
@@ -175,15 +203,68 @@ const handleDeleteClick = (id)=> {
         });
     }
   };
+
+  const handleSearchFilter = () => {
+    fetchData(); // Atualize os dados com base na pesquisa e no filtro
+  };
+  const handleSearch = () => {
+    fetchData(); // Atualize os dados com base na pesquisa
+  };
   
+  const handleFilterChange = (e) => {
+    setFilter(e.target.value); // Atualize o estado do filtro
+  };
+  const filteredData = data.filter((item) => {
+    if (filter === 'all') {
+      return true; // Mostrar todos os itens se o filtro for "all"
+    } else if (filter === 'nome') {
+      return item.nome.toLowerCase().includes(searchText.toLowerCase());
+    } else if (filter === 'acronimo') {
+      return item.acronimo.toLowerCase().includes(searchText.toLowerCase());
+    }
+  });
+  
+  const searchData = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8081/instituto?page=0&size=${itensPerPage}&search=${searchText}&filter=${filter}`
+      );
+      setData(response.data.content);
+      setTotalElements(response.data.totalElements);
+    } catch (error) {
+      console.error('Erro ao buscar os dados da API:', error);
+    }
+  };
 
   
   // Renderiza a interface de usuário
   return (
     <div className="container">
       <h2 className="titulo">Tabela de Dados</h2>
-      <button className="add-button" onClick={() => setShowAddModal(true)}>Adicionar Instituto</button>
+      
+      
       <div className="edit-delete-buttons">
+      <div className="search-filter">
+        <div className="search-input">
+          <select
+            className="filter-select"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          >
+            <option value="all">Todos</option>
+            <option value="nome">Nome</option>
+            <option value="acronimo">Acrônimo</option>
+          </select>
+          <input
+            type="text"
+            placeholder="Pesquisar por nome ou acrônimo"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+        </div>
+
+      </div>
+      <button className="add-button" onClick={() => setShowAddModal(true)}>Adicionar Instituto</button>
         <button className="edit-button" disabled={!selectedInstitute} onClick={() => handleEdit(selectedInstitute)}>
           Editar
         </button>
@@ -203,7 +284,7 @@ const handleDeleteClick = (id)=> {
           </tr>
         </thead>
         <tbody>
-          {currentItens.map(item => (
+          {filteredData.map(item => (
             <tr
               key={item.id}
               onClick={() => handleSelectInstitute(item)}
