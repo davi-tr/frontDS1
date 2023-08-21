@@ -25,6 +25,8 @@ const DataTable = () => {
   // Estado para controlar a quantidade de itens por página
   const [itensPerPage, setItensPerPage] = useState(3);
 
+  const [selectedInstitute, setSelectedInstitute] = useState(null);
+
   // Estado para verificar se chegou ao fim das páginas
   const [paginaFim, setPaginaFim] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -51,6 +53,10 @@ const DataTable = () => {
   useEffect(() => {
     setCurrentPage(0);
   }, [itensPerPage]);
+
+  const handleSelectInstitute = (institute) => {
+    setSelectedInstitute(institute === selectedInstitute ? null : institute);
+  };
 
   // Função para buscar os dados da API
   const fetchData = async () => {
@@ -175,6 +181,14 @@ const handleDeleteClick = (id)=> {
     <div className="container">
       <h2 className="titulo">Tabela de Dados</h2>
       <button className="add-button" onClick={() => setShowAddModal(true)}>Adicionar Instituto</button>
+      <div className="edit-delete-buttons">
+        <button className="edit-button" disabled={!selectedInstitute} onClick={() => handleEdit(selectedInstitute)}>
+          Editar
+        </button>
+        <button className="delete-button" disabled={!selectedInstitute} onClick={() => handleDeleteClick(selectedInstitute.id)}>
+          Excluir
+        </button>
+      </div>
       <div className="form-container">
       </div>
       <table className="data-table">
@@ -183,19 +197,19 @@ const handleDeleteClick = (id)=> {
             <th>ID</th>
             <th>Nome</th>
             <th>Acrônimo</th>
-            <th>Ação</th>
+  
           </tr>
         </thead>
         <tbody>
           {currentItens.map(item => (
-            <tr key={item.id}>
+            <tr
+              key={item.id}
+              onClick={() => handleSelectInstitute(item)}
+              className={selectedInstitute === item ? 'selected-row' : ''}
+            >
               <td>{item.id}</td>
               <td>{item.nome}</td>
               <td>{item.acronimo}</td>
-              <td>
-              <button className="edit-button" onClick={() => handleEdit(item)}>Editar</button>
-              <button className="delete-button" onClick={() => handleDeleteClick(item.id)}>Excluir</button>
-              </td>
             </tr>
           ))}
         </tbody>
