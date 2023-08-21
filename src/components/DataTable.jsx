@@ -42,6 +42,12 @@ const DataTable = () => {
   const endIndex = startIndex + itensPerPage;
   const currentItens = data.slice(startIndex, endIndex);
 
+
+  const [selectedValue, setSelectedValue] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [result, setResult] = useState({});
+
+
   // Função para buscar os dados da API com base na página atual
   useEffect(() => {
     fetchData(currentPage);
@@ -73,10 +79,10 @@ const DataTable = () => {
 
   // Função para lidar com a mudança nos campos de entrada
 
-  const handleInputChange = event => {
-    const { name, value } = event.target;
-    setNewItem({ ...newItem, [name]: value });
-  };
+  //const handleInputChange = event => {
+   // const { name, value } = event.target;
+   // setNewItem({ ...newItem, [name]: value });
+ // };
 
   // Função para iniciar a edição de um item
   const handleEdit = (institute) => {
@@ -168,10 +174,79 @@ const handleDeleteClick = (id)=> {
     }
   };
 
+  const searchName = async (name) => {
+    try {
+        const response = await axios.get(`http://localhost:8081/instituto/nome=${name}`);
+        setData(response.data.content);
+        setTotalElements(response.data.totalElements);
+    } catch (error) {
+      console.error('Erro ao buscar os dados da API:', error);
+    }
+  };
+
+  const searchAc = async (ac) => {
+    try {
+        const response = await axios.get(`http://localhost:8081/instituto/ac=${ac}`);
+        setData(response.data.content);
+        setTotalElements(response.data.totalElements);
+    } catch (error) {
+      console.error('Erro ao buscar os dados da API:', error);
+    }
+  };
+
+
+  const handleSelectChange = (event) => {
+    const value = event.target.value;
+    setSelectedValue(value);
+  };
+
+  const handleInputChange = (event) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+  };
+
+  const searchInstitute = () => {
+    if(selectedValue == "todos")
+    {
+      setResult = fetchData();
+    }
+    else if (selectedValue == "nome")
+    {
+      setResult = searchName(searchTerm)
+    }
+    else if (selectedValue == "acronimo")
+    {
+      setResult = searchAc(searchTerm)
+    }
+    console.log(searchInstitute)
+  
+  }
+
   // Renderiza a interface de usuário
   return (
     <div className="container">
       <h2 className="titulo">Tabela de Dados</h2>
+      <form action="">
+          <label>
+            Pesquisar por:
+            <select value={selectedValue} onChange={handleSelectChange}>
+              <option value="todos">Todos</option>
+              <option value="nome">Nome</option>
+              <option value="acronimo">Acrônimo</option>
+            </select>
+          </label>
+          <label>
+            Pesquisar:
+            <input
+              type="text"
+              name="searchTerm"
+              placeholder="Digite sua pesquisa"
+              value={searchTerm}
+              onChange={handleInputChange}
+            />
+            <button type="submit" onClick={searchInstitute}>Pesquisar</button>
+          </label>
+      </form>
       <button className="add-button" onClick={() => setShowAddModal(true)}>Adicionar Instituto</button>
       <div className="form-container">
       </div>
