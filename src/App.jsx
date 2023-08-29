@@ -1,15 +1,16 @@
-import { useState } from 'react'
-
-import './App.css'
-import DataTable from './components/DataTable'
+import React from 'react';
+import './App.css';
+import TelaPrincipal from './TelaPrincipal';
+import DataTable from './components/Instituto/DataTable';
 
 function App() {
-
   return (
- <div className="app">
-   <DataTable/>
- </div>
-  )
+    <div className="App">
+      <header className="App-header">
+        <TelaPrincipal />
+      </header>
+    </div>
+  );
 }
 
-export default App
+export default App;
