@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './TelaHome.css'; // Importe seu arquivo de estilos
 
 import TelaPrincipal from './TelaPrincipal';
 import DataTable from './components/Instituto/DataTable';
@@ -14,10 +15,16 @@ function Home() {
 
   if (currentScreen === 'home') {
     content = (
-      <div>
-        <h1>Tela Principal (Home)</h1>
-        <button onClick={() => handleNavigate('pesquisador')}>Ir para a Tela de Pesquisador</button>
-        <button onClick={() => handleNavigate('instituto')}>Ir para a Tela de Instituto</button>
+      <div className="home-container">
+        <h1 className="home-title">Tela Principal (Home)</h1>
+        <div className="home-buttons">
+          <button className="home-button" onClick={() => handleNavigate('pesquisador')}>
+            Ir para a Tela de Pesquisador
+          </button>
+          <button className="home-button" onClick={() => handleNavigate('instituto')}>
+            Ir para a Tela de Instituto
+          </button>
+        </div>
       </div>
     );
   } else if (currentScreen === 'pesquisador') {
