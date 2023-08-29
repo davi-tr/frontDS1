@@ -4,13 +4,11 @@ import AddResearcherForm from './components/Instituto/AddResearcherForm'; // Imp
 import axios from 'axios';
 
 
+
 function TelaPrincipal() {
   const [mostrarDataTable, setMostrarDataTable] = useState(false);
   const [pesquisadores, setPesquisadores] = useState([]);
 
-  const toggleDataTable = () => {
-    setMostrarDataTable(!mostrarDataTable);
-  };
   useEffect(() => {
     fetchPesquisadores(); // Busca a lista de pesquisadores ao carregar o componente
   }, []);
@@ -24,11 +22,13 @@ function TelaPrincipal() {
     }
   };
 
+  const handleVoltarParaTelaPrincipal = () => {
+    window.location.href = "/"; // Navegação simples para a raiz do aplicativo
+};
+
   return (
     <div>
-      <button onClick={toggleDataTable}>Instituto</button>
-
-      {mostrarDataTable && <DataTable />} {/* Renderiza o DataTable se o estado for verdadeiro */}
+       <button onClick={handleVoltarParaTelaPrincipal}>Voltar para a Tela Principal</button>
 
       {/* Renderiza o formulário de adição de pesquisador */}
       <AddResearcherForm onClose={() => setMostrarDataTable(false)} />
