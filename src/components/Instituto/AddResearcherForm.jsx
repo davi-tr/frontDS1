@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+//import axios from 'axios';
 
 const AddResearcherForm = ({ onClose }) => {
   const [researcherId, setResearcherId] = useState('');
@@ -12,6 +12,7 @@ const AddResearcherForm = ({ onClose }) => {
 
   const fetchInstitutes = async () => {
     try {
+      // fetch('http://localhost:8081/instituto/')
       const response = await axios.get('http://localhost:8081/instituto');
       setInstitutes(response.data);
     } catch (error) {
