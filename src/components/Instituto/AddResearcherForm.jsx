@@ -13,7 +13,7 @@ const AddResearcherForm = ({ onClose }) => {
   const fetchInstitutes = async () => {
     try {
       const response = await axios.get('http://localhost:8081/instituto');
-      setInstitutes(response.data);
+      setInstitutes(response.data.content);
     } catch (error) {
       console.error('Erro ao buscar a lista de institutos:', error);
     }
@@ -31,7 +31,7 @@ const AddResearcherForm = ({ onClose }) => {
 
     // Usando a API para cadastrar o pesquisador usando o ID digitado e o ID do instituto
     try {
-      await axios.post('http://localhost:8081/pesquisador', { id: researcherId, institutoId: parseInt(instituteId) });
+      await axios.post('http://localhost:8081/pesquisador', { idPesquisador: researcherId, idinstituto: parseInt(instituteId) });
       onClose(); // Feche a janela pop-up após o cadastro bem-sucedido
     } catch (error) {
       console.error('Erro ao cadastrar pesquisador:', error);
