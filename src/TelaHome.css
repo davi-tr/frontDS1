@@ -1,0 +1,36 @@
+/* Home.css */
+
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f0f0f0; /* Cinza claro de fundo */
+  }
+  
+  .home-title {
+    font-size: 2rem;
+    color: #333; /* Cinza escuro para o título */
+    margin-bottom: 1rem;
+  }
+  
+  .home-buttons {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .home-button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background-color: #555; /* Cinza médio para os botões */
+    border: none;
+    color: #fff; /* Texto branco nos botões */
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .home-button:hover {
+    background-color: #333; /* Escurece um pouco ao passar o mouse */
+  }
+  
