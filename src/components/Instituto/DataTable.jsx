@@ -4,7 +4,6 @@ import './DataTable.css';
 import DeleteConfirmationModal from './DeleteConfirmationModal.jsx'; // importação de arquivo com pop-up da tela de deleção
 import AddInstituteModal from './AddInstituteModal.jsx'; // importação de arquivo com pop-up da tela de edição
 import EditModal from './EditModal.jsx';
-import AddResearcherForm from './AddResearcherForm';
 import Modal from 'react-modal'; 
 
 Modal.setAppElement('#root');
@@ -38,9 +37,6 @@ const DataTable = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingInstitute, setEditingInstitute] = useState(null);
-
-  const [isAddResearcherModalOpen, setIsAddResearcherModalOpen] = useState(false);
-  
 
  
   // Calcula o índice inicial e final dos itens na página atual
@@ -270,7 +266,6 @@ const handleDeleteClick = (id)=> {
 
         {/* Botões "Adicionar Instituto", "Editar" e "Excluir" à direita */}
         <div className="edit-delete-buttons">
-          <button onClick={() => setIsAddResearcherModalOpen(true)}>Cadastrar Pesquisador</button>
           <button className="add-button" onClick={() => setShowAddModal(true)}>Adicionar Instituto</button>
           <button className="edit-button" disabled={!selectedInstitute} onClick={() => handleEdit(selectedInstitute)}>
             Editar
@@ -341,15 +336,6 @@ const handleDeleteClick = (id)=> {
         onSave={handleSaveEdit} // Certifique-se de que está passando a função correta aqui
         onCancel={() => setShowEditModal(false)}
       />
-       {/* Renderizar o modal com o formulário */}
-        <Modal
-          isOpen={isAddResearcherModalOpen}
-          onRequestClose={() => setIsAddResearcherModalOpen(false)}
-          contentLabel="Cadastrar Pesquisador"
-        >
-          <button onClick={() => setIsAddResearcherModalOpen(false)}>Fechar</button>
-          <AddResearcherForm onClose={() => setIsAddResearcherModalOpen(false)} />
-        </Modal>
     </div>
   );
 };
