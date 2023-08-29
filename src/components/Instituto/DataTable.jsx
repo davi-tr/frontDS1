@@ -39,6 +39,7 @@ const DataTable = () => {
   const [editingInstitute, setEditingInstitute] = useState(null);
 
  
+
   // Calcula o índice inicial e final dos itens na página atual
   const startIndex = currentPage * itensPerPage;
   const endIndex = startIndex + itensPerPage;
@@ -236,11 +237,15 @@ const handleDeleteClick = (id)=> {
       console.error('Erro ao buscar os dados da API:', error);
     }
   };
+  const handleVoltarParaTelaPrincipal = () => {
+      window.location.href = "/"; // Navegação simples para a raiz do aplicativo
+  };
 
   
   // Renderiza a interface de usuário
   return (
     <div className="container">
+     <button onClick={handleVoltarParaTelaPrincipal}>Voltar para a Tela Principal</button>
       <h2 className="titulo">Institutos Cadastrados</h2>
       
       
