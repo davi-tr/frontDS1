@@ -3,6 +3,7 @@ import './TelaHome.css'; // Importe seu arquivo de estilos
 
 import TelaPrincipal from './TelaPrincipal';
 import DataTable from './components/Instituto/DataTable';
+import fotofemass from './fotofemass.png';
 
 
 function Home() {
@@ -23,8 +24,20 @@ function Home() {
         </ul>
       </div>
       <div className="content">
+      
         {currentScreen === 'pesquisador' && <TelaPrincipal />}
         {currentScreen === 'instituto' && <DataTable />}
+        {currentScreen === 'home' && (
+          <div>
+            <h1 className="home-title">Controle de Trabalho de Pesquisadores</h1>
+            <img
+              src={fotofemass}
+              alt="Imagem de exemplo"
+              className="logohome"
+              style={{ width: '600px', height: 'auto', display: 'block', margin: '0 auto' }}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

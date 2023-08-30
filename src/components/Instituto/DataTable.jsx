@@ -237,10 +237,6 @@ const handleDeleteClick = (id)=> {
       console.error('Erro ao buscar os dados da API:', error);
     }
   };
-  const handleVoltarParaTelaPrincipal = () => {
-      window.location.href = "/"; // Navegação simples para a raiz do aplicativo
-  };
-
   
   // Renderiza a interface de usuário
   return (

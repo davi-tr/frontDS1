@@ -21,10 +21,6 @@ function TelaPrincipal() {
     }
   };
 
-  const handleVoltarParaTelaPrincipal = () => {
-    window.location.href = "/";
-  };
-
   const handleDeleteClick = async (pesquisadorId) => {
     try {
       await axios.delete(`http://localhost:8081/pesquisador/${pesquisadorId}`);
