@@ -245,7 +245,6 @@ const handleDeleteClick = (id)=> {
   // Renderiza a interface de usuário
   return (
     <div className="container">
-     <button onClick={handleVoltarParaTelaPrincipal}>Voltar para a Tela Principal</button>
       <h2 className="titulo">Institutos Cadastrados</h2>
       
       
