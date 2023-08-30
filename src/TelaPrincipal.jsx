@@ -42,7 +42,6 @@ function TelaPrincipal() {
 
   return (
     <div>
-      <button onClick={handleVoltarParaTelaPrincipal}>Voltar para a Tela Principal</button>
 
       <AddResearcherForm onClose={() => setMostrarDataTable(false)} />
       <div className="container" style={{ width: '100%', height: '70vh', overflow: 'auto' }}>

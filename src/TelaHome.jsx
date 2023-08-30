@@ -23,19 +23,6 @@ function Home() {
         </ul>
       </div>
       <div className="content">
-        {currentScreen === 'home' && (
-          <div className="home-content">
-            <h1 className="home-title">Tela Principal (Home)</h1>
-            <div className="home-buttons">
-              <button className="home-button" onClick={() => handleNavigate('pesquisador')}>
-                Ir para a Tela de Pesquisador
-              </button>
-              <button className="home-button" onClick={() => handleNavigate('instituto')}>
-                Ir para a Tela de Instituto
-              </button>
-            </div>
-          </div>
-        )}
         {currentScreen === 'pesquisador' && <TelaPrincipal />}
         {currentScreen === 'instituto' && <DataTable />}
       </div>
