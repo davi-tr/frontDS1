@@ -1,75 +1,80 @@
 .container {
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
 
 .seletor {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
 
 }
 
 .selected-actions {
-    margin-top: 16px;
-    display: flex;
-    justify-content: space-between;
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
 }
-  
+
 .select-button {
-    background-color: #007bff;
-    color: #ffffff;
-    border: none;
-    padding: 8px 16px;
-    cursor: pointer;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
 }
 
 .selected-row {
-    background-color: #f2f2f2;
+  background-color: #f2f2f2;
 }
-  
-  
-.selected-actions {
-    margin-top: 16px;
-    display: flex;
-    justify-content: space-between;
-}
-.edit-delete-buttons-container {
-    display: flex;
-    flex-direction: column; /* Stack elements vertically */
-  }
-  
-  .edit-delete-buttons {
-    display: flex;
-    justify-content: flex-end; /* Align items to the right */
-    align-items: center; /* Align items vertically centered */
-    margin-top: 10px; /* Add some space between the buttons and the table */
-  }
-  
 
-  .edit-button:disabled,
-  .delete-button:disabled,
-  .add-button:disabled {
-    opacity: 0.3;
-  }
-  
-  .add-button {
-    margin: 0;
-  }
-  
-  .qtdItens {
-    margin: 0 5px;
-    padding: 5px 10px;
-    background-color: #fff;
-    color: #333;
-    border: 1px solid #ddd;
-    cursor: pointer;
-    transition: ease-in-out 0.9s;
+
+.selected-actions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.edit-delete-buttons-container {
+  display: flex;
+  flex-direction: column;
+  /* Stack elements vertically */
+}
+
+.edit-delete-buttons {
+  display: flex;
+  justify-content: flex-end;
+  /* Align items to the right */
+  align-items: center;
+  /* Align items vertically centered */
+  margin-top: 10px;
+  /* Add some space between the buttons and the table */
+}
+
+
+.edit-button:disabled,
+.delete-button:disabled,
+.add-button:disabled {
+  opacity: 0.3;
+}
+
+.add-button {
+  margin: 0;
+}
+
+.qtdItens {
+  margin: 0 5px;
+  padding: 5px 10px;
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  transition: ease-in-out 0.9s;
 }
 
 select.qtdItens option:checked {
-    box-shadow: 0 0 10px 100px #1882A8 inset;
+  box-shadow: 0 0 10px 100px #1882A8 inset;
 }
 
 .informe {
@@ -79,30 +84,36 @@ select.qtdItens option:checked {
 .titulo {
   font-size: 24px;
   margin-bottom: 20px;
-    text-align: center; /* Centraliza o texto */
-    color: #333; /* Cor do texto */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Sombra de texto */
+  text-align: center;
+  /* Centraliza o texto */
+  color: #333;
+  /* Cor do texto */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  /* Sombra de texto */
 }
 
 .titulo:hover {
-color: #007bff; /* Cor do texto ao passar o mouse */
+  color: #007bff;
+  /* Cor do texto ao passar o mouse */
 }
 
-  .data-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
 
-.data-table th, .data-table td {
+.data-table th,
+.data-table td {
   border: 1px solid #ccc;
   padding: 8px;
-    text-align: center;
-}
-.data-table th {
-    background-color: #f2f2f2;
+  text-align: center;
 }
 
-.id{
+.data-table th {
+  background-color: #f2f2f2;
+}
+
+.id {
   width: 15rem;
 }
 
@@ -117,7 +128,7 @@ color: #007bff; /* Cor do texto ao passar o mouse */
   box-sizing: border-box;
   color: #FFFFFF;
   cursor: pointer;
-  font-family: nunito,roboto,proxima-nova,"proxima nova",sans-serif;
+  font-family: nunito, roboto, proxima-nova, "proxima nova", sans-serif;
   font-size: 16px;
   font-weight: 800;
   line-height: 16px;
@@ -131,18 +142,19 @@ color: #007bff; /* Cor do texto ao passar o mouse */
   user-select: none;
   touch-action: manipulation;
   vertical-align: middle;
-  transition: ease-in-out 0.2s; /* Add some spacing between the buttons */
-  }
+  transition: ease-in-out 0.2s;
+  /* Add some spacing between the buttons */
+}
 
-  .add-button:hover{
-    background-color: white !important;
-    background-position: 0 0;
-    color: #007bff;
-    transform: scale(1.025);
-  }
-  
+.add-button:hover {
+  background-color: white !important;
+  background-position: 0 0;
+  color: #007bff;
+  transform: scale(1.025);
+}
 
-.edit-button{
+
+.edit-button {
   margin: 0.5rem;
   background: orange;
   border: 1px solid orange;
@@ -152,7 +164,7 @@ color: #007bff; /* Cor do texto ao passar o mouse */
   color: #FFFFFF;
   cursor: pointer;
   display: inline-block;
-  font-family: nunito,roboto,proxima-nova,"proxima nova",sans-serif;
+  font-family: nunito, roboto, proxima-nova, "proxima nova", sans-serif;
   font-size: 16px;
   font-weight: 800;
   line-height: 16px;
@@ -169,22 +181,23 @@ color: #007bff; /* Cor do texto ao passar o mouse */
   transition: ease-in-out 0.2s;
 
 }
+
 .edit-button:hover,
-.edit-button:active{
-background-color: white;
-background-position: 0 0;
-color: orange;
-transform: scale(1.025);
+.edit-button:active {
+  background-color: white;
+  background-position: 0 0;
+  color: orange;
+  transform: scale(1.025);
 }
 
 
-.edit-button:active{
-    opacity: .5s;
+.edit-button:active {
+  opacity: .5s;
 }
 
 .delete-button {
-margin: 0.5rem;
- background: red;
+  margin: 0.5rem;
+  background: red;
   border: 1px solid red;
   border-radius: 6px;
   box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
@@ -192,7 +205,7 @@ margin: 0.5rem;
   color: #FFFFFF;
   cursor: pointer;
   display: inline-block;
-  font-family: nunito,roboto,proxima-nova,"proxima nova",sans-serif;
+  font-family: nunito, roboto, proxima-nova, "proxima nova", sans-serif;
   font-size: 16px;
   font-weight: 800;
   line-height: 16px;
@@ -211,111 +224,158 @@ margin: 0.5rem;
 
 .delete-button:hover,
 .delete-button:active {
-    background-color: white;
-    background-position: 0 0;
-    color: red;
-    transform: scale(1.025);
+  background-color: white;
+  background-position: 0 0;
+  color: red;
+  transform: scale(1.025);
 }
 
 .delete-button:active {
-    opacity: .5s;
+  opacity: .5s;
 }
 
+.delete-button-2:hover,
+.delete-button-2:active {
+  background-color: white;
+  background-position: 0 0;
+  color: rgb(47, 0, 255);
+  transform: scale(1.025);
+}
+
+.delete-button-2:active {
+  opacity: .5s;
+}
+
+.delete-button-2 {
+  margin: 0.5rem;
+  background: rgb(79, 54, 218);
+  border: 1px solid rgb(0, 204, 255);
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: nunito, roboto, proxima-nova, "proxima nova", sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 16px;
+  min-height: 40px;
+  outline: 0;
+  padding: 12px 14px;
+  text-align: center;
+  text-rendering: geometricprecision;
+  text-transform: none;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  transition: ease-in-out 0.2s;
+}
+
+.delete-button:hover,
+.delete-button:active {
+  background-color: white;
+  background-position: 0 0;
+  color: red;
+  transform: scale(1.025);
+}
 
 .pagination {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
 }
 
-td.opcoes{
-    display: flex;
-    width: 20rem;
-    justify-content: center;
-    align-items: center;
+td.opcoes {
+  display: flex;
+  width: 20rem;
+  justify-content: center;
+  align-items: center;
 }
 
-.cabeca{
+.cabeca {
   background-color: initial !important;
-  cursor:default !important;
+  cursor: default !important;
 }
 
-tr:hover{
+tr:hover {
   transition: ease-in-out .3s;
   background-color: rgb(128, 128, 128);
   cursor: pointer;
 }
 
-.selected-row{
+.selected-row {
   background-color: grey;
 }
 
-.add-button:hover, .botao:hover {
-    background-color: #0056b3;
-  }
+.add-button:hover,
+.botao:hover {
+  background-color: #0056b3;
+}
 
 .botao:hover {
-    background-color: green;
+  background-color: green;
 }
 
 
 .modal-popup {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
 }
 
 .modal-popup-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    max-width: 300px;
-    /* Defina a largura máxima desejada */
-    max-width: 300px;
-    text-align: center;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  /* Defina a largura máxima desejada */
+  max-width: 300px;
+  text-align: center;
 }
 
 .modal-header h5 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: bold;
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .modal-body {
-    margin: 20px 0;
-    font-size: 16px;
+  margin: 20px 0;
+  font-size: 16px;
 }
 
 .modal-footer {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .add-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
 
-.modal-content{
+.modal-content {
   background-color: #0056b3;
   position: absolute;
   float: left;
@@ -327,79 +387,83 @@ tr:hover{
 
 .add-modal-container {
   font-family: nunito, roboto, proxima-nova, "proxima nova", sans-serif;
-     background-color: white;
-    padding: 40px;
-    border-radius: 5px;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-    width: 60%;
-    max-width: 500px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transition: ease-in-out 0.4s;
+  background-color: white;
+  padding: 40px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  width: 60%;
+  max-width: 500px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: ease-in-out 0.4s;
 }
 
 
 
 .add-modal-content {
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-grow: 1;
-    justify-content: center;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  justify-content: center;
 }
 
 .add-modal-label {
-    font-weight: bold;
-    margin-bottom: 10px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .add-modal-input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid rgb(15, 1, 1);
-    border-radius: 3px;
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid rgb(15, 1, 1);
+  border-radius: 3px;
 }
 
 .add-modal-button-container {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
 
 
 .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; /* Z-index alto para ficar acima do conteúdo */
-  }
-  
-  .modal-content {
-    font-family: nunito, roboto, proxima-nova, "proxima nova", sans-serif;
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    max-width: 80%;
-    max-height: 80%;
-    overflow: auto;
-    width: 100%; /* Preenche toda a largura disponível */
-    max-width: 600px; /* Define uma largura máxima */
-    padding: 20px;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Fundo semi-transparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  /* Z-index alto para ficar acima do conteúdo */
+}
 
-  
+.modal-content {
+  font-family: nunito, roboto, proxima-nova, "proxima nova", sans-serif;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  max-width: 80%;
+  max-height: 80%;
+  overflow: auto;
+  width: 100%;
+  /* Preenche toda a largura disponível */
+  max-width: 600px;
+  /* Define uma largura máxima */
+  padding: 20px;
+}
+
+
 .field {
   display: flex;
   align-items: center;
@@ -418,12 +482,14 @@ tr:hover{
 
 /* Estilização da caixa de pesquisa com caixa de texto maior */
 .search-input input[type="text"] {
-  padding: 12px; /* Aumentando o preenchimento vertical */
+  padding: 12px;
+  /* Aumentando o preenchimento vertical */
   margin-right: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
-  width: 300px; /* Aumentando a largura */
+  width: 300px;
+  /* Aumentando a largura */
 }
 
 
@@ -441,7 +507,8 @@ tr:hover{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px; /* Adicione margem inferior para separar da tabela */
+  margin-bottom: 20px;
+  /* Adicione margem inferior para separar da tabela */
 }
 
 .edit-delete-buttons {
@@ -509,8 +576,3 @@ input[type="text"],
 .data-table-pesquisadores th {
   background-color: #f2f2f2;
 }
-
-
-
-
-
