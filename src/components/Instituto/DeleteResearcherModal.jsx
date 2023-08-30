@@ -14,7 +14,7 @@ const DeleteResearcherModal = ({ show, onClose, onConfirm, itemId }) => {
           <h5>Confirmação de Exclusão</h5>
         </div>
         <div className="modal-body">
-          <p>Tem certeza que deseja excluir o Instituto com o Pesquisador selecionado:</p>
+          <p>Tem certeza que deseja excluir o Pesquisador selecionado:</p>
           <p>{itemId}</p>
         </div>
         <div className="modal-footer">
