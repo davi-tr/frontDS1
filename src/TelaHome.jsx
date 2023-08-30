@@ -4,6 +4,7 @@ import './TelaHome.css'; // Importe seu arquivo de estilos
 import TelaPrincipal from './TelaPrincipal';
 import DataTable from './components/Instituto/DataTable';
 
+
 function Home() {
   const [currentScreen, setCurrentScreen] = useState('home');
 
