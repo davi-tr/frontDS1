@@ -133,7 +133,7 @@ const AddResearcherForm = ({ onClose, updateTable }) => {
                 onChange={(e) => setInstituteId(e.target.value)}
                 className="add-modal-input"
               >
-                <option value="">Selecione um instituto</option>
+                <option value="">Selecione um institutos</option>
                 {filteredInstitutes.map((institute) => (
                   <option key={institute.id} value={institute.id}>
                     {institute.nome}
