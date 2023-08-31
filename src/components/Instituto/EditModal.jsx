@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import './DataTable.css';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const EditModal = ({ show, onClose, institute, onSave, onCancel }) => {
     if (!show) return null;
@@ -17,11 +20,43 @@ const EditModal = ({ show, onClose, institute, onSave, onCancel }) => {
       }));
     };
   
-    const handleSave = () => {
+    const handleSave = async () => {
+      try {
         console.log("Salvando alterações:", editedInstitute);
-      onSave(editedInstitute); // Chama a função onSave com as informações editadas
-      onClose();
+        await onSave(editedInstitute); // Chama a função onSave com as informações editadas
+        showSuccessToast('Instituto editado com sucesso!');
+        onClose();
+      } catch (error) {
+        console.error('Erro ao editar instituto:', error);
+        showErrorToast('Erro ao editar instituto. Por favor, tente novamente.');
+      }
     };
+    
+
+    const showSuccessToast = (message) => {
+      toast.success(message, {
+        position: 'top-right',
+        autoClose: 3000, // Tempo de exibição do alerta em milissegundos (3 segundos)
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    };
+    
+    const showErrorToast = (message) => {
+      toast.error(message, {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    };
+    
   
     return (
       

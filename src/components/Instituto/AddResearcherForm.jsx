@@ -10,11 +10,20 @@ const AddResearcherForm = ({ onClose, updateTable }) => {
   const [instituteId, setInstituteId] = useState('');
   const [institutes, setInstitutes] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  
+  const [searchText, setSearchText] = useState('');
+  const [filteredInstitutes, setFilteredInstitutes] = useState([]);
 
   useEffect(() => {
     fetchInstitutes();
   }, []);
+
+  useEffect(() => {
+    const filtered = institutes.filter((institute) =>
+      institute.nome.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setFilteredInstitutes(filtered);
+  }, [searchText, institutes]);
+  
 
   const fetchInstitutes = async () => {
     try {
@@ -149,19 +158,27 @@ const AddResearcherForm = ({ onClose, updateTable }) => {
           </label>
 
           <label className="add-modal-label">
-            <select
-              value={instituteId}
-              onChange={(e) => setInstituteId(e.target.value)}
-              className="add-modal-input"
-            >
-              <option value="">Selecione um instituto</option>
-              {institutes.map((institute) => (
-                <option key={institute.id} value={institute.id}>
-                  {institute.nome}
-                </option>
-              ))}
-            </select>
-          </label>
+  <input
+    type="text"
+    placeholder="Pesquisar instituto"
+    value={searchText}
+    onChange={(e) => setSearchText(e.target.value)}
+    className="add-modal-input"
+  />
+  <select
+    value={instituteId}
+    onChange={(e) => setInstituteId(e.target.value)}
+    className="add-modal-input"
+  >
+    <option value="">Selecione um instituto</option>
+    {filteredInstitutes.map((institute) => (
+      <option key={institute.id} value={institute.id}>
+        {institute.nome}
+      </option>
+    ))}
+  </select>
+</label>
+
           <div className="add-modal-button-container">
             <button type="submit" className="add-button">
               Cadastrar
