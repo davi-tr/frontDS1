@@ -114,7 +114,7 @@ function TelaPrincipal() {
               className="delete-button"
               onClick={() => {
                 if (selectedPesquisador && pesquisadorAdicionadoId !== null) {
-                  handleDeleteClick(selectedPesquisador.idXML);
+                  handleDeleteClick(selectedPesquisador.id);
                   setShowConfirmationPopup(false);
                 }
               }}
