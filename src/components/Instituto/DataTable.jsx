@@ -5,6 +5,9 @@ import DeleteConfirmationModal from './DeleteConfirmationModal.jsx'; // importa�
 import AddInstituteModal from './AddInstituteModal.jsx'; // importação de arquivo com pop-up da tela de edição
 import EditModal from './EditModal.jsx';
 import Modal from 'react-modal'; 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 Modal.setAppElement('#root');
 
@@ -101,8 +104,26 @@ const DataTable = () => {
     try {
       await axios.post('http://localhost:8081/instituto', newInstitute);
       fetchData();
+      toast.success('Instituto adicionado com sucesso!', {
+        position: 'top-right',
+        autoClose: 3000, // Tempo de exibição do alerta em milissegundos (3 segundos)
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } catch (error) {
       console.error('Erro ao adicionar instituto:', error);
+      toast.error('Erro ao adicionar instituto. Por favor, tente novamente.', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 
@@ -237,6 +258,8 @@ const handleDeleteClick = (id)=> {
       console.error('Erro ao buscar os dados da API:', error);
     }
   };
+
+  
   
   // Renderiza a interface de usuário
   return (
