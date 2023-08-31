@@ -41,6 +41,8 @@ const DataTable = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingInstitute, setEditingInstitute] = useState(null);
 
+  
+
  
 
   // Calcula o índice inicial e final dos itens na página atual
