@@ -121,14 +121,20 @@ const AddResearcherForm = ({ onClose, updateTable }) => {
             </label>
 
             <label className="add-modal-label">
-              ID do Instituto:
+              <input
+                type="text"
+                placeholder="Pesquisar instituto"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                className="add-modal-input"
+              />
               <select
                 value={instituteId}
                 onChange={(e) => setInstituteId(e.target.value)}
                 className="add-modal-input"
               >
                 <option value="">Selecione um instituto</option>
-                {institutes.map((institute) => (
+                {filteredInstitutes.map((institute) => (
                   <option key={institute.id} value={institute.id}>
                     {institute.nome}
                   </option>
@@ -139,7 +145,7 @@ const AddResearcherForm = ({ onClose, updateTable }) => {
               <button type="submit" className="add-button">
                 Cadastrar
               </button>
-              <button onClick={() => setModalIsOpen(false)} className="add-button">
+              <button onClick={() => setModalIsOpen(false)} className="mr-2 delete-button">
                 Fechar
               </button>
             </div>
@@ -157,36 +163,9 @@ const AddResearcherForm = ({ onClose, updateTable }) => {
             />
           </label>
 
-          <label className="add-modal-label">
-  <input
-    type="text"
-    placeholder="Pesquisar instituto"
-    value={searchText}
-    onChange={(e) => setSearchText(e.target.value)}
-    className="add-modal-input"
-  />
-  <select
-    value={instituteId}
-    onChange={(e) => setInstituteId(e.target.value)}
-    className="add-modal-input"
-  >
-    <option value="">Selecione um instituto</option>
-    {filteredInstitutes.map((institute) => (
-      <option key={institute.id} value={institute.id}>
-        {institute.nome}
-      </option>
-    ))}
-  </select>
-</label>
+          
 
-          <div className="add-modal-button-container">
-            <button type="submit" className="add-button">
-              Cadastrar
-            </button>
-            <button onClick={() => setModalIsOpen(false)} className="delete-button">
-              Fechar
-            </button>
-          </div>
+        
         </form>
       </Modal>
 
