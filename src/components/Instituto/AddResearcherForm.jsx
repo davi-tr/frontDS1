@@ -3,6 +3,7 @@ import axios from 'axios';
 import Modal from 'react-modal';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './DataTable.css';
 
 const AddResearcherForm = ({ onClose, updateTable }) => {
   const [researcherId, setResearcherId] = useState('');
@@ -135,6 +136,41 @@ const AddResearcherForm = ({ onClose, updateTable }) => {
             </div>
           </form>
         </div>
+        <h2 className="modal-header"></h2>
+        <form onSubmit={handleSubmit}  >
+          <label className="add-modal-label">
+            <input
+              type="text"
+              value={researcherId}
+              onChange={(e) => setResearcherId(e.target.value)}
+              className="add-modal-input"
+              placeholder="ID pesquisador"
+            />
+          </label>
+
+          <label className="add-modal-label">
+            <select
+              value={instituteId}
+              onChange={(e) => setInstituteId(e.target.value)}
+              className="add-modal-input"
+            >
+              <option value="">Selecione um instituto</option>
+              {institutes.map((institute) => (
+                <option key={institute.id} value={institute.id}>
+                  {institute.nome}
+                </option>
+              ))}
+            </select>
+          </label>
+          <div className="add-modal-button-container">
+            <button type="submit" className="add-button">
+              Cadastrar
+            </button>
+            <button onClick={() => setModalIsOpen(false)} className="delete-button">
+              Fechar
+            </button>
+          </div>
+        </form>
       </Modal>
 
       <ToastContainer />
