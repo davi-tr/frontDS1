@@ -63,3 +63,11 @@
 .home-button:hover {
   background-color: #333;
 }
+
+
+.home-title {
+  font-size: 50px;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333; /* Cor do texto */
+}

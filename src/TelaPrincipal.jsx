@@ -2,11 +2,16 @@ import React, { useState, useEffect } from 'react';
 import DataTable from './components/Instituto/DataTable';
 import AddResearcherForm from './components/Instituto/AddResearcherForm';
 import axios from 'axios';
+import Modal from 'react-modal';
+import './TelaPrincipal.css';
+
 
 function TelaPrincipal() {
   const [mostrarDataTable, setMostrarDataTable] = useState(false);
   const [pesquisadores, setPesquisadores] = useState([]);
   const [selectedPesquisador, setSelectedPesquisador] = useState(null);
+  const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
+  const [selectedRowId, setSelectedRowId] = useState(null);
 
   useEffect(() => {
     fetchPesquisadores();
@@ -21,9 +26,6 @@ function TelaPrincipal() {
     }
   };
 
-  const handleVoltarParaTelaPrincipal = () => {
-    window.location.href = "/";
-  };
 
   const handleDeleteClick = async (pesquisadorId) => {
     try {
@@ -38,42 +40,90 @@ function TelaPrincipal() {
 
   const handlePesquisadorSelect = (pesquisador) => {
     setSelectedPesquisador(pesquisador);
+    setSelectedRowId(pesquisador.id);
   };
 
+  const handleRowClick = (pesquisador) => {
+    setSelectedPesquisador(pesquisador);
+    onSelectPesquisador(pesquisador); // Chame a função para lidar com a seleção do pesquisador
+  };
+  
+
   return (
-    <div>
+      <div>
+        <AddResearcherForm onClose={() => setMostrarDataTable(false)} updateTable={fetchPesquisadores} />
+        <button
+          className="delete-button"
+          disabled={!selectedPesquisador}
+          onClick={() => setShowConfirmationPopup(true)}
+        >
+          Excluir
+        </button>
+  
+        <div className="container">
+          <h2 className="titulo">Pesquisadores Cadastrados</h2>
+          <table className="data-table-pesquisadores">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Instituto</th>
+          <th>Sigla</th>
 
-      <AddResearcherForm onClose={() => setMostrarDataTable(false)} />
-      <div className="container" style={{ width: '100%', height: '70vh', overflow: 'auto' }}>
-        <h2 className="titulo">Pesquisadores Cadastrados</h2>
-        <table className="data-table-pesquisadores">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nome</th>
-              <th>Instituto</th>
-            </tr>
-          </thead>
-          <tbody>
-            {pesquisadores.map((pesquisador) => (
-              <tr key={pesquisador.id} onClick={() => handlePesquisadorSelect(pesquisador)}>
-                <td>{pesquisador.id}</td>
-                <td>{pesquisador.nome}</td>
-                <td>{pesquisador.instituto.nome}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        </tr>
+      </thead>
+      <tbody>
+  {pesquisadores.map((pesquisador) => (
+    <tr
+      key={pesquisador.id}
+      onClick={() => handleRowClick(pesquisador)}
+      className={selectedPesquisador === pesquisador ? 'selected-row' : ''}
+    >
+      <td>{pesquisador.nome}</td>
+      {/* Exibir as informações do instituto relacionado */}
+      <td>{pesquisador.instituto.nome}</td>
+      <td>{pesquisador.instituto.acronimo}</td>
+    </tr>
+  ))}
+</tbody>
+    </table>
+        </div>
+  
+        <Modal
+          isOpen={showConfirmationPopup}
+          onRequestClose={() => setShowConfirmationPopup(false)}
+          contentLabel="Confirmar Exclusão"
+          className="modal-popup"
+          overlayClassName="modal-overlay"
+        >
+          <h2 className="modal-header">Confirmar Exclusão</h2>
+          {selectedPesquisador && (
+            <p>
+              Deseja realmente excluir o pesquisador com ID:{' '}
+              {selectedPesquisador.id}?
+            </p>
+          )}
+          <div className="add-modal-button-container">
+            <button
+              className="delete-button"
+              onClick={() => {
+                if (selectedPesquisador) {
+                  handleDeleteClick(selectedPesquisador.id);
+                  setShowConfirmationPopup(false);
+                }
+              }}
+            >
+              Confirmar
+            </button>
+            <button
+              onClick={() => setShowConfirmationPopup(false)}
+              className="add-button"
+            >
+              Cancelar
+            </button>
+          </div>
+        </Modal>
+        
       </div>
-
-      <div className="edit-delete-buttons">  <button
-        className="delete-button-2"
-        disabled={!selectedPesquisador}
-        onClick={() => handleDeleteClick(selectedPesquisador.id)}
-      >  Excluir
-      </button>
-      </div>
-    </div>
   );
 }
 
