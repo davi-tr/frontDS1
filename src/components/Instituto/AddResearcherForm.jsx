@@ -52,8 +52,10 @@ const AddResearcherForm = ({ onClose, updateTable }) => {
         progress: undefined,
       });
 
+
       // Atualize a tabela apenas se o cadastro for bem-sucedido
       fetchPesquisadores();
+      updateTable();
 
     } catch (error) {
       console.error('Erro ao cadastrar pesquisador:', error);
@@ -93,7 +95,7 @@ const AddResearcherForm = ({ onClose, updateTable }) => {
         className="modal-popup"
         overlayClassName="modal-overlay"
       >
-        <h2 className="modal-header">Cadastrar Pesquisador</h2>
+        <h2 className="modal-header"></h2>
         <form onSubmit={handleSubmit}>
           <label className="add-modal-label">
             <input
