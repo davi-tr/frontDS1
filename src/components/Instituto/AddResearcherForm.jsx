@@ -9,6 +9,7 @@ const AddResearcherForm = ({ onClose, updateTable }) => {
   const [instituteId, setInstituteId] = useState('');
   const [institutes, setInstitutes] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  
 
   useEffect(() => {
     fetchInstitutes();
@@ -54,6 +55,7 @@ const AddResearcherForm = ({ onClose, updateTable }) => {
 
 
       // Atualize a tabela apenas se o cadastro for bem-sucedido
+      
       fetchPesquisadores();
       updateTable();
 
@@ -95,42 +97,44 @@ const AddResearcherForm = ({ onClose, updateTable }) => {
         className="modal-popup"
         overlayClassName="modal-overlay"
       >
-        <h2 className="modal-header"></h2>
-        <form onSubmit={handleSubmit}>
-          <label className="add-modal-label">
-            <input
-              type="text"
-              value={researcherId}
-              onChange={(e) => setResearcherId(e.target.value)}
-              className="add-modal-input"
-              placeholder="ID pesquisador"
-            />
-          </label>
+        <div className="modal-content">  {/* Adicione uma div para envolver o conteúdo do modal */}
+          <h2 className="modal-header"> Cadastrar Pesquisador </h2>
+          <form onSubmit={handleSubmit}>
+            <label className="add-modal-label">
+              <input
+                type="text"
+                value={researcherId}
+                onChange={(e) => setResearcherId(e.target.value)}
+                className="add-modal-input"
+                placeholder="ID pesquisador"
+              />
+            </label>
 
-          <label className="add-modal-label">
-            ID do Instituto:
-            <select
-              value={instituteId}
-              onChange={(e) => setInstituteId(e.target.value)}
-              className="add-modal-input"
-            >
-              <option value="">Selecione um instituto</option>
-              {institutes.map((institute) => (
-                <option key={institute.id} value={institute.id}>
-                  {institute.nome}
-                </option>
-              ))}
-            </select>
-          </label>
-          <div className="add-modal-button-container">
-            <button type="submit" className="add-button">
-              Cadastrar
-            </button>
-            <button onClick={() => setModalIsOpen(false)} className="add-button">
-              Fechar
-            </button>
-          </div>
-        </form>
+            <label className="add-modal-label">
+              ID do Instituto:
+              <select
+                value={instituteId}
+                onChange={(e) => setInstituteId(e.target.value)}
+                className="add-modal-input"
+              >
+                <option value="">Selecione um instituto</option>
+                {institutes.map((institute) => (
+                  <option key={institute.id} value={institute.id}>
+                    {institute.nome}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <div className="add-modal-button-container">
+              <button type="submit" className="add-button">
+                Cadastrar
+              </button>
+              <button onClick={() => setModalIsOpen(false)} className="add-button">
+                Fechar
+              </button>
+            </div>
+          </form>
+        </div>
       </Modal>
 
       <ToastContainer />
