@@ -24,7 +24,7 @@ const EditModal = ({ show, onClose, institute, onSave, onCancel }) => {
     };
   
     return (
-      <div className="modal-overlay">
+      
         <div className="modal-content">
           <h2>Editar Instituto</h2>
           <div className="field">
@@ -51,12 +51,12 @@ const EditModal = ({ show, onClose, institute, onSave, onCancel }) => {
               onChange={e => handleFieldChange('acronimo', e.target.value)}
             />
           </div>
-          <div className="modal-buttons">
-            <button onClick={onCancel} className='cencelar'>Cancelar</button>
-            <button onClick={handleSave} className='salvar'>Salvar</button>
+          <div className="add-modal-button-container">
+            <button onClick={onCancel} className="mr-2 delete-button">Cancelar</button>
+            <button onClick={handleSave} className="add-button">Salvar</button>
           </div>
         </div>
-      </div>
+   
     );
   };
   
