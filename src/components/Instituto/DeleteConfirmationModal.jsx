@@ -29,8 +29,8 @@ const DeleteConfirmationModal = ({ show, onClose, onConfirm, itemId }) => {
       setIsDeleting(false); // Restaure o estado após a exclusão bem-sucedida
       onClose(); // Feche o modal
     } catch (error) {
-      console.error('Erro ao excluir o instituto:', error);
-      toast.error(`Erro ao excluir o Instituto com ID ${itemId}. Por favor, tente novamente.`, {
+      console.error('Erro ao excluir o instituto:', error.mensagem);
+      toast.error(`Erro ao excluir o Instituto com ID ${itemId}. Por favor, tente novamente. ${error.mensagem}`, {
         position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,

@@ -215,19 +215,24 @@ const handleDeleteClick = (id)=> {
     setInstituteToDelete(id);
     setShowDeleteModal(true);
   };
-  const handleConfirmDelete = () => {
-    if (instituteToDelete) {
-      axios.delete(`http://localhost:8081/instituto/${instituteToDelete}`)
-        .then(() => {
-          fetchData();
-          setShowDeleteModal(false); // Feche o modal após a exclusão
-          setInstituteToDelete(null);
-        })
-        .catch(error => {
-          console.error('Erro ao deletar cadastro:', error);
-        });
+const handleConfirmDelete = async () => {
+  if (instituteToDelete) {
+    try {
+      const response = await axios.delete(`http://localhost:8081/instituto/${instituteToDelete}`);
+      if (response.status === 200) {
+        fetchData();
+        setShowDeleteModal(false); // Feche o modal após a exclusão
+        setInstituteToDelete(null);
+      } else {
+        throw('Erro ao deletar cadastro. Status code:', response.status);
+      }
+    } catch (error) {
+      console.log("erro2222");
+      throw error.response.data
     }
-  };
+  }
+};
+
 
   const handleSearchFilter = () => {
     fetchData(); // Atualize os dados com base na pesquisa e no filtro
