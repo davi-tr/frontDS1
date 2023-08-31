@@ -12,6 +12,8 @@ function TelaPrincipal() {
   const [selectedPesquisador, setSelectedPesquisador] = useState(null);
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
+  const [pesquisadorXmlId, setPesquisadorXmlId] = useState(null); // Defina o estado para o ID do pesquisador do XML
+  const [pesquisadorAdicionadoId, setPesquisadorAdicionadoId] = useState(null);
 
   useEffect(() => {
     fetchPesquisadores();
@@ -45,13 +47,19 @@ function TelaPrincipal() {
 
   const handleRowClick = (pesquisador) => {
     setSelectedPesquisador(pesquisador);
-    onSelectPesquisador(pesquisador); // Chame a função para lidar com a seleção do pesquisador
+    setPesquisadorAdicionadoId(pesquisador.id); // Atualizar o estado com o ID do pesquisador
   };
-  
 
   return (
       <div>
-        <AddResearcherForm onClose={() => setMostrarDataTable(false)} updateTable={fetchPesquisadores} />
+     <AddResearcherForm
+
+     
+        onClose={() => setMostrarDataTable(false)}
+        updateTable={fetchPesquisadores}
+        
+        onAddPesquisador={(idDigitado) => setPesquisadorAdicionadoId(idDigitado)}
+      />
         <button
           className="delete-button"
           disabled={!selectedPesquisador}
@@ -87,7 +95,6 @@ function TelaPrincipal() {
 </tbody>
     </table>
         </div>
-  
         <Modal
           isOpen={showConfirmationPopup}
           onRequestClose={() => setShowConfirmationPopup(false)}
@@ -95,33 +102,38 @@ function TelaPrincipal() {
           className="modal-popup"
           overlayClassName="modal-overlay"
         >
-          <h2 className="modal-header">Confirmar Exclusão</h2>
-          {selectedPesquisador && (
-            <p>
-              Deseja realmente excluir o pesquisador com ID:{' '}
-              {selectedPesquisador.id}?
-            </p>
-          )}
-          <div className="add-modal-button-container">
-            <button
-              className="delete-button"
-              onClick={() => {
-                if (selectedPesquisador) {
-                  handleDeleteClick(selectedPesquisador.id);
-                  setShowConfirmationPopup(false);
-                }
-              }}
-            >
-              Confirmar
-            </button>
-            <button
-              onClick={() => setShowConfirmationPopup(false)}
-              className="add-button"
-            >
-              Cancelar
-            </button>
+          <div className="modal-content">
+            <h2 className="modal-header">Confirmar Exclusão</h2>
+            {selectedPesquisador && pesquisadorAdicionadoId !== null && (
+              <p>
+                Deseja realmente excluir o pesquisador com ID: {pesquisadorAdicionadoId}?
+              </p>
+            )}
+            <div className="add-modal-button-container">
+              <button
+                className="delete-button"
+                onClick={() => {
+                  if (selectedPesquisador && pesquisadorAdicionadoId !== null) {
+                    handleDeleteClick(selectedPesquisador.id);
+                    setShowConfirmationPopup(false);
+                  }
+                }}
+              >
+                Confirmar
+              </button>
+              <button
+                onClick={() => setShowConfirmationPopup(false)}
+                className="add-button"
+              >
+                Cancelar
+              </button>
+            </div>
           </div>
         </Modal>
+        
+
+        
+                
         
       </div>
   );
