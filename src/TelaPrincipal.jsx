@@ -118,8 +118,14 @@ function TelaPrincipal() {
             </p>
           )}
           <div className="add-modal-button-container">
+          <button
+              onClick={() => setShowConfirmationPopup(false)}
+              className="mr-2 delete-button"
+            >
+              Cancelar
+            </button>
             <button
-              className="delete-button"
+              className="add-button"
               onClick={() => {
                 if (selectedPesquisador && pesquisadorAdicionadoId !== null) {
                   handleDeleteClick(selectedPesquisador.id);
@@ -129,12 +135,7 @@ function TelaPrincipal() {
             >
               Confirmar
             </button>
-            <button
-              onClick={() => setShowConfirmationPopup(false)}
-              className="add-button"
-            >
-              Cancelar
-            </button>
+            
           </div>
         </div>
       </Modal>

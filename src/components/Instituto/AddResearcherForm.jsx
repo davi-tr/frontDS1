@@ -142,12 +142,13 @@ const AddResearcherForm = ({ onClose, updateTable }) => {
               </select>
             </label>
             <div className="add-modal-button-container">
-              <button type="submit" className="add-button">
-                Cadastrar
-              </button>
               <button onClick={() => setModalIsOpen(false)} className="mr-2 delete-button">
                 Fechar
               </button>
+              <button type="submit" className="add-button">
+                Cadastrar
+              </button>
+              
             </div>
           </form>
         </div>
