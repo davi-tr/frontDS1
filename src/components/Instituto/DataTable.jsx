@@ -312,9 +312,8 @@ const handleConfirmDelete = async () => {
         <thead>
           <tr className='cabeca'>
             <th className='id'>ID</th>
-            <th>Nome</th>
-            <th>Acrônimo</th>
-  
+            <th>NOME</th>
+            <th>ACRÔNIMO</th>
           </tr>
         </thead>
         <tbody>
