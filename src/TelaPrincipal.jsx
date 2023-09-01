@@ -106,7 +106,7 @@ function TelaPrincipal() {
           <h2 className="modal-header">Confirmar Exclusão</h2>
           {selectedPesquisador && pesquisadorAdicionadoId !== null && (
             <p>
-              Deseja realmente excluir o pesquisador com ID: {pesquisadorAdicionadoId}?
+              Deseja realmente excluir o pesquisador com ID:  <span className="highlighted-id">{pesquisadorAdicionadoId}</span>?
             </p>
           )}
           <div className="add-modal-button-container">
