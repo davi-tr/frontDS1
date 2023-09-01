@@ -98,6 +98,17 @@ select.qtdItens option:checked {
 }
 
 .data-table {
+  background-color: silver
+}
+
+/* Destaque da primeira linha (cabeçalho) */
+.data-table thead tr {
+  
+  background-color: #3498db; 
+  color: black; /* Cor do texto no cabeçalho */
+}
+
+.data-table {
   width: 100%;
   border-collapse: collapse;
 }

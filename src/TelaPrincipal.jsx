@@ -15,14 +15,23 @@ function TelaPrincipal() {
   const [pesquisadorXmlId, setPesquisadorXmlId] = useState(null); // Defina o estado para o ID do pesquisador do XML
   const [pesquisadorAdicionadoId, setPesquisadorAdicionadoId] = useState(null);
 
+  const [currentPage, setCurrentPage] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(3); // Defina o valor inicial desejado
+  const [totalElements, setTotalElements] = useState(0); // Inicialize com 0
+
   useEffect(() => {
     fetchPesquisadores();
   }, []);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   const fetchPesquisadores = async () => {
     try {
       const response = await axios.get('http://localhost:8081/pesquisador');
       setPesquisadores(response.data.content);
+      setTotalElements(response.data.totalElements);
     } catch (error) {
       console.error('Erro ao buscar a lista de pesquisadores:', error);
     }
@@ -73,10 +82,9 @@ function TelaPrincipal() {
         <table className="data-table-pesquisadores">
           <thead>
             <tr>
-              <th>Nome</th>
-              <th>Instituto</th>
-              <th>Sigla</th>
-
+              <th>NOME</th>
+              <th>INSTITUTO</th>
+              <th>ACRÔNIMO</th>
             </tr>
           </thead>
           <tbody>
@@ -130,10 +138,31 @@ function TelaPrincipal() {
           </div>
         </div>
       </Modal>
+     
 
 
-
-
+      <div className="pagination">
+        {Array.from(Array(Math.ceil(totalElements / itemsPerPage)), (item, index) => (
+          <button
+            key={index}
+            onClick={() => handlePageChange(index)}
+            className={currentPage === index ? 'active-page' : ''}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
+      <div className="items-per-page">
+        <label>Quantidade de itens por página:</label>
+        <select
+          value={itemsPerPage}
+          onChange={(e) => setItemsPerPage(Number(e.target.value))}
+        >
+          <option value={3}>3</option>
+          <option value={5}>5</option>
+          <option value={10}>10</option>
+        </select>
+      </div>
 
     </div>
   );
