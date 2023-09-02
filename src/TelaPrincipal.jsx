@@ -14,6 +14,12 @@ function TelaPrincipal() {
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [pesquisadorXmlId, setPesquisadorXmlId] = useState(null); // Defina o estado para o ID do pesquisador do XML
   const [pesquisadorAdicionadoId, setPesquisadorAdicionadoId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5); // Altere a quantidade de itens por página conforme necessário
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const [totalElements, setTotalElements] = useState(false);
+
 
   useEffect(() => {
     fetchPesquisadores();
@@ -27,6 +33,25 @@ function TelaPrincipal() {
       console.error('Erro ao buscar a lista de pesquisadores:', error);
     }
   };
+
+  // Função para atualizar o estado e verificar se chegou ao fim das páginas
+  const updateState = async (page) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8081/pesquisador?page=${page}&size=${itensPerPage}&search=${searchText}&filter=${filter}`
+      );
+      setTotalElements(response.data.totalElements);
+    } catch (error) {
+      console.error('Erro ao buscar os dados da API:', error);
+    }
+
+    if (totalElements) {
+      setPaginaFim(true); // Se não houver mais elementos, marca como o fim das páginas
+    } else {
+      setPaginaFim(false);
+    }
+  };
+
 
 
   const handleDeleteClick = async (pesquisadorId) => {
@@ -53,11 +78,8 @@ function TelaPrincipal() {
   return (
     <div>
       <AddResearcherForm
-
-
         onClose={() => setMostrarDataTable(false)}
         updateTable={fetchPesquisadores}
-
         onAddPesquisador={(idDigitado) => setPesquisadorAdicionadoId(idDigitado)}
       />
       <button
@@ -76,7 +98,6 @@ function TelaPrincipal() {
               <th>Nome</th>
               <th>Instituto</th>
               <th>Sigla</th>
-
             </tr>
           </thead>
           <tbody>
@@ -94,6 +115,35 @@ function TelaPrincipal() {
             ))}
           </tbody>
         </table>
+
+        <div className="pagination">
+          <button
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Anterior
+          </button>
+          <span>Página {currentPage}</span>
+          <button
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={indexOfLastItem >= pesquisadores.length}
+          >
+            Próxima
+          </button>
+        </div >
+        <div className='seletor'>
+          <p className='informe'>Quantidade de itens por página</p>
+          <select
+            className='qtdItens'
+            value={itemsPerPage}
+            onChange={(e) => setItemsPerPage(Number(e.target.value))}
+          >
+            <option value={3}>3</option>
+            <option value={5}>5</option>
+            <option value={8}>8</option>
+            <option value={10}>10</option>
+          </select>
+        </div>
       </div>
       <Modal
         isOpen={showConfirmationPopup}
@@ -130,13 +180,9 @@ function TelaPrincipal() {
           </div>
         </div>
       </Modal>
-
-
-
-
-
     </div>
   );
+
 }
 
 export default TelaPrincipal;
