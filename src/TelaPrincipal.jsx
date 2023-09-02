@@ -14,21 +14,20 @@ function TelaPrincipal() {
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [pesquisadorXmlId, setPesquisadorXmlId] = useState(null); // Defina o estado para o ID do pesquisador do XML
   const [pesquisadorAdicionadoId, setPesquisadorAdicionadoId] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5); // Altere a quantidade de itens por página conforme necessário
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const [totalElements, setTotalElements] = useState(false);
-
 
   useEffect(() => {
     fetchPesquisadores();
   }, []);
 
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
   const fetchPesquisadores = async () => {
     try {
       const response = await axios.get('http://localhost:8081/pesquisador');
       setPesquisadores(response.data.content);
+      setTotalElements(response.data.totalElements);
     } catch (error) {
       console.error('Erro ao buscar a lista de pesquisadores:', error);
     }
@@ -98,6 +97,7 @@ function TelaPrincipal() {
               <th>Nome</th>
               <th>Instituto</th>
               <th>Sigla</th>
+
             </tr>
           </thead>
           <tbody>
@@ -156,12 +156,18 @@ function TelaPrincipal() {
           <h2 className="modal-header">Confirmar Exclusão</h2>
           {selectedPesquisador && pesquisadorAdicionadoId !== null && (
             <p>
-              Deseja realmente excluir o pesquisador com ID: {pesquisadorAdicionadoId}?
+              Deseja realmente excluir o pesquisador com ID:  <span className="highlighted-id">{pesquisadorAdicionadoId}</span>?
             </p>
           )}
           <div className="add-modal-button-container">
             <button
-              className="delete-button"
+              onClick={() => setShowConfirmationPopup(false)}
+              className="mr-2 delete-button"
+            >
+              Cancelar
+            </button>
+            <button
+              className="add-button"
               onClick={() => {
                 if (selectedPesquisador && pesquisadorAdicionadoId !== null) {
                   handleDeleteClick(selectedPesquisador.id);
@@ -171,15 +177,15 @@ function TelaPrincipal() {
             >
               Confirmar
             </button>
-            <button
-              onClick={() => setShowConfirmationPopup(false)}
-              className="add-button"
-            >
-              Cancelar
-            </button>
+
           </div>
         </div>
       </Modal>
+
+
+
+
+
     </div>
   );
 

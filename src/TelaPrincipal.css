@@ -18,3 +18,142 @@
     width: 400px; /* Ajuste a largura conforme necessário */
     height: auto; /* O tamanho aumentará automaticamente para se adequar ao conteúdo */
   }
+  .modal-popup {
+  width: 80%; /* Ajuste o valor conforme necessário */
+  max-width: 800px; /* Defina um valor máximo para a largura */
+  margin: 0 auto; /* Centralizar a modal horizontalmente */
+}
+
+/* Ajuste para o título da modal */
+.modal-header {
+  margin: 0;
+  padding: 10px;
+  background-color: #f0f0f0;
+}
+
+/* Ajuste para os campos de entrada e rótulos na modal */
+.add-modal-input-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.add-modal-input-container label {
+  margin-bottom: 5px;
+}
+
+/* Ajuste para o botão de fechar na modal */
+.add-modal-button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+/* Ajuste para os botões na modal */
+.add-button,
+.delete-button {
+  margin-left: 10px;
+}
+
+/* Ajuste para o botão de fechar na modal */
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Ajuste para o botão de pesquisa e a caixa de seleção */
+.add-modal-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-top: 5px;
+  box-sizing: border-box;
+}
+.highlighted-id {
+  font-weight: bold;
+}
+.data-table-pesquisadores {
+  background-color: silver; /* Cor de fundo da tabela */
+  border-collapse: collapse; /* Para garantir que as células tenham bordas */
+  width: 100%; /* Define a largura da tabela */
+}
+
+/* Estilo das células da tabela de pesquisadores */
+.data-table-pesquisadores th,
+.data-table-pesquisadores td {
+  border: 1px solid #ddd; /* Borda de 1px sólida */
+  padding: 8px; /* Espaçamento interno das células */
+  text-align: left; /* Alinhamento do texto à esquerda */
+}
+
+/* Estilo das células de cabeçalho da tabela de pesquisadores */
+.data-table-pesquisadores th {
+  color: black; /* Cor do texto no cabeçalho */
+}
+.container-principal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Alinhe os elementos à esquerda */
+}
+
+/* Estilo do título */
+.titulo {
+  margin-bottom: 10px; /* Espaçamento inferior para separar o título dos botões */
+}
+
+/* Estilo dos botões */
+.add-button,
+.delete-button {
+  margin-left: auto; /* Move os botões para a direita */
+  margin-top: 10px; /* Espaçamento superior para separar os botões da tabela */
+}
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.pagination button {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  color: white; /* Defina a cor do número da página como branca */
+}
+
+.pagination button:hover {
+  background-color: #28a745;
+  color: white; 
+  border-color: #28a745; 
+}
+
+/* CSS para o seletor de quantidade por página */
+.seletor {
+  display: flex;
+  justify-content: center; /* Centralize o conteúdo horizontalmente */
+  align-items: center;
+  margin-top: 20px;
+}
+
+.seletor select {
+
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.items-per-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza verticalmente */
+  margin-top: 20px;
+}
+
+.items-per-page label {
+  margin-bottom: 10px; /* Espaço entre o rótulo e o seletor */
+}

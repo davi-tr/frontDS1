@@ -98,6 +98,17 @@ select.qtdItens option:checked {
 }
 
 .data-table {
+  background-color: silver
+}
+
+/* Destaque da primeira linha (cabeçalho) */
+.data-table thead tr {
+  
+  background-color: #3498db; 
+  color: black; /* Cor do texto no cabeçalho */
+}
+
+.data-table {
   width: 100%;
   border-collapse: collapse;
 }
@@ -584,4 +595,59 @@ input[type="text"],
 }
 
 
+.modal-popup {
+  width: 80%; /* Ajuste o valor conforme necessário */
+  max-width: 800px; /* Defina um valor máximo para a largura */
+  margin: 0 auto; /* Centralizar a modal horizontalmente */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+/* Ajuste para o título da modal */
+.modal-header {
+  margin: 0;
+  padding: 10px;
+  background-color: #f0f0f0;
+}
 
+/* Ajuste para os campos de entrada e rótulos na modal */
+.add-modal-input-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.add-modal-input-container label {
+  margin-bottom: 5px;
+}
+
+/* Ajuste para o botão de fechar na modal */
+.add-modal-button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+/* Ajuste para os botões na modal */
+.add-button,
+.delete-button {
+  margin-left: 10px;
+}
+
+/* Ajuste para o botão de fechar na modal */
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Ajuste para o botão de pesquisa e a caixa de seleção */
+.add-modal-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-top: 5px;
+  box-sizing: border-box;
+}
