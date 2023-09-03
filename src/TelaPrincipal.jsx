@@ -33,24 +33,6 @@ function TelaPrincipal() {
     }
   };
 
-  // Função para atualizar o estado e verificar se chegou ao fim das páginas
-  const updateState = async (page) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8081/pesquisador?page=${page}&size=${itensPerPage}&search=${searchText}&filter=${filter}`
-      );
-      setTotalElements(response.data.totalElements);
-    } catch (error) {
-      console.error('Erro ao buscar os dados da API:', error);
-    }
-
-    if (totalElements) {
-      setPaginaFim(true); // Se não houver mais elementos, marca como o fim das páginas
-    } else {
-      setPaginaFim(false);
-    }
-  };
-
 
 
   const handleDeleteClick = async (pesquisadorId) => {
@@ -115,35 +97,6 @@ function TelaPrincipal() {
             ))}
           </tbody>
         </table>
-
-        <div className="pagination">
-          <button
-            onClick={() => setCurrentPage(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            Anterior
-          </button>
-          <span>Página {currentPage}</span>
-          <button
-            onClick={() => setCurrentPage(currentPage + 1)}
-            disabled={indexOfLastItem >= pesquisadores.length}
-          >
-            Próxima
-          </button>
-        </div >
-        <div className='seletor'>
-          <p className='informe'>Quantidade de itens por página</p>
-          <select
-            className='qtdItens'
-            value={itemsPerPage}
-            onChange={(e) => setItemsPerPage(Number(e.target.value))}
-          >
-            <option value={3}>3</option>
-            <option value={5}>5</option>
-            <option value={8}>8</option>
-            <option value={10}>10</option>
-          </select>
-        </div>
       </div>
       <Modal
         isOpen={showConfirmationPopup}
