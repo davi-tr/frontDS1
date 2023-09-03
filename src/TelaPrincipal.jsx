@@ -16,7 +16,7 @@ function TelaPrincipal() {
   const [pesquisadorAdicionadoId, setPesquisadorAdicionadoId] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(0);
-  const [itemsPerPage, setItemsPerPage] = useState(3); // Defina o valor inicial desejado
+  const [itemsPerPage, setItemsPerPage] = useState(10); // Valor padrão: 3
   const [totalElements, setTotalElements] = useState(0); // Inicialize com 0
 
   useEffect(() => {
@@ -28,14 +28,13 @@ function TelaPrincipal() {
   };
   const fetchPesquisadores = async () => {
     try {
-      const response = await axios.get('http://localhost:8081/pesquisador');
+      const response = await axios.get(`http://localhost:8081/pesquisador?page=${currentPage}&size=${itemsPerPage}`);
       setPesquisadores(response.data.content);
       setTotalElements(response.data.totalElements);
     } catch (error) {
       console.error('Erro ao buscar a lista de pesquisadores:', error);
     }
   };
-
 
   const handleDeleteClick = async (pesquisadorId) => {
     try {
@@ -155,9 +154,11 @@ function TelaPrincipal() {
         <label>Quantidade de itens por página:</label>
         <select
           value={itemsPerPage}
-          onChange={(e) => setItemsPerPage(Number(e.target.value))}
+          onChange={(e) => {
+            setItemsPerPage(Number(e.target.value));
+            setCurrentPage(0); // Reinicie a página para a primeira página ao alterar os itens por página
+          }}
         >
-          
           <option value={3}>3</option>
           <option value={5}>5</option>
           <option value={10}>10</option>
