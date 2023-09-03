@@ -12,6 +12,7 @@ function TelaPrincipal() {
   const [selectedPesquisador, setSelectedPesquisador] = useState(null);
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
+
   const [pesquisadorXmlId, setPesquisadorXmlId] = useState(null); // Defina o estado para o ID do pesquisador do XML
   const [pesquisadorAdicionadoId, setPesquisadorAdicionadoId] = useState(null);
 
