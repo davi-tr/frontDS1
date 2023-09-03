@@ -4,7 +4,7 @@ import './DataTable.css';
 import DeleteConfirmationModal from './DeleteConfirmationModal.jsx'; // importação de arquivo com pop-up da tela de deleção
 import AddInstituteModal from './AddInstituteModal.jsx'; // importação de arquivo com pop-up da tela de edição
 import EditModal from './EditModal.jsx';
-import Modal from 'react-modal'; 
+import Modal from 'react-modal';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -41,9 +41,9 @@ const DataTable = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingInstitute, setEditingInstitute] = useState(null);
 
-  
 
- 
+
+
 
   // Calcula o índice inicial e final dos itens na página atual
   const startIndex = currentPage * itensPerPage;
@@ -52,7 +52,7 @@ const DataTable = () => {
 
   const [searchText, setSearchText] = useState('');
   const [filter, setFilter] = useState('all');
-  
+
   const pages = searchText ? 1 : Math.ceil(totalElements / itensPerPage);
 
 
@@ -80,8 +80,8 @@ const DataTable = () => {
   useEffect(() => {
     searchData(); // Chame a função searchData apenas quando a pesquisa mudar
   }, [searchText, filter]);
-  
-  
+
+
 
   const handleSelectInstitute = (institute) => {
     setSelectedInstitute(institute === selectedInstitute ? null : institute);
@@ -100,8 +100,8 @@ const DataTable = () => {
       console.error('Erro ao buscar os dados da API:', error);
     }
   };
-  
-  
+
+
   const handleAddInstitute = async newInstitute => {
     try {
       await axios.post('http://localhost:8081/instituto', newInstitute);
@@ -187,14 +187,14 @@ const DataTable = () => {
     } catch (error) {
       console.error('Erro ao buscar os dados da API:', error);
     }
-  
+
     if (totalElements) {
       setPaginaFim(true); // Se não houver mais elementos, marca como o fim das páginas
     } else {
       setPaginaFim(false);
     }
   };
-  
+
   // Função para avançar para a próxima página
   const handleNextPage = () => {
     if (!paginaFim) { // Verifica se não chegou ao fim das páginas
@@ -211,27 +211,27 @@ const DataTable = () => {
     }
   };
 
-const handleDeleteClick = (id)=> {
+  const handleDeleteClick = (id) => {
     setInstituteToDelete(id);
     setShowDeleteModal(true);
   };
-const handleConfirmDelete = async () => {
-  if (instituteToDelete) {
-    try {
-      const response = await axios.delete(`http://localhost:8081/instituto/${instituteToDelete}`);
-      if (response.status === 200) {
-        fetchData();
-        setShowDeleteModal(false); // Feche o modal após a exclusão
-        setInstituteToDelete(null);
-      } else {
-        throw('Erro ao deletar cadastro. Status code:', response.status);
+  const handleConfirmDelete = async () => {
+    if (instituteToDelete) {
+      try {
+        const response = await axios.delete(`http://localhost:8081/instituto/${instituteToDelete}`);
+        if (response.status === 200) {
+          fetchData();
+          setShowDeleteModal(false); // Feche o modal após a exclusão
+          setInstituteToDelete(null);
+        } else {
+          throw ('Erro ao deletar cadastro. Status code:', response.status);
+        }
+      } catch (error) {
+        console.log("erro2222");
+        throw error.response.data
       }
-    } catch (error) {
-      console.log("erro2222");
-      throw error.response.data
     }
-  }
-};
+  };
 
 
   const handleSearchFilter = () => {
@@ -240,7 +240,7 @@ const handleConfirmDelete = async () => {
   const handleSearch = () => {
     fetchData(); // Atualize os dados com base na pesquisa
   };
-  
+
   const handleFilterChange = (e) => {
     setFilter(e.target.value); // Atualize o estado do filtro
   };
@@ -253,7 +253,7 @@ const handleConfirmDelete = async () => {
       return item.acronimo.toLowerCase().includes(searchText.toLowerCase());
     }
   });
-  
+
   const searchData = async () => {
     try {
       const response = await axios.get(
@@ -266,14 +266,14 @@ const handleConfirmDelete = async () => {
     }
   };
 
-  
-  
+
+
   // Renderiza a interface de usuário
   return (
     <div className="container">
       <h2 className="titulo">Institutos Cadastrados</h2>
-      
-      
+
+
       <div className="search-and-buttons">
         {/* Filtro e barra de pesquisa à esquerda */}
         <div className="search-input">
@@ -347,7 +347,7 @@ const handleConfirmDelete = async () => {
           <option value={10}>10</option>
         </select>
       </div>
-       <DeleteConfirmationModal
+      <DeleteConfirmationModal
         show={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
         onConfirm={handleConfirmDelete}
@@ -358,7 +358,7 @@ const handleConfirmDelete = async () => {
         onClose={() => setShowAddModal(false)}
         onAdd={handleAddInstitute}
       />
-       <EditModal
+      <EditModal
         show={showEditModal}
         onClose={() => setShowEditModal(false)}
         institute={editingInstitute}

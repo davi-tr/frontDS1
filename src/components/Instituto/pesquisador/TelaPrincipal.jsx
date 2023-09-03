@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import DataTable from './components/Instituto/DataTable';
-import AddResearcherForm from './components/Instituto/AddResearcherForm';
+import DataTable from '../instituto/DataTable';
+import AddResearcherForm from './AddResearcherForm';
 import axios from 'axios';
 import Modal from 'react-modal';
 import './TelaPrincipal.css';
