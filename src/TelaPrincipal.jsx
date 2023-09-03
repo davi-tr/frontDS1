@@ -26,7 +26,6 @@ function TelaPrincipal() {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-
   const fetchPesquisadores = async () => {
     try {
       const response = await axios.get('http://localhost:8081/pesquisador');
@@ -158,6 +157,7 @@ function TelaPrincipal() {
           value={itemsPerPage}
           onChange={(e) => setItemsPerPage(Number(e.target.value))}
         >
+          
           <option value={3}>3</option>
           <option value={5}>5</option>
           <option value={10}>10</option>
