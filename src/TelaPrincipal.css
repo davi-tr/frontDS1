@@ -61,6 +61,7 @@
   color: white;
 }
 
+
 /* Ajuste para o botão de pesquisa e a caixa de seleção */
 .add-modal-input {
   width: 100%;
@@ -117,6 +118,7 @@
 }
 
 .pagination button {
+  color: black !important;
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -128,7 +130,7 @@
 
 .pagination button:hover {
   background-color: #28a745;
-  color: white; 
+  color: white !important; 
   border-color: #28a745; 
 }
 

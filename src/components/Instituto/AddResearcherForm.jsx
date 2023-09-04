@@ -8,7 +8,9 @@ import './DataTable.css';
 const AddResearcherForm = ({ onClose, updateTable }) => {
   const [researcherId, setResearcherId] = useState('');
   const [instituteId, setInstituteId] = useState('');
+  const [pesquisadores, setPesquisadores] = useState([]);
   const [institutes, setInstitutes] = useState([]);
+  const [responseControl, setResponseControl] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [filteredInstitutes, setFilteredInstitutes] = useState([]);
@@ -46,10 +48,13 @@ const AddResearcherForm = ({ onClose, updateTable }) => {
     }
 
     try {
-      await axios.post('http://localhost:8081/pesquisador', {
+      const response = await axios.post('http://localhost:8081/pesquisador', {
         idPesquisador: researcherId,
         idinstituto: parseInt(instituteId),
       });
+      
+      console.log(response);
+      
       onClose();
 
       // Exibe o alerta de sucesso apenas se o cadastro for bem-sucedido
@@ -70,10 +75,10 @@ const AddResearcherForm = ({ onClose, updateTable }) => {
       updateTable();
 
     } catch (error) {
-      console.error('Erro ao cadastrar pesquisador:', error);
+      console.error('Erro ao cadastrar pesquisador:', error.response.data.mensagem);
 
       // Exibe o alerta de erro apenas se ocorrer um erro no cadastro
-      toast.error('Erro ao cadastrar pesquisador. Por favor, tente novamente.', {
+      toast.error(`Erro ao cadastrar pesquisador. Por favor, tente novamente. ERRO:${error.response.data.mensagem}`,{
         position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
