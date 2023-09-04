@@ -29,29 +29,44 @@ function TelaPrincipal() {
    const endIndex = startIndex + itensPerPage;
    const currentItens = pesquisadores.slice(startIndex, endIndex);
 
+
+   const [pesquisadorSearchText, setPesquisadorSearchText] = useState('');
+   const [pesquisadoresFiltrados, setPesquisadoresFiltrados] = useState([]);
+
    const pages = Math.ceil(totalElements / itensPerPage);
 
-  useEffect(() => {
+   useEffect(() => {
+
+    // Chame a função para buscar os pesquisadores padrão
     fetchPesquisadores();
-  }, [currentPage]);
+  
+    // Atualize pesquisadoresFiltrados com todos os pesquisadores quando não houver pesquisa
+    if (pesquisadorSearchText === '') {
+      setPesquisadoresFiltrados(pesquisadores);
+    }
+  }, [currentPage, pesquisadorSearchText]);
 
   useEffect(() => {
     setCurrentPage(0);
     fetchPesquisadores();
-  }, [itensPerPage]);
+  }, [itensPerPage,currentPage, pesquisadorSearchText]);
+
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
   const fetchPesquisadores = async () => {
     try {
-      const response = await axios.get(`http://localhost:8081/pesquisador?page=${currentPage}&size=${itensPerPage}`);
+      const response = await axios.get(
+        `http://localhost:8081/pesquisador?page=${currentPage}&size=${itensPerPage}&nome=${pesquisadorSearchText}`
+      );
       setPesquisadores(response.data.content);
       setTotalElements(response.data.totalElements);
     } catch (error) {
       console.error('Erro ao buscar a lista de pesquisadores:', error);
     }
   };
+  
 
   const handleDeleteClick = async (pesquisadorId) => {
     try {
@@ -74,8 +89,36 @@ function TelaPrincipal() {
     setPesquisadorAdicionadoId(pesquisador.idXML); // Atualizar o estado com o ID do pesquisador
   };
 
+  const handlePesquisadorSearch = (searchText) => {
+    setPesquisadorSearchText(searchText);
+  
+    if (searchText === '') {
+      // Quando não houver pesquisa, exiba todos os pesquisadores
+      setPesquisadoresFiltrados(pesquisadores);
+    } else {
+      // Filtrar os pesquisadores com base no nome em tempo real
+      const resultados = pesquisadores.filter((pesquisador) =>
+        pesquisador.nome.toLowerCase().includes(searchText.toLowerCase())
+      );
+  
+      setPesquisadoresFiltrados(resultados);
+    }
+  };
+  
+  
+
   return (
     <div>
+      <h2 className="titulo">Pesquisadores Cadastrados</h2>
+      <div className="search-input">
+        <input
+          type="text"
+          placeholder="Pesquisar por nome de pesquisador"
+          value={pesquisadorSearchText}
+          onChange={(e) => handlePesquisadorSearch(e.target.value)}
+        />
+      </div>
+
       <AddResearcherForm
 
 
@@ -93,7 +136,7 @@ function TelaPrincipal() {
       </button>
 
       <div className="container">
-        <h2 className="titulo">Pesquisadores Cadastrados</h2>
+      
         <table className="data-table-pesquisadores">
           <thead>
             <tr>
@@ -104,19 +147,21 @@ function TelaPrincipal() {
             </tr>
           </thead>
           <tbody>
-            {pesquisadores.map((pesquisador) => (
-              <tr
-                key={pesquisador.id}
-                onClick={() => handleRowClick(pesquisador)}
-                className={selectedPesquisador === pesquisador ? 'selected-row' : ''}
-              >
-                <td>{pesquisador.idXML}</td>
-                <td>{pesquisador.nome}</td>
-                {/* Exibir as informações do instituto relacionado */}
-                <td>{pesquisador.instituto.nome}</td>
-                <td>{pesquisador.instituto.acronimo}</td>
-              </tr>
-            ))}
+          {pesquisadoresFiltrados.map((pesquisador) => (
+            <tr
+              key={pesquisador.id}
+              onClick={() => handleRowClick(pesquisador)}
+              className={selectedPesquisador === pesquisador ? 'selected-row' : ''}
+            >
+              <td>{pesquisador.idXML}</td>
+              <td>{pesquisador.nome}</td>
+              {/* Exibir as informações do instituto relacionado */}
+              <td>{pesquisador.instituto.nome}</td>
+              <td>{pesquisador.instituto.acronimo}</td>
+            </tr>
+          ))}
+
+
           </tbody>
         </table>
       </div>
