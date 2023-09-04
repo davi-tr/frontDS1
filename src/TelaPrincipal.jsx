@@ -16,20 +16,36 @@ function TelaPrincipal() {
   const [pesquisadorXmlId, setPesquisadorXmlId] = useState(null); // Defina o estado para o ID do pesquisador do XML
   const [pesquisadorAdicionadoId, setPesquisadorAdicionadoId] = useState(null);
 
-  const [currentPage, setCurrentPage] = useState(0);
-  const [itemsPerPage, setItemsPerPage] = useState(10); // Valor padrão: 3
-  const [totalElements, setTotalElements] = useState(0); // Inicialize com 0
+   // Estado para controlar a página atual da tabela
+   const [currentPage, setCurrentPage] = useState(0);
+
+   // Estado para armazenar o número total de elementos na tabela
+   const [totalElements, setTotalElements] = useState(false);
+ 
+   // Estado para controlar a quantidade de itens por página
+   const [itensPerPage, setItensPerPage] = useState(3);// Inicialize com 0
+
+   const startIndex = currentPage * itensPerPage;
+   const endIndex = startIndex + itensPerPage;
+   const currentItens = pesquisadores.slice(startIndex, endIndex);
+
+   const pages = Math.ceil(totalElements / itensPerPage);
 
   useEffect(() => {
     fetchPesquisadores();
-  }, []);
+  }, [currentPage]);
+
+  useEffect(() => {
+    setCurrentPage(0);
+    fetchPesquisadores();
+  }, [itensPerPage]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
   const fetchPesquisadores = async () => {
     try {
-      const response = await axios.get(`http://localhost:8081/pesquisador?page=${currentPage}&size=${itemsPerPage}`);
+      const response = await axios.get(`http://localhost:8081/pesquisador?page=${currentPage}&size=${itensPerPage}`);
       setPesquisadores(response.data.content);
       setTotalElements(response.data.totalElements);
     } catch (error) {
@@ -81,6 +97,7 @@ function TelaPrincipal() {
         <table className="data-table-pesquisadores">
           <thead>
             <tr>
+              <th>ID</th>
               <th>NOME</th>
               <th>INSTITUTO</th>
               <th>ACRÔNIMO</th>
@@ -93,6 +110,7 @@ function TelaPrincipal() {
                 onClick={() => handleRowClick(pesquisador)}
                 className={selectedPesquisador === pesquisador ? 'selected-row' : ''}
               >
+                <td>{pesquisador.idXML}</td>
                 <td>{pesquisador.nome}</td>
                 {/* Exibir as informações do instituto relacionado */}
                 <td>{pesquisador.instituto.nome}</td>
@@ -140,28 +158,17 @@ function TelaPrincipal() {
      
 
 
-      <div className="pagination">
-        {Array.from(Array(Math.ceil(totalElements / itemsPerPage)), (item, index) => (
-          <button
-            key={index}
-            onClick={() => handlePageChange(index)}
-            className={currentPage === index ? 'active-page' : ''}
-          >
-            {index + 1}
-          </button>
-        ))}
+      <div className='pagination'>
+        {Array.from(Array(pages), (item, index) => {
+          return <button className="botao" value={index} onClick={(e) => setCurrentPage(Number(e.target.value))} key={index}>{index + 1}</button>
+        })}
       </div>
-      <div className="items-per-page">
-        <label>Quantidade de itens por página:</label>
-        <select
-          value={itemsPerPage}
-          onChange={(e) => {
-            setItemsPerPage(Number(e.target.value));
-            setCurrentPage(0); // Reinicie a página para a primeira página ao alterar os itens por página
-          }}
-        >
+      <div className='seletor'>
+        <p className='informe'>Quantidade de itens por página</p>
+        <select className='qtdItens' value={itensPerPage} onChange={(e) => setItensPerPage(Number(e.target.value))}>
           <option value={3}>3</option>
           <option value={5}>5</option>
+          <option value={8}>8</option>
           <option value={10}>10</option>
         </select>
       </div>

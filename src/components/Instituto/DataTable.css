@@ -329,6 +329,11 @@ tr:hover {
 
 .botao:hover {
   background-color: green;
+  color: #fff !important;
+}
+
+.botao{
+  color: black !important;
 }
 
 
@@ -441,6 +446,7 @@ tr:hover {
   display: flex;
   justify-content: flex-end;
 }
+
 
 
 .modal-overlay {
