@@ -29,6 +29,10 @@ function TelaPrincipal() {
    const endIndex = startIndex + itensPerPage;
    const currentItens = pesquisadores.slice(startIndex, endIndex);
 
+   const [searchText, setSearchText] = useState('');
+   const [searchResults, setSearchResults] = useState([]);
+   const [filter, setFilter] = useState('all');
+
    const pages = Math.ceil(totalElements / itensPerPage);
 
   useEffect(() => {
@@ -74,6 +78,27 @@ function TelaPrincipal() {
     setPesquisadorAdicionadoId(pesquisador.idXML); // Atualizar o estado com o ID do pesquisador
   };
 
+  const searchPesquisadores = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8081/pesquisador?search=${searchText}`);
+      setSearchResults(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar os dados da API:', error);
+    }
+  };
+  const searchData = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8081/instituto?search=${searchText}&filter=${filter}`
+      );
+      setData(response.data.content);
+      setTotalElements(response.data.totalElements);
+    } catch (error) {
+      console.error('Erro ao buscar os dados da API:', error);
+    }
+  };
+  
+
   return (
     <div>
       <AddResearcherForm
@@ -92,6 +117,23 @@ function TelaPrincipal() {
         Excluir
       </button>
 
+      <div className="search-input">
+        <select
+          className="filter-select"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+        >
+          <option value="all">Todos</option>
+          <option value="nome">Nome</option>
+          <option value="idXML">ID</option>
+        </select>
+        <input
+          type="text"
+          placeholder="Pesquisar por nome ou acrônimo"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+        />
+      </div>
       <div className="container">
         <h2 className="titulo">Pesquisadores Cadastrados</h2>
         <table className="data-table-pesquisadores">
@@ -104,19 +146,33 @@ function TelaPrincipal() {
             </tr>
           </thead>
           <tbody>
-            {pesquisadores.map((pesquisador) => (
-              <tr
-                key={pesquisador.id}
-                onClick={() => handleRowClick(pesquisador)}
-                className={selectedPesquisador === pesquisador ? 'selected-row' : ''}
-              >
-                <td>{pesquisador.idXML}</td>
-                <td>{pesquisador.nome}</td>
-                {/* Exibir as informações do instituto relacionado */}
-                <td>{pesquisador.instituto.nome}</td>
-                <td>{pesquisador.instituto.acronimo}</td>
-              </tr>
-            ))}
+            {searchResults.length > 0 ? (
+              searchResults.map((pesquisador) => (
+                <tr
+                  key={pesquisador.id}
+                  onClick={() => handleRowClick(pesquisador)}
+                  className={selectedPesquisador === pesquisador ? 'selected-row' : ''}
+                >
+                  <td>{pesquisador.idXML}</td>
+                  <td>{pesquisador.nome}</td>
+                  <td>{pesquisador.instituto.nome}</td>
+                  <td>{pesquisador.instituto.acronimo}</td>
+                </tr>
+              ))
+            ) : (
+              pesquisadores.map((pesquisador) => (
+                <tr
+                  key={pesquisador.id}
+                  onClick={() => handleRowClick(pesquisador)}
+                  className={selectedPesquisador === pesquisador ? 'selected-row' : ''}
+                >
+                  <td>{pesquisador.idXML}</td>
+                  <td>{pesquisador.nome}</td>
+                  <td>{pesquisador.instituto.nome}</td>
+                  <td>{pesquisador.instituto.acronimo}</td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
