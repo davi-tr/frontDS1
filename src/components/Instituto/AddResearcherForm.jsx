@@ -29,7 +29,7 @@ const AddResearcherForm = ({ onClose, updateTable }) => {
 
   const fetchInstitutes = async () => {
     try {
-      const response = await axios.get('http://localhost:8081/instituto');
+      const response = await axios.get('http://localhost:8082/instituto');
       setInstitutes(response.data.content);
     } catch (error) {
       console.error('Erro ao buscar a lista de institutos:', error);
@@ -48,7 +48,7 @@ const AddResearcherForm = ({ onClose, updateTable }) => {
     }
 
     try {
-      const response = await axios.post('http://localhost:8081/pesquisador', {
+      const response = await axios.post('http://localhost:8082/pesquisador', {
         idPesquisador: researcherId,
         idinstituto: parseInt(instituteId),
       });
@@ -92,7 +92,7 @@ const AddResearcherForm = ({ onClose, updateTable }) => {
 
   const fetchPesquisadores = async () => {
     try {
-      const response = await axios.get('http://localhost:8081/pesquisador');
+      const response = await axios.get('http://localhost:8082/pesquisador');
       setPesquisadores(response.data.content);
     } catch (error) {
       console.error('Erro ao buscar a lista de pesquisadores:', error);
