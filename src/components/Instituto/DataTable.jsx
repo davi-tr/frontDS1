@@ -92,7 +92,7 @@ const DataTable = () => {
   const fetchData = async (page) => {
     try {
       const response = await axios.get(
-        `http://localhost:8082/instituto?page=${page}&size=${itensPerPage}&search=${searchText}&filter=${filter}`
+        `http://localhost:8083/instituto?page=${page}&size=${itensPerPage}&search=${searchText}&filter=${filter}`
       );
       setData(response.data.content);
       setTotalElements(response.data.totalElements);
@@ -104,7 +104,7 @@ const DataTable = () => {
   
   const handleAddInstitute = async newInstitute => {
     try {
-      await axios.post('http://localhost:8082/instituto', newInstitute);
+      await axios.post('http://localhost:8083/instituto', newInstitute);
       fetchData();
       toast.success('Instituto adicionado com sucesso!', {
         position: 'top-right',
@@ -144,7 +144,7 @@ const DataTable = () => {
 
   const handleSaveEdit = async (editedInstitute) => {
     try {
-      await axios.put(`http://localhost:8082/instituto`, {
+      await axios.put(`http://localhost:8083/instituto`, {
         id: editedInstitute.id,
         nome: editedInstitute.nome,
         acronimo: editedInstitute.acronimo,
@@ -161,12 +161,12 @@ const DataTable = () => {
   const handleEditSubmit = async (editedData) => {
     try {
       if (editedData.id !== null) {
-        await axios.put(`http://localhost:8082/instituto/id=${editedData.id}`, {
+        await axios.put(`http://localhost:8083/instituto/id=${editedData.id}`, {
           nome: editedData.nome,
           acronimo: editedData.acronimo,
         });
       } else {
-        await axios.post('http://localhost:8082/instituto', editedData);
+        await axios.post('http://localhost:8083/instituto', editedData);
       }
       fetchData(); // Atualiza a lista após a edição ou adição
       setEditingInstitute(null); // Limpa o objeto de edição
@@ -181,7 +181,7 @@ const DataTable = () => {
   const updateState = async (page) => {
     try {
       const response = await axios.get(
-        `http://localhost:8082/instituto?page=${page}&size=${itensPerPage}&search=${searchText}&filter=${filter}`
+        `http://localhost:8083/instituto?page=${page}&size=${itensPerPage}&search=${searchText}&filter=${filter}`
       );
       setTotalElements(response.data.totalElements);
     } catch (error) {
@@ -218,7 +218,7 @@ const handleDeleteClick = (id)=> {
 const handleConfirmDelete = async () => {
   if (instituteToDelete) {
     try {
-      const response = await axios.delete(`http://localhost:8082/instituto/${instituteToDelete}`);
+      const response = await axios.delete(`http://localhost:8083/instituto/${instituteToDelete}`);
       if (response.status === 200) {
         fetchData();
         setShowDeleteModal(false); // Feche o modal após a exclusão
@@ -257,7 +257,7 @@ const handleConfirmDelete = async () => {
   const searchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8082/instituto?search=${searchText}&filter=${filter}`
+        `http://localhost:8083/instituto?search=${searchText}&filter=${filter}`
       );
       setData(response.data.content);
       setTotalElements(response.data.totalElements);

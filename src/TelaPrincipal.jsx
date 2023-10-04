@@ -49,7 +49,7 @@ function TelaPrincipal() {
   };
   const fetchPesquisadores = async () => {
     try {
-      const response = await axios.get(`http://localhost:8082/pesquisador?page=${currentPage}&size=${itensPerPage}`);
+      const response = await axios.get(`http://localhost:8083/pesquisador?page=${currentPage}&size=${itensPerPage}`);
       setPesquisadores(response.data.content);
       setTotalElements(response.data.totalElements);
     } catch (error) {
@@ -59,7 +59,7 @@ function TelaPrincipal() {
 
   const handleDeleteClick = async (pesquisadorId) => {
     try {
-      await axios.delete(`http://localhost:8082/pesquisador/${pesquisadorId}`);
+      await axios.delete(`http://localhost:8083/pesquisador/${pesquisadorId}`);
       // Atualizar a lista de pesquisadores após a exclusão
       fetchPesquisadores();
       setSelectedPesquisador(null); // Limpar a seleção
@@ -80,7 +80,7 @@ function TelaPrincipal() {
 
   const searchPesquisadores = async () => {
     try {
-      const response = await axios.get(`http://localhost:8082/pesquisador?search=${searchText}`);
+      const response = await axios.get(`http://localhost:8083/pesquisador?search=${searchText}`);
       setSearchResults(response.data);
     } catch (error) {
       console.error('Erro ao buscar os dados da API:', error);
@@ -89,8 +89,7 @@ function TelaPrincipal() {
   const searchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8082
-/instituto?search=${searchText}&filter=${filter}`
+        `http://localhost:8083/instituto?search=${searchText}&filter=${filter}`
       );
       setData(response.data.content);
       setTotalElements(response.data.totalElements);
