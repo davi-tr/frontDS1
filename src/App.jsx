@@ -6,6 +6,7 @@ import TelaHome from './TelaHome';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import TelaProducoes from './TelaProducoes';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<TelaHome />} />
         <Route path="/datatable" element={<DataTable />} />
         <Route path="/telaprincipal" element={<TelaPrincipal />} />
+        <Route path="/telaproducao" element={<TelaProducoes />} />
       </Routes>
       <ToastContainer />
     </Router>

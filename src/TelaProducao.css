@@ -1,0 +1,40 @@
+.custom-input {
+    width: 200px; /* Defina o tamanho desejado */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-right: 10px; /* Espaçamento à direita para separar os campos */
+  }
+  .row {
+    display: flex;
+    flex-wrap: wrap; /* Permite que as colunas quebrem para a próxima linha quando não há espaço suficiente */
+    margin-bottom: 10px; /* Espaçamento inferior entre as linhas de campos */
+  }
+  
+  .column {
+    flex: 1; /* Distribui igualmente o espaço disponível entre as colunas */
+    margin-right: 10px; /* Espaçamento à direita entre as colunas */
+  }
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .custom-table th,
+  .custom-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .custom-table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+  }
+  
+  .custom-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  

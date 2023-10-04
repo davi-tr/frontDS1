@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import './TelaHome.css'; // Importe seu arquivo de estilos
-
 import TelaPrincipal from './TelaPrincipal';
 import DataTable from './components/Instituto/DataTable';
 import fotofemass from './fotofemass.png';
+import TelaProducoes from './TelaProducoes';
 
 
 function Home() {
@@ -19,8 +19,9 @@ function Home() {
         <h2>Menu</h2>
         <ul>
           <li onClick={() => handleNavigate('home')}>Home</li>
-          <li onClick={() => handleNavigate('pesquisador')}>Tela de Pesquisador</li>
-          <li onClick={() => handleNavigate('instituto')}>Tela de Instituto</li>
+          <li onClick={() => handleNavigate('pesquisador')}>Pesquisadores</li>
+          <li onClick={() => handleNavigate('instituto')}>Institutos</li>
+          <li onClick={() => handleNavigate('producoes')}>Produções</li>
         </ul>
       </div>
       <div className="content">
@@ -38,6 +39,8 @@ function Home() {
             />
           </div>
         )}
+        {currentScreen === 'producoes' && <TelaProducoes />}
+
       </div>
     </div>
   );
