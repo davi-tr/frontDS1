@@ -8,6 +8,7 @@ import TelaProducoes from './TelaProducoes';
 
 function Home() {
   const [currentScreen, setCurrentScreen] = useState('home');
+  
 
   const handleNavigate = (screen) => {
     setCurrentScreen(screen);

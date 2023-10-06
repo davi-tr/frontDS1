@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './TelaProducao.css';
 
 function TelaProducoes() {
@@ -9,83 +10,102 @@ function TelaProducoes() {
   const [pesquisador, setPesquisador] = useState('');
   const [tipoProducao, setTipoProducao] = useState('');
 
+  
+  useEffect(() => {
+    fetchProducoes();
+  }, []);
 
-
+  const fetchProducoes = async () => {
+    try {
+      const response = await fetch('http://localhost:8083/producao');
+      const data = await response.json();
+      const producoesData = data.content; // Acesso ao array de produções
+  
+      setProducoes(producoesData);
+    } catch (error) {
+      console.error('Erro ao buscar produções:', error);
+    }
+  };
+  
 
   const handleBusca = () => {
     // Verifica se todos os campos estão preenchidos
     if (dataInicio && dataFim && instituto && pesquisador && tipoProducao) {
-      const resultadosFiltrados = producoes.filter((producao) => {
-        // Lógica de filtragem
-        return (
-          producao.data >= dataInicio &&
-          producao.data <= dataFim &&
-          producao.instituto === instituto &&
-          producao.pesquisador === pesquisador &&
-          producao.tipoProducao === tipoProducao
-        );
-      });
+      // Aqui você pode aplicar filtros se necessário
+      // Seus filtros
 
       // Atualiza o estado
-      setProducoes(resultadosFiltrados);
+      // Não é necessário atualizar o estado aqui, pois os dados serão buscados da API
     } else {
       // Mensagem de erro se algum campo estiver vazio
       alert('Preencha todos os campos de filtro.');
     }
   };
 
- // ...
+  useEffect(() => {
 
- return (
+    // Faz uma solicitação à API para buscar os dados
+    axios.get('http://localhost:8083/producao')
+      .then((response) => {
+        
+        // Acesso à matriz de produções na resposta da API
+        setProducoes(response.data.content);
+      })
+      .catch((error) => {
+        console.error('Erro ao buscar dados da API:', error);
+      });
+  }, []);
+
+
+  return (
     <div>
       <h2 className="titulo">Itens de produção</h2>
-  
+
       <div className="row">
         <div className="column">
-    <input
-        type="text"
-        placeholder="Data Início"
-        value={dataInicio}
-        onChange={(e) => setDataInicio(e.target.value)}
-        className="custom-input"
-    />
-    </div>
+          <input
+            type="text"
+            placeholder="Data Início"
+            value={dataInicio}
+            onChange={(e) => setDataInicio(e.target.value)}
+            className="custom-input"
+          />
+        </div>
 
-    <div className="column">
-    <input
-        type="text"
-        placeholder="Data Fim"
-        value={dataFim}
-        onChange={(e) => setDataFim(e.target.value)}
-        className="custom-input"
-    />
-    </div>
+        <div className="column">
+          <input
+            type="text"
+            placeholder="Data Fim"
+            value={dataFim}
+            onChange={(e) => setDataFim(e.target.value)}
+            className="custom-input"
+          />
+        </div>
 
-    <div className="column">
-    <select
-        value={instituto}
-        onChange={(e) => setInstituto(e.target.value)}
-        className="custom-input"
-    >
-        <option value="">Selecione o Instituto</option>
-        {/* Institutos */}
-    </select>
-    </div>
+        <div className="column">
+          <select
+            value={instituto}
+            onChange={(e) => setInstituto(e.target.value)}
+            className="custom-input"
+          >
+            <option value="">Selecione o Instituto</option>
+            {/* Institutos */}
+          </select>
+        </div>
 
-    <div className="column">
-    <select
-        value={pesquisador}
-        onChange={(e) => setPesquisador(e.target.value)}
-        className="custom-input"
-    >
-        <option value="">Selecione o Pesquisador</option>
-        {/* Pesquisadores*/}
-    </select>
-    </div>
+        <div className="column">
+          <select
+            value={pesquisador}
+            onChange={(e) => setPesquisador(e.target.value)}
+            className="custom-input"
+          >
+            <option value="">Selecione o Pesquisador</option>
+            {/* Pesquisadores */}
+          </select>
+        </div>
 
-    <div className="column">
-    </div>
-  
+        <div className="column"></div>
+
         <div className="column">
           <select
             value={tipoProducao}
@@ -98,39 +118,30 @@ function TelaProducoes() {
           </select>
         </div>
       </div>
-  
+
       <button onClick={handleBusca} className="add-button">
         Aplicar
       </button>
-  
-      <ul>
-        {producoes.map((producao, index) => (
-          <li key={index}>
-            <strong>Título:</strong> {producao.titulo}, <strong>Autor:</strong> {producao.autor}
-          </li>
-        ))}
-      </ul>
-
       <table className="custom-table">
         <thead>
-        <tr>
+          <tr>
             <th>Tipo de Produção</th>
-            <th>Detalhamento</th>
-        </tr>
+            <th>Descrição</th>
+          </tr>
         </thead>
         <tbody>
-        {producoes.map((producao, index) => (
+          {producoes.map((producao, index) => (
             <tr key={index}>
-            <td>{producao.tipoProducao}</td>
-            <td>{producao.detalhamento}</td>
+              <td>{producao.tipo}</td>
+              <td>
+                {producao.titulo}, {producao.ano}
+              </td>
             </tr>
-        ))}
+          ))}
         </tbody>
-    </table>
+      </table>
     </div>
-  
   );
-  
 }
 
 export default TelaProducoes;
