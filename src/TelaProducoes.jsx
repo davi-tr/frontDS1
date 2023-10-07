@@ -82,7 +82,6 @@ function TelaProducoes() {
   };
 
   useEffect(() => {
-
     // Faz uma solicitação à API para buscar os dados
     axios.get('http://localhost:8083/producao')
       .then((response) => {
