@@ -9,8 +9,47 @@ function TelaProducoes() {
   const [instituto, setInstituto] = useState('');
   const [pesquisador, setPesquisador] = useState('');
   const [tipoProducao, setTipoProducao] = useState('');
+  const [listaDeInstitutos, setListaDeInstitutos] = useState([]);
+  const apiUrl = "http://localhost:8083/instituto";
+  const [listaDePesquisadores, setListaDePesquisadores] = useState([]);
+  const apiUrlP = "http://localhost:8083/pesquisador";
 
-  
+
+  useEffect(() => {
+    async function fetchPesquisadores() {
+      try {
+        const response = await fetch(apiUrlP);
+        if (response.ok) {
+          const data = await response.json();
+          setListaDePesquisadores(data.content);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar a lista de pesquisadores:", error);
+      }
+    }
+
+    fetchPesquisadores();
+  }, [apiUrlP]);
+
+
+
+  useEffect(() => {
+
+    async function fetchInstitutos() {
+      try {
+        const response = await fetch(apiUrl);
+        if (response.ok) {
+          const data = await response.json();
+          setListaDeInstitutos(data.content);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar a lista de institutos:", error);
+      }
+    }
+    fetchInstitutos();
+  }, [apiUrl]);
+
+
   useEffect(() => {
     fetchProducoes();
   }, []);
@@ -20,13 +59,13 @@ function TelaProducoes() {
       const response = await fetch('http://localhost:8083/producao');
       const data = await response.json();
       const producoesData = data.content; // Acesso ao array de produções
-  
+
       setProducoes(producoesData);
     } catch (error) {
       console.error('Erro ao buscar produções:', error);
     }
   };
-  
+
 
   const handleBusca = () => {
     // Verifica se todos os campos estão preenchidos
@@ -47,7 +86,7 @@ function TelaProducoes() {
     // Faz uma solicitação à API para buscar os dados
     axios.get('http://localhost:8083/producao')
       .then((response) => {
-        
+
         // Acesso à matriz de produções na resposta da API
         setProducoes(response.data.content);
       })
@@ -89,7 +128,11 @@ function TelaProducoes() {
             className="custom-input"
           >
             <option value="">Selecione o Instituto</option>
-            {/* Institutos */}
+            {listaDeInstitutos.map((instituto) => (
+              <option key={instituto.id} value={instituto.id}>
+                {instituto.nome}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -100,7 +143,11 @@ function TelaProducoes() {
             className="custom-input"
           >
             <option value="">Selecione o Pesquisador</option>
-            {/* Pesquisadores */}
+            {listaDePesquisadores.map((pesquisador) => (
+              <option key={pesquisador.idXML} value={pesquisador.idXML}>
+                {pesquisador.nome}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -126,7 +173,7 @@ function TelaProducoes() {
         <thead>
           <tr>
             <th>Tipo de Produção</th>
-            <th>Descrição</th>
+            <th>Detalhamento</th>
           </tr>
         </thead>
         <tbody>
@@ -134,7 +181,7 @@ function TelaProducoes() {
             <tr key={index}>
               <td>{producao.tipo}</td>
               <td>
-                {producao.titulo}, {producao.ano}
+                {producao.id} ; {producao.titulo} | {producao.ano}
               </td>
             </tr>
           ))}
