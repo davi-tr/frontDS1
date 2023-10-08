@@ -180,7 +180,9 @@ function TelaProducoes() {
             <tr key={index}>
               <td>{producao.tipo}</td>
               <td>
-                {producao.id} ; {producao.titulo} | {producao.ano}
+                {producao.id} - {producao.tipo} : {producao.titulo} . De {producao.ano}
+                <br />
+                Autores: {producao.pesquisador.map(pesquisador => pesquisador.nome).join(', ')}
               </td>
             </tr>
           ))}
