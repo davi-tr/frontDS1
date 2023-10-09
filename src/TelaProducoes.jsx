@@ -14,6 +14,26 @@ function TelaProducoes() {
   const [listaDePesquisadores, setListaDePesquisadores] = useState([]);
   const apiUrlP = "http://localhost:8083/pesquisador";
 
+  // Configuração da paginação
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 10;
+
+  const pagesVisited = currentPage * itemsPerPage;
+
+  const displayProducoes = producoes
+    .slice(pagesVisited, pagesVisited + itemsPerPage)
+    .map((producao, index) => (
+      <tr key={index}>
+        <td>{producao.tipo}</td>
+        <td>
+          {producao.id} - {producao.tipo} : {producao.titulo} . De {producao.ano}
+          <br />
+          Autores: {producao.pesquisador.map(pesquisador => pesquisador.nome).join(', ')}
+        </td>
+      </tr>
+    ));
+
+  const pageCount = Math.ceil(producoes.length / itemsPerPage);
 
   useEffect(() => {
     async function fetchPesquisadores() {
@@ -31,10 +51,7 @@ function TelaProducoes() {
     fetchPesquisadores();
   }, [apiUrlP]);
 
-
-
   useEffect(() => {
-
     async function fetchInstitutos() {
       try {
         const response = await fetch(apiUrl);
@@ -49,7 +66,6 @@ function TelaProducoes() {
     fetchInstitutos();
   }, [apiUrl]);
 
-
   useEffect(() => {
     fetchProducoes();
   }, []);
@@ -58,42 +74,20 @@ function TelaProducoes() {
     try {
       const response = await fetch('http://localhost:8083/producao');
       const data = await response.json();
-      const producoesData = data.content; // Acesso ao array de produções
-
+      const producoesData = data.content;
       setProducoes(producoesData);
     } catch (error) {
       console.error('Erro ao buscar produções:', error);
     }
   };
 
-
   const handleBusca = () => {
-    // Verifica se todos os campos estão preenchidos
     if (dataInicio && dataFim && instituto && pesquisador && tipoProducao) {
-      // Aqui você pode aplicar filtros se necessário
-      // Seus filtros
-
-      // Atualiza o estado
-      // Não é necessário atualizar o estado aqui, pois os dados serão buscados da API
+      // Aplicar filtros aqui, se necessário
     } else {
-      // Mensagem de erro se algum campo estiver vazio
       alert('Preencha todos os campos de filtro.');
     }
   };
-
-  useEffect(() => {
-    // Faz uma solicitação à API para buscar os dados
-    axios.get('http://localhost:8083/producao')
-      .then((response) => {
-
-        // Acesso à matriz de produções na resposta da API
-        setProducoes(response.data.content);
-      })
-      .catch((error) => {
-        console.error('Erro ao buscar dados da API:', error);
-      });
-  }, []);
-
 
   return (
     <div>
@@ -176,18 +170,18 @@ function TelaProducoes() {
           </tr>
         </thead>
         <tbody>
-          {producoes.map((producao, index) => (
-            <tr key={index}>
-              <td>{producao.tipo}</td>
-              <td>
-                {producao.id} - {producao.tipo} : {producao.titulo} . De {producao.ano}
-                <br />
-                Autores: {producao.pesquisador.map(pesquisador => pesquisador.nome).join(', ')}
-              </td>
-            </tr>
-          ))}
+          {displayProducoes}
         </tbody>
       </table>
+
+      <div className="pagination">
+        <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 0}>
+          1
+        </button>
+        <button onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === pageCount - 1}>
+          2
+        </button>
+      </div>
     </div>
   );
 }
