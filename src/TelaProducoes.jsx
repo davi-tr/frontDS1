@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './TelaProducao.css';
+import './TelaPrincipal.css';
 
 function TelaProducoes() {
   const [producoes, setProducoes] = useState([]);
@@ -168,7 +169,7 @@ function TelaProducoes() {
       <button onClick={handleBusca} className="add-button">
         Aplicar
       </button>
-      <table className="custom-table">
+      <table className="data-table-pesquisadores">
         <thead>
           <tr>
             <th>Tipo de Produção</th>
