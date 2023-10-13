@@ -30,7 +30,7 @@ function TelaProducoes() {
           {producao.id} - {producao.tipo} : {producao.titulo} . De {producao.ano}
           <br />
           Autores: {producao.pesquisador.map(pesquisador => pesquisador.nome).join(', ')} -
-          - Autores complementares: {/*producao.autorcomplementar.map(autorcomplementar => autorcomplementar.nome).join(', ')*/}
+          - Autores complementares: {/*producao.autorcomplementar.map(autorcomplementar => autorcomplementar.nome).join(', ') */}
         </td>
       </tr>
     ));
