@@ -29,7 +29,8 @@ function TelaProducoes() {
         <td>
           {producao.id} - {producao.tipo} : {producao.titulo} . De {producao.ano}
           <br />
-          Autores: {producao.pesquisador.map(pesquisador => pesquisador.nome).join(', ')}
+          Autores: {producao.pesquisador.map(pesquisador => pesquisador.nome).join(', ')} -
+          - Autores complementares: {/*producao.autorcomplementar.map(autorcomplementar => autorcomplementar.nome).join(', ') */}
         </td>
       </tr>
     ));
@@ -177,10 +178,10 @@ function TelaProducoes() {
 
       <div className="pagination">
         <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 0}>
-          1
+          anterior
         </button>
         <button onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === pageCount - 1}>
-          2
+          proximo
         </button>
       </div>
     </div>
