@@ -92,7 +92,7 @@ function TelaProducoes() {
   };
 
   return (
-    <div>
+    <div className="tela-producoes">
       <h2 className="titulo">Itens de produção</h2>
 
       <div className="row">

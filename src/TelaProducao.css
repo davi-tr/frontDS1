@@ -1,40 +1,75 @@
+/* TelaProducao.css */
+
+.tela-producoes {
+  animation: fadeInSelector 0.5s ease;
+}
+
+@keyframes fadeInSelector {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .custom-input {
-    width: 200px; /* Defina o tamanho desejado */
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    margin-right: 10px; /* Espaçamento à direita para separar os campos */
+  width: 200px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.column {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.custom-table th,
+.custom-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+.custom-table th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.custom-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Animação de preenchimento para os botões */
+.add-button,
+.pagination button {
+  animation: fadeInButton 0.5s ease;
+}
+
+@keyframes fadeInButton {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  .row {
-    display: flex;
-    flex-wrap: wrap; /* Permite que as colunas quebrem para a próxima linha quando não há espaço suficiente */
-    margin-bottom: 10px; /* Espaçamento inferior entre as linhas de campos */
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .column {
-    flex: 1; /* Distribui igualmente o espaço disponível entre as colunas */
-    margin-right: 10px; /* Espaçamento à direita entre as colunas */
-  }
-  .custom-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  .custom-table th,
-  .custom-table td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: left;
-  }
-  
-  .custom-table th {
-    background-color: #f0f0f0;
-    font-weight: bold;
-  }
-  
-  .custom-table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  
+}
