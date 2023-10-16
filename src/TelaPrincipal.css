@@ -159,3 +159,195 @@
 .items-per-page label {
   margin-bottom: 10px; /* Espaço entre o rótulo e o seletor */
 }
+
+/* TelaPrincipal.css */
+
+/* Estilos gerais */
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Estilos para o container principal */
+.container {
+  animation: fadeInContainer 0.5s ease;
+}
+
+@keyframes fadeInContainer {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.titulo {
+  animation: fadeInTitle 0.8s ease;
+}
+
+@keyframes fadeInTitle {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilos para a tabela de dados */
+.data-table-pesquisadores {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+  margin-top: 20px;
+  animation: fadeInTable 0.5s ease;
+}
+
+@keyframes fadeInTable {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+tr {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+td, th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.selected-row {
+  background-color: #e0e0e0;
+}
+
+/* Estilos para o botão de exclusão */
+.delete-button {
+  animation: fadeInButton 0.5s ease;
+}
+
+@keyframes fadeInButton {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilos para a entrada de pesquisa */
+.search-input {
+  animation: fadeInSearch 0.5s ease;
+}
+
+@keyframes fadeInSearch {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilos para a paginação */
+.pagination {
+  animation: fadeInPagination 0.5s ease;
+}
+
+@keyframes fadeInPagination {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilos para o seletor de quantidade de itens por página */
+.seletor {
+  animation: fadeInSelector 0.5s ease;
+}
+
+@keyframes fadeInSelector {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilos para a mensagem informativa */
+.informe {
+  animation: fadeInInform 0.5s ease;
+}
+
+@keyframes fadeInInform {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilos para o seletor de quantidade de itens */
+.qtdItens {
+  animation: fadeInQtdItens 0.5s ease;
+}
+
+@keyframes fadeInQtdItens {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilos para os botões de paginação */
+.botao {
+  animation: fadeInButtonPag 0.5s ease;
+}
+
+@keyframes fadeInButtonPag {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Restante do seu CSS */

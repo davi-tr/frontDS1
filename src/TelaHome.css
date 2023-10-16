@@ -1,73 +1,155 @@
 /* TelaHome.css */
 
-.home-container {
-  display: flex;
-  background-color: #f0f0f0;
-  min-height: 100vh;
+/* Estilos gerais */
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
+/* Estilos para o container principal */
+.home-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Estilos para a barra lateral */
 .sidebar {
-  background-color: #333;
-  color: #fff;
-  width: 250px;
+  background-color: #f9f9f9;
   padding: 20px;
+  flex: 1;
+  transition: all 0.3s;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  animation: fadeInSidebar 0.5s ease;
+}
+
+@keyframes fadeInSidebar {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .sidebar h2 {
-  font-size: 24px;
+  font-size: 1.5rem;
   margin-bottom: 20px;
+  color: #333;
 }
 
 .sidebar ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .sidebar li {
+  padding: 15px 30px;
+  position: relative;
   cursor: pointer;
-  padding: 10px 0;
-  font-size: 18px;
-  transition: background-color 0.3s;
 }
 
-.sidebar li:hover {
-  background-color: #555;
+.sidebar li::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background-color: #007bff;
+  transition: height 0.3s;
+  z-index: -1;
 }
 
+.sidebar li.active::before,
+.sidebar li:hover::before {
+  height: 100%;
+}
+
+/* TelaHome.css */
+
+/* Restante do seu CSS */
+
+/* Animação de preenchimento para o item ativo */
+.sidebar li.active {
+  color: white; /* Altere a cor do texto para branco */
+  background-color: #007bff; /* Altere a cor de fundo para azul */
+  border-radius: 5px; /* Adicione borda arredondada */
+  transition: all 0.3s; /* Adicione uma transição suave para a animação */
+}
+
+
+.sidebar li:not(.active):hover {
+  background-color: #e6e6e6; /* Altere a cor de fundo ao passar o mouse para cinza claro */
+  border-radius: 5px;
+  transition: all 0.3s; /* Adicione uma transição suave para a animação */
+}
+
+/* Transição de saída ao remover o mouse */
+.sidebar li:not(.active) {
+  transition: all 0.3s; /* Adicione uma transição suave para a animação de saída */
+}
+
+/* Estilos para o conteúdo principal */
 .content {
-  flex-grow: 1;
+  flex: 3;
   padding: 20px;
+  animation: fadeInContent 0.5s ease;
+}
+
+@keyframes fadeInContent {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .home-title {
   font-size: 2rem;
-  color: #333;
-  margin-bottom: 1rem;
-}
-
-.home-buttons {
-  display: flex;
-  gap: 1rem;
-}
-
-.home-button {
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  background-color: #555;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.home-button:hover {
-  background-color: #333;
-}
-
-
-.home-title {
-  font-size: 50px;
   text-align: center;
   margin-bottom: 20px;
-  color: #333; /* Cor do texto */
+  color: #333;
+  animation: fadeInTitle 0.8s ease;
 }
+
+@keyframes fadeInTitle {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.logohome {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+  margin-top: 20px;
+  border-radius: 8px;
+  transition: all 0.3s;
+  animation: fadeInLogo 1s ease;
+}
+
+@keyframes fadeInLogo {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Restante do seu CSS */
