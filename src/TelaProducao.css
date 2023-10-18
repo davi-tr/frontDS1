@@ -4,6 +4,10 @@
   animation: fadeInSelector 0.5s ease;
 }
 
+
+.pagination{
+  padding-bottom: 5rem;
+}
 @keyframes fadeInSelector {
   from {
     opacity: 0;

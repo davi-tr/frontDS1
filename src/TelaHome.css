@@ -21,7 +21,9 @@ body {
   transition: all 0.3s;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   animation: fadeInSidebar 0.5s ease;
+  height: auto;
 }
+
 
 @keyframes fadeInSidebar {
   from {
@@ -47,11 +49,10 @@ body {
 }
 
 .sidebar li {
-  padding: 15px 30px !important;
-  text-align: start !important;
+  padding: 1px 30px !important;
   position: relative !important;
   cursor: pointer;
-}
+} 
 
 .sidebar li::before {
   content: '';
@@ -80,7 +81,8 @@ body {
   color: white; /* Altere a cor do texto para branco */
   background-color: #007bff; /* Altere a cor de fundo para azul */
   transition: all 0.3s; /* Adicione uma transição suave para a animação */
-  border-radius: 90px; /* Adicione borda arredondada *//* Centralize o texto */
+  border-radius: 90px;
+  border-top-right-radius: 20px;
   
 }
 .tabs{
@@ -89,7 +91,7 @@ body {
 }
 
 .active .tabs{
-  transform: translateX(30%);
+  transform:translateX(10%);
   transition: transform ease-in-out 600ms;
 }
 .menu{
