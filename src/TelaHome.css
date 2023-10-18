@@ -47,8 +47,9 @@ body {
 }
 
 .sidebar li {
-  padding: 15px 30px;
-  position: relative;
+  padding: 15px 30px !important;
+  text-align: start !important;
+  position: relative !important;
   cursor: pointer;
 }
 
@@ -57,7 +58,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100% !important;
   height: 0;
   background-color: #007bff;
   transition: height 0.3s;
@@ -69,28 +70,40 @@ body {
   height: 100%;
 }
 
+
 /* TelaHome.css */
 
 /* Restante do seu CSS */
 
 /* Animação de preenchimento para o item ativo */
-.sidebar li.active {
+.sidebar li.active{
   color: white; /* Altere a cor do texto para branco */
   background-color: #007bff; /* Altere a cor de fundo para azul */
-  border-radius: 5px; /* Adicione borda arredondada */
   transition: all 0.3s; /* Adicione uma transição suave para a animação */
+  border-radius: 90px; /* Adicione borda arredondada *//* Centralize o texto */
+  
+}
+.tabs{
+  transform: translateX(0%);
+  transition: transform ease-in-out 600ms;
 }
 
-
+.active .tabs{
+  transform: translateX(30%);
+  transition: transform ease-in-out 600ms;
+}
+.menu{
+  margin-left: 1.70rem;
+}
 .sidebar li:not(.active):hover {
   background-color: #e6e6e6; /* Altere a cor de fundo ao passar o mouse para cinza claro */
-  border-radius: 5px;
-  transition: all 0.3s; /* Adicione uma transição suave para a animação */
+  border-radius: 90px;
+  transition: ease-in-out 0.3s; /* Adicione uma transição suave para a animação */
 }
 
 /* Transição de saída ao remover o mouse */
 .sidebar li:not(.active) {
-  transition: all 0.3s; /* Adicione uma transição suave para a animação de saída */
+  transition: ease-in-out 0.3s; /* Adicione uma transição suave para a animação de saída */
 }
 
 /* Estilos para o conteúdo principal */
