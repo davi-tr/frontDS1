@@ -5,8 +5,8 @@ import './TelaPrincipal.css';
 
 function TelaProducoes() {
   const [producoes, setProducoes] = useState([]);
-  const [dataInicio, setDataInicio] = useState('');
-  const [dataFim, setDataFim] = useState('');
+  const [anoInicio, setAnoInicio] = useState('');
+  const [anoFim, setAnoFim] = useState(new Date().getFullYear().toString());
   const [instituto, setInstituto] = useState('');
   const [pesquisador, setPesquisador] = useState('');
   const [tipoProducao, setTipoProducao] = useState('');
@@ -29,7 +29,7 @@ function TelaProducoes() {
         <td>
           {producao.id} - {producao.tipo} : {producao.titulo} . De {producao.ano}
           <br />
-          Autores: {producao.pesquisador.map(pesquisador => pesquisador.nome).join(', ')} -
+          Autores: {producao.pesquisador.map(pesquisador => pesquisador.nome).join(', ')}    -
           - Autores complementares: {/*producao.autorcomplementar.map(autorcomplementar => autorcomplementar.nome).join(', ') */}
         </td>
       </tr>
@@ -84,10 +84,19 @@ function TelaProducoes() {
   };
 
   const handleBusca = () => {
-    if (dataInicio && dataFim && instituto && pesquisador && tipoProducao) {
-      // Aplicar filtros aqui, se necessário
+    if (anoInicio && pesquisador) {
+
+      const filteredProducoes = producoes.filter(producao => {
+        const dataProducao = new Date(producao.ano);
+        const dataInicioFilter = new Date(anoInicio);
+        const dataFimFilter = new Date(anoFim);
+        return dataProducao.getFullYear() >= dataInicioFilter.getFullYear() &&
+          dataProducao.getFullYear() <= dataFimFilter.getFullYear() &&
+          producao.instituto === instituto;
+      });
+      setProducoes(filteredProducoes);
     } else {
-      alert('Preencha todos os campos de filtro.');
+      alert('Preencha o ano inicial e selecione o Pesquisador para aplicar o filtro.');
     }
   };
 
@@ -98,20 +107,19 @@ function TelaProducoes() {
       <div className="row">
         <div className="column">
           <input
-            type="text"
-            placeholder="Data Início"
-            value={dataInicio}
-            onChange={(e) => setDataInicio(e.target.value)}
+            type="number" // 
+            placeholder="Ano Inicial"
+            value={anoInicio}
+            onChange={(e) => setAnoInicio(e.target.value)}
             className="custom-input"
           />
         </div>
 
         <div className="column">
           <input
-            type="text"
-            placeholder="Data Fim"
-            value={dataFim}
-            onChange={(e) => setDataFim(e.target.value)}
+            type="text" // 
+            value={anoFim}
+            disabled
             className="custom-input"
           />
         </div>
@@ -154,6 +162,7 @@ function TelaProducoes() {
             onChange={(e) => setTipoProducao(e.target.value)}
             className="custom-input"
           >
+
             <option value="">Tipo de Produção</option>
             <option value="Artigo">Artigo</option>
             <option value="Livro">Livro</option>
