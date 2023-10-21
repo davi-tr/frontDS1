@@ -16,24 +16,24 @@ function TelaPrincipal() {
   const [pesquisadorXmlId, setPesquisadorXmlId] = useState(null); // Defina o estado para o ID do pesquisador do XML
   const [pesquisadorAdicionadoId, setPesquisadorAdicionadoId] = useState(null);
 
-   // Estado para controlar a página atual da tabela
-   const [currentPage, setCurrentPage] = useState(0);
+  // Estado para controlar a página atual da tabela
+  const [currentPage, setCurrentPage] = useState(0);
 
-   // Estado para armazenar o número total de elementos na tabela
-   const [totalElements, setTotalElements] = useState(false);
- 
-   // Estado para controlar a quantidade de itens por página
-   const [itensPerPage, setItensPerPage] = useState(3);// Inicialize com 0
+  // Estado para armazenar o número total de elementos na tabela
+  const [totalElements, setTotalElements] = useState(false);
 
-   const startIndex = currentPage * itensPerPage;
-   const endIndex = startIndex + itensPerPage;
-   const currentItens = pesquisadores.slice(startIndex, endIndex);
+  // Estado para controlar a quantidade de itens por página
+  const [itensPerPage, setItensPerPage] = useState(3);// Inicialize com 0
 
-   const [searchText, setSearchText] = useState('');
-   const [searchResults, setSearchResults] = useState([]);
-   const [filter, setFilter] = useState('all');
+  const startIndex = currentPage * itensPerPage;
+  const endIndex = startIndex + itensPerPage;
+  const currentItens = pesquisadores.slice(startIndex, endIndex);
 
-   const pages = Math.ceil(totalElements / itensPerPage);
+  const [searchText, setSearchText] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [filter, setFilter] = useState('all');
+
+  const pages = Math.ceil(totalElements / itensPerPage);
 
   useEffect(() => {
     fetchPesquisadores();
@@ -43,6 +43,31 @@ function TelaPrincipal() {
     setCurrentPage(0);
     fetchPesquisadores();
   }, [itensPerPage]);
+
+  const handleSearchFilter = () => {
+    fetchData(); // Atualize os dados com base na pesquisa e no filtro
+  };
+  const handleSearch = () => {
+    fetchData(); // Atualize os dados com base na pesquisa
+  };
+
+
+  const handleFilterChange = (e) => {
+    setFilter(e.target.value); // Atualize o estado do filtro
+  };
+  /* const SearchResults = data.filter((pesquisador) => {
+     if (filter === 'all') {
+       return true; // Mostrar todos os itens se o filtro for "all"
+     } else if (filter === 'Nome') {
+       return pesquisador.nome.toLowerCase().includes(searchText.toLowerCase());
+     } else if (filter === 'ID') {
+       return pesquisador.idXML.toLowerCase().includes(searchText.toLowerCase());
+     }
+   });*/
+
+  useEffect(() => {
+    searchPesquisadores();
+  }, [searchText, filter]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -56,6 +81,20 @@ function TelaPrincipal() {
       console.error('Erro ao buscar a lista de pesquisadores:', error);
     }
   };
+
+  const fetchData = async (page) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8083/pesquisador?page=${page}&size=${itensPerPage}&search=${searchText}&filter=${filter}`
+      );
+      setData(response.data.content);
+      setTotalElements(response.data.totalElements);
+    } catch (error) {
+      console.error('Erro ao buscar os dados da API:', error);
+    }
+  };
+
+
 
   const handleDeleteClick = async (pesquisadorId) => {
     try {
@@ -89,7 +128,7 @@ function TelaPrincipal() {
   const searchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8083/instituto?search=${searchText}&filter=${filter}`
+        `http://localhost:8083/pesquisador?search=${searchText}&filter=${filter}`
       );
       setData(response.data.content);
       setTotalElements(response.data.totalElements);
@@ -97,7 +136,7 @@ function TelaPrincipal() {
       console.error('Erro ao buscar os dados da API:', error);
     }
   };
-  
+
 
   return (
     <div>
@@ -211,7 +250,7 @@ function TelaPrincipal() {
           </div>
         </div>
       </Modal>
-     
+
 
 
       <div className='pagination'>
