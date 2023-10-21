@@ -16,19 +16,19 @@ function Home() {
   return (
     <div className="home-container">
       <div className="sidebar">
-        <h2>Menu</h2>
+        <h2 className='menu'>Menu</h2>
         <ul>
           <li className={currentScreen === 'home' ? 'active' : ''} onClick={() => handleNavigate('home')}>
-            Home
+          <p className='tabs'>Home</p>
           </li>
           <li className={currentScreen === 'pesquisador' ? 'active' : ''} onClick={() => handleNavigate('pesquisador')}>
-            Pesquisadores
+            <p className='tabs'>Pesquisadores</p>
           </li>
           <li className={currentScreen === 'instituto' ? 'active' : ''} onClick={() => handleNavigate('instituto')}>
-            Institutos
+          <p className='tabs'>Institutos</p>
           </li>
           <li className={currentScreen === 'producoes' ? 'active' : ''} onClick={() => handleNavigate('producoes')}>
-            Produções
+          <p className='tabs'>Produções</p>
           </li>
         </ul>
       </div>
