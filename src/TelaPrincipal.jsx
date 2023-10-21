@@ -7,6 +7,7 @@ import './TelaPrincipal.css';
 
 
 function TelaPrincipal() {
+  const [data, setData] = useState([]);
   const [mostrarDataTable, setMostrarDataTable] = useState(false);
   const [pesquisadores, setPesquisadores] = useState([]);
   const [selectedPesquisador, setSelectedPesquisador] = useState(null);
@@ -44,6 +45,14 @@ function TelaPrincipal() {
     fetchPesquisadores();
   }, [itensPerPage]);
 
+  useEffect(() => {
+    if (searchText) {
+      searchPesquisadores(); // Se a pesquisa estiver ativa, busque os resultados da pesquisa
+    } else {
+      fetchPesquisadores(currentPage); // Caso contrário, busque os resultados com paginação
+    }
+  }, [currentPage, searchText]); // Atualize sempre que a página ou pesquisa mudar
+
   const handleSearchFilter = () => {
     fetchData(); // Atualize os dados com base na pesquisa e no filtro
   };
@@ -51,27 +60,27 @@ function TelaPrincipal() {
     fetchData(); // Atualize os dados com base na pesquisa
   };
 
-
   const handleFilterChange = (e) => {
     setFilter(e.target.value); // Atualize o estado do filtro
   };
-  /* const SearchResults = data.filter((pesquisador) => {
-     if (filter === 'all') {
-       return true; // Mostrar todos os itens se o filtro for "all"
-     } else if (filter === 'Nome') {
-       return pesquisador.nome.toLowerCase().includes(searchText.toLowerCase());
-     } else if (filter === 'ID') {
-       return pesquisador.idXML.toLowerCase().includes(searchText.toLowerCase());
-     }
-   });*/
 
-  useEffect(() => {
-    searchPesquisadores();
-  }, [searchText, filter]);
+  const searchPesquisadores = async () => {
+    try {
+      let response;
+      if (filter === 'all') {
+        response = await axios.get(`http://localhost:8083/pesquisador?search=${searchText}`);
+      } else if (filter === 'nome') {
+        response = await axios.get(`http://localhost:8083/pesquisador?search=${searchText}`);
+      } else if (filter === 'idXML') {
+        response = await axios.get(`http://localhost:8083/pesquisador?search=${searchText}`);
+      }
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
+      setSearchResults(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar os dados da API:', error);
+    }
   };
+
   const fetchPesquisadores = async () => {
     try {
       const response = await axios.get(`http://localhost:8083/pesquisador?page=${currentPage}&size=${itensPerPage}`);
@@ -81,20 +90,6 @@ function TelaPrincipal() {
       console.error('Erro ao buscar a lista de pesquisadores:', error);
     }
   };
-
-  const fetchData = async (page) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8083/pesquisador?page=${page}&size=${itensPerPage}&search=${searchText}&filter=${filter}`
-      );
-      setData(response.data.content);
-      setTotalElements(response.data.totalElements);
-    } catch (error) {
-      console.error('Erro ao buscar os dados da API:', error);
-    }
-  };
-
-
 
   const handleDeleteClick = async (pesquisadorId) => {
     try {
@@ -115,26 +110,6 @@ function TelaPrincipal() {
   const handleRowClick = (pesquisador) => {
     setSelectedPesquisador(pesquisador);
     setPesquisadorAdicionadoId(pesquisador.idXML); // Atualizar o estado com o ID do pesquisador
-  };
-
-  const searchPesquisadores = async () => {
-    try {
-      const response = await axios.get(`http://localhost:8083/pesquisador?search=${searchText}`);
-      setSearchResults(response.data);
-    } catch (error) {
-      console.error('Erro ao buscar os dados da API:', error);
-    }
-  };
-  const searchData = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8083/pesquisador?search=${searchText}&filter=${filter}`
-      );
-      setData(response.data.content);
-      setTotalElements(response.data.totalElements);
-    } catch (error) {
-      console.error('Erro ao buscar os dados da API:', error);
-    }
   };
 
 
@@ -168,7 +143,7 @@ function TelaPrincipal() {
         </select>
         <input
           type="text"
-          placeholder="Pesquisar por nome ou acrônimo"
+          placeholder="Pesquisar por nome ou ID"
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
         />
@@ -250,9 +225,6 @@ function TelaPrincipal() {
           </div>
         </div>
       </Modal>
-
-
-
       <div className='pagination'>
         {Array.from(Array(pages), (item, index) => {
           return <button className="botao" value={index} onClick={(e) => setCurrentPage(Number(e.target.value))} key={index}>{index + 1}</button>

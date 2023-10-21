@@ -14,14 +14,13 @@ function TelaProducoes() {
   const apiUrl = "http://localhost:8083/instituto";
   const [listaDePesquisadores, setListaDePesquisadores] = useState([]);
   const apiUrlP = "http://localhost:8083/pesquisador";
-  const [itensPerPage, setItensPerPage] = useState(3);
+  const [itemsPerPage, setItemsPerPage] = useState(3);
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 10;
-  const [producoesOriginais, setProducoesOriginais] = useState([]);
+  const [novosPesquisadores, setNovosPesquisadores] = useState([]);
 
   const pagesVisited = currentPage * itemsPerPage;
 
-  const displayProducoes = producoes
+  const displayProducoes = [...producoes, ...novosPesquisadores]
     .slice(pagesVisited, pagesVisited + itemsPerPage)
     .map((producao, index) => (
       <tr key={index}>
@@ -29,13 +28,12 @@ function TelaProducoes() {
         <td>
           {producao.id} - {producao.tipo} : {producao.titulo} . De {producao.ano}
           <br />
-          Autores: {producao.pesquisador.map(pesquisador => pesquisador.nome).join(', ')}
-          {/* Autores complementares: producao.autorcomplementar.map(autorcomplementar => autorcomplementar.nome).join(', ') */}
+          Autores: {producao.pesquisador.map(pesquisador => pesquisador.nome).join(', ')} |
         </td>
       </tr>
     ));
 
-  const pageCount = Math.ceil(producoes.length / itemsPerPage);
+  const pageCount = Math.ceil(producoes.length / itemsPerPage) + Math.ceil(novosPesquisadores.length / itemsPerPage);
 
   useEffect(() => {
     async function fetchPesquisadores() {
@@ -72,13 +70,19 @@ function TelaProducoes() {
     fetchProducoes();
   }, []);
 
+  useEffect(() => {
+    if (novosPesquisadores.length > 0) {
+      setProducoes([producoes, novosPesquisadores]);
+      setNovosPesquisadores([]);
+    }
+  }, [novosPesquisadores, producoes]);
+
   const fetchProducoes = async () => {
     try {
       const response = await fetch('http://localhost:8083/producao');
       const data = await response.json();
       const producoesData = data.content;
       setProducoes(producoesData);
-      setProducoesOriginais(producoesData);
     } catch (error) {
       console.error('Erro ao buscar produções:', error);
     }
@@ -106,10 +110,6 @@ function TelaProducoes() {
       } catch (error) {
         console.error('Erro ao buscar produções:', error);
       }
-      
-      
-    } else {
-      
     }
   };
 
@@ -212,7 +212,7 @@ function TelaProducoes() {
       </div>
       <div className="seletor">
         <p className='informe'>Quantidade de itens por página</p>
-        <select className='qtdItens' value={currentPage} onChange={(e) => setCurrentPage(Number(e.target.value))}>
+        <select className='qtdItens' value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))}>
           <option value={3}>3</option>
           <option value={5}>5</option>
           <option value={8}>8</option>
