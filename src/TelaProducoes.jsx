@@ -14,10 +14,10 @@ function TelaProducoes() {
   const apiUrl = "http://localhost:8083/instituto";
   const [listaDePesquisadores, setListaDePesquisadores] = useState([]);
   const apiUrlP = "http://localhost:8083/pesquisador";
-
-  // Configuração da paginação
+  const [itensPerPage, setItensPerPage] = useState(3);
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 10;
+  const [producoesOriginais, setProducoesOriginais] = useState([]);
 
   const pagesVisited = currentPage * itemsPerPage;
 
@@ -29,8 +29,8 @@ function TelaProducoes() {
         <td>
           {producao.id} - {producao.tipo} : {producao.titulo} . De {producao.ano}
           <br />
-          Autores: {producao.pesquisador.map(pesquisador => pesquisador.nome).join(', ')}    -
-          - Autores complementares: {/*producao.autorcomplementar.map(autorcomplementar => autorcomplementar.nome).join(', ') */}
+          Autores: {producao.pesquisador.map(pesquisador => pesquisador.nome).join(', ')}
+          {/* Autores complementares: producao.autorcomplementar.map(autorcomplementar => autorcomplementar.nome).join(', ') */}
         </td>
       </tr>
     ));
@@ -78,6 +78,7 @@ function TelaProducoes() {
       const data = await response.json();
       const producoesData = data.content;
       setProducoes(producoesData);
+      setProducoesOriginais(producoesData);
     } catch (error) {
       console.error('Erro ao buscar produções:', error);
     }
@@ -85,8 +86,7 @@ function TelaProducoes() {
 
   const handleBusca = () => {
     if (anoInicio && pesquisador) {
-
-      const filteredProducoes = producoes.filter(producao => {
+      const filteredProducoes = producoesOriginais.filter(producao => {
         const dataProducao = new Date(producao.ano);
         const dataInicioFilter = new Date(anoInicio);
         const dataFimFilter = new Date(anoFim);
@@ -107,7 +107,7 @@ function TelaProducoes() {
       <div className="row">
         <div className="column">
           <input
-            type="number" // 
+            type="number"
             placeholder="Ano Inicial"
             value={anoInicio}
             onChange={(e) => setAnoInicio(e.target.value)}
@@ -117,7 +117,7 @@ function TelaProducoes() {
 
         <div className="column">
           <input
-            type="text" // 
+            type="text"
             value={anoFim}
             disabled
             className="custom-input"
@@ -162,7 +162,6 @@ function TelaProducoes() {
             onChange={(e) => setTipoProducao(e.target.value)}
             className="custom-input"
           >
-
             <option value="">Tipo de Produção</option>
             <option value="Artigo">Artigo</option>
             <option value="Livro">Livro</option>
@@ -173,6 +172,7 @@ function TelaProducoes() {
       <button onClick={handleBusca} className="add-button">
         Aplicar
       </button>
+
       <table className="data-table-pesquisadores">
         <thead>
           <tr>
@@ -184,14 +184,27 @@ function TelaProducoes() {
           {displayProducoes}
         </tbody>
       </table>
-
-      <div className="pagination">
+      <div className='pagination'>
         <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 0}>
-          anterior
+          Anterior
         </button>
+        {[...Array(pageCount)].map((_, index) => (
+          <button key={index} onClick={() => setCurrentPage(index)} disabled={currentPage === index}>
+            {index + 1}
+          </button>
+        ))}
         <button onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === pageCount - 1}>
-          proximo
+          Próximo
         </button>
+      </div>
+      <div className="seletor">
+        <p className='informe'>Quantidade de itens por página</p>
+        <select className='qtdItens' value={currentPage} onChange={(e) => setCurrentPage(Number(e.target.value))}>
+          <option value={3}>3</option>
+          <option value={5}>5</option>
+          <option value={8}>8</option>
+          <option value={10}>10</option>
+        </select>
       </div>
     </div>
   );
