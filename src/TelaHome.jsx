@@ -19,16 +19,19 @@ function Home() {
         <h2 className='menu'>Menu</h2>
         <ul>
           <li className={currentScreen === 'home' ? 'active' : ''} onClick={() => handleNavigate('home')}>
-          <p className='tabs'>Home</p>
+            <p className='tabs'>Home</p>
           </li>
           <li className={currentScreen === 'pesquisador' ? 'active' : ''} onClick={() => handleNavigate('pesquisador')}>
             <p className='tabs'>Pesquisadores</p>
           </li>
           <li className={currentScreen === 'instituto' ? 'active' : ''} onClick={() => handleNavigate('instituto')}>
-          <p className='tabs'>Institutos</p>
+            <p className='tabs'>Institutos</p>
           </li>
           <li className={currentScreen === 'producoes' ? 'active' : ''} onClick={() => handleNavigate('producoes')}>
-          <p className='tabs'>Produções</p>
+            <p className='tabs'>Produções</p>
+          </li>
+          <li className={currentScreen === 'grafo' ? 'active' : ''} onClick={() => handleNavigate('grafos')}>
+            <p className='tabs'>Gerador de grafo</p>
           </li>
         </ul>
       </div>
@@ -47,6 +50,7 @@ function Home() {
           </div>
         )}
         {currentScreen === 'producoes' && <TelaProducoes />}
+        {currentScreen === '' && <TelaGrafo />}
       </div>
     </div>
   );
