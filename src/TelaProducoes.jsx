@@ -84,7 +84,7 @@ function TelaProducoes() {
     }
   };
 
-  const handleBusca = () => {
+  const handleBusca = async () => {
     if (anoInicio && pesquisador) {
       const filteredProducoes = producoesOriginais.filter(producao => {
         const dataProducao = new Date(producao.ano);
@@ -95,8 +95,21 @@ function TelaProducoes() {
           producao.instituto === instituto;
       });
       setProducoes(filteredProducoes);
+    }
+    if (anoInicio) {
+      try {
+        const response = await fetch(`http://localhost:8083/producao/datas=${anoInicio}-2023`);
+        console.log(response);
+        const data = await response.json();
+        const filteredProducoes = data.content;
+        setProducoes(filteredProducoes);
+      } catch (error) {
+        console.error('Erro ao buscar produções:', error);
+      }
+      
+      
     } else {
-      alert('Preencha o ano inicial e selecione o Pesquisador para aplicar o filtro.');
+      
     }
   };
 
