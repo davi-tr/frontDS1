@@ -46,7 +46,7 @@ function TelaPrincipal() {
 
   useEffect(() => {
     if (searchText) {
-      searchPesquisadores(); // Se a pesquisa estiver ativa, busque os resultados da pesquisa
+      searchPesquisadores();
     } else {
       fetchPesquisadores(currentPage); // Caso contrário, busque os resultados com paginação
     }
