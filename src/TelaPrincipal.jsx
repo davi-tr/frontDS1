@@ -7,7 +7,7 @@ import './TelaPrincipal.css';
 
 
 function TelaPrincipal() {
-  const [data, setData] = useState([]);
+
   const [mostrarDataTable, setMostrarDataTable] = useState(false);
   const [pesquisadores, setPesquisadores] = useState([]);
   const [selectedPesquisador, setSelectedPesquisador] = useState(null);
@@ -17,7 +17,6 @@ function TelaPrincipal() {
   const [pesquisadorXmlId, setPesquisadorXmlId] = useState(null); // Defina o estado para o ID do pesquisador do XML
   const [pesquisadorAdicionadoId, setPesquisadorAdicionadoId] = useState(null);
 
-  // Estado para controlar a página atual da tabela
   const [currentPage, setCurrentPage] = useState(0);
 
   // Estado para armazenar o número total de elementos na tabela
@@ -39,7 +38,7 @@ function TelaPrincipal() {
   useEffect(() => {
     fetchPesquisadores();
   }, [currentPage]);
-
+  //
   useEffect(() => {
     setCurrentPage(0);
     fetchPesquisadores();
@@ -47,7 +46,7 @@ function TelaPrincipal() {
 
   useEffect(() => {
     if (searchText) {
-      searchPesquisadores(); // Se a pesquisa estiver ativa, busque os resultados da pesquisa
+      searchPesquisadores();
     } else {
       fetchPesquisadores(currentPage); // Caso contrário, busque os resultados com paginação
     }
@@ -61,7 +60,7 @@ function TelaPrincipal() {
   };
 
   const handleFilterChange = (e) => {
-    setFilter(e.target.value); // Atualize o estado do filtro
+    setFilter(e.target.value);
   };
 
   const searchPesquisadores = async () => {
@@ -70,9 +69,9 @@ function TelaPrincipal() {
       if (filter === 'all') {
         response = await axios.get(`http://localhost:8083/pesquisador?search=${searchText}`);
       } else if (filter === 'nome') {
-        response = await axios.get(`http://localhost:8083/pesquisador?search=${searchText}`);
+        response = await axios.get(`http://localhost:8083/pesquisador?nome=${searchText}`);
       } else if (filter === 'idXML') {
-        response = await axios.get(`http://localhost:8083/pesquisador?search=${searchText}`);
+        response = await axios.get(`http://localhost:8083/pesquisador?idXML=${searchText}`);
       }
 
       setSearchResults(response.data);
