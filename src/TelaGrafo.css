@@ -130,5 +130,13 @@
     background-color: #0056b3;
   }
   
-  /* Restante do seu CSS */
+  .config-table {
+    width: 100%; /* Define a largura da tabela como 100% */
+  }
   
+  .config-table select,
+  .config-table input {
+    max-width: 100%; /* Define o tamanho máximo dos selects e inputs para 100% */
+    width: 100%; /* Define a largura para 100% para preencher a célula da tabela */
+    box-sizing: border-box; /* Inclui a largura e a borda na largura total */
+  }
