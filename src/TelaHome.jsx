@@ -4,6 +4,7 @@ import TelaPrincipal from './TelaPrincipal';
 import DataTable from './components/Instituto/DataTable';
 import fotofemass from './fotofemass.png';
 import TelaProducoes from './TelaProducoes';
+import TelaGrafo from './TelaGrafo';
 import './TelaHome.css'; // Importe o arquivo de estilos atualizado
 
 function Home() {
@@ -30,13 +31,14 @@ function Home() {
           <li className={currentScreen === 'producoes' ? 'active' : ''} onClick={() => handleNavigate('producoes')}>
             <p className='tabs'>Produções</p>
           </li>
-          <li className={currentScreen === 'grafo' ? 'active' : ''} onClick={() => handleNavigate('grafos')}>
+          <li className={currentScreen === 'grafo' ? 'active' : ''} onClick={() => handleNavigate('grafo')}>
             <p className='tabs'>Gerador de grafo</p>
           </li>
         </ul>
       </div>
       <div className="content">
         {currentScreen === 'pesquisador' && <TelaPrincipal />}
+        {currentScreen === 'grafo' && <TelaGrafo />}
         {currentScreen === 'instituto' && <DataTable />}
         {currentScreen === 'home' && (
           <div>
@@ -50,7 +52,6 @@ function Home() {
           </div>
         )}
         {currentScreen === 'producoes' && <TelaProducoes />}
-        {currentScreen === '' && <TelaGrafo />}
       </div>
     </div>
   );
