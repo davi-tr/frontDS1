@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './TelaPrincipal.css'; 
+import './TelaPrincipal.css';
 import './Telagrafo.css';
 
 function TelaGrafo() {
@@ -14,97 +14,129 @@ function TelaGrafo() {
   const [listaDePesquisadores, setListaDePesquisadores] = useState([]);
   const apiUrlP = "http://localhost:8083/pesquisador";
   const [regrasNP, setRegrasNP] = useState([
-  
-    
+
+
     { cor: 'Verde', inicio: '1', fim: '0' },
     { cor: 'Vermelho', inicio: '', fim: '0' },
     { cor: 'Amarelo', inicio: '', fim: '0' },
   ]);
 
- // useEffect para buscar a lista de pesquisadores
- useEffect(() => {
-  async function fetchPesquisadores() {
-    try {
-      const response = await axios.get(apiUrlP);
-      setListaDePesquisadores(response.data.content);
-    } catch (error) {
-      console.error("Erro ao buscar a lista de pesquisadores:", error);
+  // useEffect para buscar a lista de pesquisadores
+  useEffect(() => {
+    async function fetchPesquisadores() {
+      try {
+        const response = await axios.get(apiUrlP);
+        setListaDePesquisadores(response.data.content);
+      } catch (error) {
+        console.error("Erro ao buscar a lista de pesquisadores:", error);
+      }
     }
-  }
 
-  fetchPesquisadores();
-}, [apiUrlP]);
+    fetchPesquisadores();
+  }, [apiUrlP]);
 
-// useEffect para buscar a lista de institutos
-useEffect(() => {
-  async function fetchInstitutos() {
-    try {
-      const response = await axios.get(apiUrl);
-      setListaDeInstitutos(response.data.content);
-    } catch (error) {
-      console.error("Erro ao buscar a lista de institutos:", error);
+  // useEffect para buscar a lista de institutos
+  useEffect(() => {
+    async function fetchInstitutos() {
+      try {
+        const response = await axios.get(apiUrl);
+        setListaDeInstitutos(response.data.content);
+      } catch (error) {
+        console.error("Erro ao buscar a lista de institutos:", error);
+      }
     }
-  }
 
-  fetchInstitutos();
-}, [apiUrl]);
+    fetchInstitutos();
+  }, [apiUrl]);
 
-// useEffect para buscar a lista de produções
-useEffect(() => {
-  fetchProducoes();
-}, []);
+  // useEffect para buscar a lista de produções
+  useEffect(() => {
+    fetchProducoes();
+  }, []);
 
-// Função para buscar as produções
-const fetchProducoes = async () => {
-  try {
-    const response = await axios.get('http://localhost:8083/producao');
-    const producoesData = response.data.content;
-    setProducoes(producoesData);
-  } catch (error) {
-    console.error('Erro ao buscar produções:', error);
-  }
-};
+  // Função para buscar as produções
+  const fetchProducoes = async () => {
+    try {
+      const response = await axios.get('http://localhost:8083/producao');
+      const producoesData = response.data.content;
+      setProducoes(producoesData);
+    } catch (error) {
+      console.error('Erro ao buscar produções:', error);
+    }
+  };
 
-// Função para lidar com a alteração das regras
-const handleRegraChange = (index, field, value) => {
-  const updatedRegras = [...regrasNP];
-  updatedRegras[index][field] = value;
+  // Função para lidar com a alteração das regras
+  const handleRegraChange = (index, field, value) => {
+    const updatedRegras = [...regrasNP];
+    updatedRegras[index][field] = value;
 
-  // Verifique se a cor já foi selecionada em outra regra
-  const selectedColors = updatedRegras.map((regra) => regra.cor);
-  if (selectedColors.filter((color) => color === value).length > 1) {
-    alert('Essa cor já foi selecionada em outra regra. Escolha outra cor.');
-    return;
-  }
+    // Verifique se a cor já foi selecionada em outra regra
+    const selectedColors = updatedRegras.map((regra) => regra.cor);
+    if (selectedColors.filter((color) => color === value).length > 1) {
+      alert('Essa cor já foi selecionada em outra regra. Escolha outra cor.');
+      return;
+    }
 
-  setRegrasNP(updatedRegras);
-};
+    setRegrasNP(updatedRegras);
+  };
 
-const handleGerarGrafo = () => {
-  // Coloque aqui a lógica para gerar o grafo com base nas configurações selecionadas
-  // Isso pode envolver a chamada de funções ou componentes específicos para a geração de gráficos.
-};
+  // const [grafoElements, setGrafoElements] = useState([]);
+  const handleGerarGrafo = () => {
+    //nodes é uma array vazia que será usada para armazenar os nós (ou vértices) do grafo
+    //edges é outra array vazia que será usada para armazenar as arestas (ou conexões) entre os nós do grafo.
+    //const nodes = [];
+    //const edges = [];
+
+    // Adicione nós com base nas seleções
+    //  if (selectedTipoVertice === 'Pesquisador') {
+
+    // Adicione os nós dos pesquisadores selecionados
+    //nodes.push({ data: { id: pesquisador, label: pesquisador, type: 'Pesquisador' } });
+    //  } else if (selectedTipoVertice === 'Instituto') {
+
+    // Adicione os nós dos institutos selecionados
+    // nodes.push({ data: { id: instituto, label: instituto, type: 'Instituto' } });
+    //  } else if (selectedTipoVertice === 'Producao') {
+
+    // Adicione os nós das produções selecionadas
+    //   producoes.forEach((producao) => {
+    //   nodes.push({ data: { id: producao.id, label: producao.titulo, type: 'Producao' } });
+    //  });
+    //  }
+
+    // Adicione arestas com base nas regras
+    // regrasNP.forEach((regra, index) => {
+    //if (index < regrasNP.length - 1) {
+    //  const startNode = nodes.find((node) => node.data.id === regra.inicio);
+    //  const endNode = nodes.find((node) => node.data.id === regra.fim);
+    //  if (startNode && endNode) {
+    //     edges.push({ data: { source: startNode.data.id, target: endNode.data.id, color: regra.cor } });
+    //  }
+    //  }
+    //});
+
+  };
 
   return (
     <div className="grafo-generator">
       <h2 className="titulo">Gerador de Grafos</h2>
       <div className="configuracoes">
-      <div className="combo-box">
-        <select
-          value={instituto}
-          onChange={(e) => setInstituto(e.target.value)}
-          className="custom-input"
-        >
-          <option value="">Selecione o Instituto</option>
-          {listaDeInstitutos.map((instituto) => (
-            <option key={instituto.id} value={instituto.id}>
-              {instituto.nome}
-            </option>
-          ))}
-        </select>
-      </div>
+        <div className="combo-box">
+          <select
+            value={instituto}
+            onChange={(e) => setInstituto(e.target.value)}
+            className="custom-input"
+          >
+            <option value="">Selecione o Instituto</option>
+            {listaDeInstitutos.map((instituto) => (
+              <option key={instituto.id} value={instituto.id}>
+                {instituto.nome}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <div className="combo-box">
+        <div className="combo-box">
           <select
             value={selectedProducao}
             onChange={(e) => setSelectedProducao(e.target.value)}
@@ -139,6 +171,7 @@ const handleGerarGrafo = () => {
         </div>
         <button onClick={handleGerarGrafo} className="gerar-button">Gerar Grafo</button>
       </div>
+
       <div className="regras-plotagem">
         <h2 className="titulo">Regras de Plotagem (Número de Produção - NP)</h2>
         <table className="config-table">
