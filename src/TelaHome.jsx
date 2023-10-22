@@ -30,7 +30,7 @@ function Home() {
           <li className={currentScreen === 'producoes' ? 'active' : ''} onClick={() => handleNavigate('producoes')}>
             <p className='tabs'>Produções</p>
           </li>
-          <li className={currentScreen === 'grafo' ? 'active' : ''} onClick={() => handleNavigate('grafos')}>
+          <li className={currentScreen === 'grafo' ? 'active' : ''} onClick={() => handleNavigate('grafo')}>
             <p className='tabs'>Gerador de grafo</p>
           </li>
         </ul>
