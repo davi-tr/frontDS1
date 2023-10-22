@@ -17,7 +17,6 @@ function TelaPrincipal() {
   const [pesquisadorXmlId, setPesquisadorXmlId] = useState(null); // Defina o estado para o ID do pesquisador do XML
   const [pesquisadorAdicionadoId, setPesquisadorAdicionadoId] = useState(null);
 
-  // Estado para controlar a página atual da tabela
   const [currentPage, setCurrentPage] = useState(0);
 
   // Estado para armazenar o número total de elementos na tabela
