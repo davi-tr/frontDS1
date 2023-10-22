@@ -70,9 +70,9 @@ function TelaPrincipal() {
       if (filter === 'all') {
         response = await axios.get(`http://localhost:8083/pesquisador?search=${searchText}`);
       } else if (filter === 'nome') {
-        response = await axios.get(`http://localhost:8083/pesquisador?search=${searchText}`);
+        response = await axios.get(`http://localhost:8083/pesquisador?nome=${searchText}`);
       } else if (filter === 'idXML') {
-        response = await axios.get(`http://localhost:8083/pesquisador?search=${searchText}`);
+        response = await axios.get(`http://localhost:8083/pesquisador?idXML=${searchText}`);
       }
 
       setSearchResults(response.data);
