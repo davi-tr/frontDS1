@@ -5,7 +5,7 @@ import './TelaPrincipal.css';
 
 function TelaProducoes() {
   const [producoes, setProducoes] = useState([]);
-  const [anoInicio, setAnoInicio] = useState('');
+  const [anoInicio, setAnoInicio] = useState(new Date().getFullYear().toString());
   const [anoFim, setAnoFim] = useState(new Date().getFullYear().toString());
   const [instituto, setInstituto] = useState('');
   const [pesquisador, setPesquisador] = useState('');
@@ -38,11 +38,8 @@ function TelaProducoes() {
   useEffect(() => {
     async function fetchPesquisadores() {
       try {
-        const response = await fetch(apiUrlP);
-        if (response.ok) {
-          const data = await response.json();
-          setListaDePesquisadores(data.content);
-        }
+        const response = await axios.get(apiUrlP);
+        setListaDePesquisadores(response.data.content);
       } catch (error) {
         console.error("Erro ao buscar a lista de pesquisadores:", error);
       }
@@ -54,11 +51,8 @@ function TelaProducoes() {
   useEffect(() => {
     async function fetchInstitutos() {
       try {
-        const response = await fetch(apiUrl);
-        if (response.ok) {
-          const data = await response.json();
-          setListaDeInstitutos(data.content);
-        }
+        const response = await axios.get(apiUrl);
+        setListaDeInstitutos(response.data.content);
       } catch (error) {
         console.error("Erro ao buscar a lista de institutos:", error);
       }
@@ -72,16 +66,15 @@ function TelaProducoes() {
 
   useEffect(() => {
     if (novosPesquisadores.length > 0) {
-      setProducoes([producoes, novosPesquisadores]);
+      setProducoes([...producoes, ...novosPesquisadores]);
       setNovosPesquisadores([]);
     }
   }, [novosPesquisadores, producoes]);
 
   const fetchProducoes = async () => {
     try {
-      const response = await fetch('http://localhost:8083/producao');
-      const data = await response.json();
-      const producoesData = data.content;
+      const response = await axios.get('http://localhost:8083/producao');
+      const producoesData = response.data.content;
       setProducoes(producoesData);
     } catch (error) {
       console.error('Erro ao buscar produções:', error);
@@ -89,50 +82,21 @@ function TelaProducoes() {
   };
 
   const handleBusca = async () => {
-    console.log("instituto:",instituto, "anoInicial: ",anoInicio, "pesquisador:",pesquisador)
-    if (anoInicio != "" && pesquisador != "") {
-      try {
-        const response = await fetch(`http://localhost:8083/producao/pesquisador=${pesquisador}/datas=${anoInicio}-2023`);
-        console.log(response);
-        const data = await response.json();
-        const filteredProducoes = data.content;
-        setProducoes(filteredProducoes);
-      } catch (error) {
-        console.error('Erro ao buscar produções:', error);
-      }
-    }
-    else if (anoInicio !="" && instituto != "" ) {
-      console.log("caso 2")
+    console.log("instituto:", instituto, "anoInicial: ", anoInicio, "pesquisador:", pesquisador);
 
+    if (anoInicio && pesquisador) {
       try {
-        const response = await fetch(`http://localhost:8083/producao/datas=${anoInicio}-2023`);
-        console.log(response);
-        const data = await response.json();
-        const filteredProducoes = data.content;
+        const response = await axios.get(`http://localhost:8083/producao/pesquisador=${pesquisador}/datas=${anoInicio}-2023`);
+        const filteredProducoes = response.data.content;
         setProducoes(filteredProducoes);
       } catch (error) {
         console.error('Erro ao buscar produções:', error);
       }
-    }
-    else if(anoInicio !="" && instituto == ""){
-      console.log("caso 3")
-
+    } else if (anoInicio && instituto) {
+      console.log("caso 2");
       try {
-        const response = await fetch(`http://localhost:8083/producao/instituto=${instituto}`);
-        console.log(response);
-        const data = await response.json();
-        const filteredProducoes = data.content;
-        setProducoes(filteredProducoes);
-      } catch (error) {
-        console.error('Erro ao buscar produções:', error);
-      }
-    }
-    if(anoInicio && instituto){
-      try {
-        const response = await fetch(`http://localhost:8083/producao/datas=${anoInicio}-2023/instituto=${instituto}`);
-        console.log(response);
-        const data = await response.json();
-        const filteredProducoes = data.content;
+        const response = await axios.get(`http://localhost:8083/producao/datas=${anoInicio}-2023/instituto=${instituto}`);
+        const filteredProducoes = response.data.content;
         setProducoes(filteredProducoes);
       } catch (error) {
         console.error('Erro ao buscar produções:', error);
