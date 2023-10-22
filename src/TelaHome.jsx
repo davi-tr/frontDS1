@@ -6,6 +6,7 @@ import fotofemass from './fotofemass.png';
 import TelaProducoes from './TelaProducoes';
 import TelaGrafo from './TelaGrafo';
 import './TelaHome.css'; // Importe o arquivo de estilos atualizado
+import TelaPesquisador from './TelaPesquisador';
 
 function Home() {
   const [currentScreen, setCurrentScreen] = useState('home');
@@ -34,11 +35,15 @@ function Home() {
           <li className={currentScreen === 'grafo' ? 'active' : ''} onClick={() => handleNavigate('grafo')}>
             <p className='tabs'>Gerador de grafo</p>
           </li>
+          <li className={currentScreen === 'novoPesquisador' ? 'active' : ''} onClick={() => handleNavigate('novoPesquisador')}>
+            <p className='tabs'>Nova Tela Pesquisador</p>
+          </li>
         </ul>
       </div>
       <div className="content">
         {currentScreen === 'pesquisador' && <TelaPrincipal />}
         {currentScreen === 'grafo' && <TelaGrafo />}
+        {currentScreen === 'novoPesquisador' && <TelaPesquisador />}
         {currentScreen === 'instituto' && <DataTable />}
         {currentScreen === 'home' && (
           <div>

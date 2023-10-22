@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import TelaProducoes from './TelaProducoes';
 import TelaGrafo from './TelaGrafo';
+import TelaPesquisador from './TelaPesquisador';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/telaprincipal" element={<TelaPrincipal />} />
         <Route path="/telaproducao" element={<TelaProducoes />} />
         <Route path="/telagrafo" element={<TelaGrafo />} />
+        <Route path="/telapesquisador" element={<TelaPesquisador />} />
       </Routes>
       <ToastContainer />
     </Router>
