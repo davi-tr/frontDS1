@@ -61,7 +61,7 @@ function TelaPrincipal() {
   };
 
   const handleFilterChange = (e) => {
-    setFilter(e.target.value); // Atualize o estado do filtro
+    setFilter(e.target.value);
   };
 
   const searchPesquisadores = async () => {
