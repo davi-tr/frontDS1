@@ -89,20 +89,47 @@ function TelaProducoes() {
   };
 
   const handleBusca = async () => {
-    if (anoInicio && pesquisador) {
-      const filteredProducoes = producoesOriginais.filter(producao => {
-        const dataProducao = new Date(producao.ano);
-        const dataInicioFilter = new Date(anoInicio);
-        const dataFimFilter = new Date(anoFim);
-        return dataProducao.getFullYear() >= dataInicioFilter.getFullYear() &&
-          dataProducao.getFullYear() <= dataFimFilter.getFullYear() &&
-          producao.instituto === instituto;
-      });
-      setProducoes(filteredProducoes);
+    console.log("instituto:",instituto, "anoInicial: ",anoInicio, "pesquisador:",pesquisador)
+    if (anoInicio != "" && pesquisador != "") {
+      try {
+        const response = await fetch(`http://localhost:8083/producao/pesquisador=${pesquisador}/datas=${anoInicio}-2023`);
+        console.log(response);
+        const data = await response.json();
+        const filteredProducoes = data.content;
+        setProducoes(filteredProducoes);
+      } catch (error) {
+        console.error('Erro ao buscar produções:', error);
+      }
     }
-    if (anoInicio) {
+    else if (anoInicio !="" && instituto != "" ) {
+      console.log("caso 2")
+
       try {
         const response = await fetch(`http://localhost:8083/producao/datas=${anoInicio}-2023`);
+        console.log(response);
+        const data = await response.json();
+        const filteredProducoes = data.content;
+        setProducoes(filteredProducoes);
+      } catch (error) {
+        console.error('Erro ao buscar produções:', error);
+      }
+    }
+    else if(anoInicio !="" && instituto == ""){
+      console.log("caso 3")
+
+      try {
+        const response = await fetch(`http://localhost:8083/producao/instituto=${instituto}`);
+        console.log(response);
+        const data = await response.json();
+        const filteredProducoes = data.content;
+        setProducoes(filteredProducoes);
+      } catch (error) {
+        console.error('Erro ao buscar produções:', error);
+      }
+    }
+    if(anoInicio && instituto){
+      try {
+        const response = await fetch(`http://localhost:8083/producao/datas=${anoInicio}-2023/instituto=${instituto}`);
         console.log(response);
         const data = await response.json();
         const filteredProducoes = data.content;
