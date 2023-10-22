@@ -7,7 +7,7 @@ import './TelaPrincipal.css';
 
 
 function TelaPrincipal() {
-  const [data, setData] = useState([]);
+
   const [mostrarDataTable, setMostrarDataTable] = useState(false);
   const [pesquisadores, setPesquisadores] = useState([]);
   const [selectedPesquisador, setSelectedPesquisador] = useState(null);
@@ -38,7 +38,7 @@ function TelaPrincipal() {
   useEffect(() => {
     fetchPesquisadores();
   }, [currentPage]);
-
+  //
   useEffect(() => {
     setCurrentPage(0);
     fetchPesquisadores();
