@@ -15,6 +15,7 @@ function TelaGrafo() {
   const apiUrlP = "http://localhost:8083/pesquisador";
   const [regrasNP, setRegrasNP] = useState([
   
+    
     { cor: 'Verde', inicio: '1', fim: '0' },
     { cor: 'Vermelho', inicio: '', fim: '0' },
     { cor: 'Amarelo', inicio: '', fim: '0' },
