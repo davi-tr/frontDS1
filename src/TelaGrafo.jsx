@@ -4,19 +4,15 @@ import './TelaPrincipal.css';
 import './Telagrafo.css';
 
 function TelaGrafo() {
-  const [selectedInstituto, setSelectedInstituto] = useState('');
   const [selectedProducao, setSelectedProducao] = useState('');
-  const [selectedPesquisador, setSelectedPesquisador] = useState('');
   const [selectedTipoVertice, setSelectedTipoVertice] = useState('Pesquisador');
   const [instituto, setInstituto] = useState('');
   const [pesquisador, setPesquisador] = useState('');
   const [producoes, setProducoes] = useState('');
-  const [tipoProducao, setTipoProducao] = useState('');
   const [listaDeInstitutos, setListaDeInstitutos] = useState([]);
   const apiUrl = "http://localhost:8083/instituto";
   const [listaDePesquisadores, setListaDePesquisadores] = useState([]);
   const apiUrlP = "http://localhost:8083/pesquisador";
-  const [novosPesquisadores, setNovosPesquisadores] = useState([]);
   const [regrasNP, setRegrasNP] = useState([
   
     { cor: 'Verde', inicio: '1', fim: '0' },
