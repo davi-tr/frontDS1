@@ -89,46 +89,46 @@ function TelaProducoes() {
   };
 
   const handleBusca = async () => {
-    console.log("instituto:",instituto, "anoInicial: ",anoInicio, "pesquisador:",pesquisador, "tipo de producao:",tipoProducao)
+    console.log("instituto:", instituto, "anoInicial: ", anoInicio, "pesquisador:", pesquisador, "tipo de producao:", tipoProducao)
     if (anoInicio != "" && pesquisador != "") {
       try {
         const response = await fetch(`http://localhost:8083/producao/pesquisador=${pesquisador}/datas=${anoInicio}-2023`);
         console.log(response);
         const data = await response.json();
-        if(tipoProducao === "Artigo"){
+        if (tipoProducao === "Artigo") {
           const filteredProducoes = data.content.filter(item => item.tipo === "ARTIGO");
           setProducoes(filteredProducoes);
         }
-        else if(tipoProducao === "Livro"){
+        else if (tipoProducao === "Livro") {
           const filteredProducoes = data.content.filter(item => item.tipo === "LIVRO");
           setProducoes(filteredProducoes);
         }
-        else{
+        else {
           const filteredProducoes = data.content
           setProducoes(filteredProducoes);
         }
-        
-        
+
+
       } catch (error) {
         console.error('Erro ao buscar produções:', error);
       }
     }
-    else if (anoInicio !="" && instituto != "" ) {
+    else if (anoInicio != "" && instituto != "") {
       console.log("caso 2")
 
       try {
         const response = await fetch(`http://localhost:8083/producao/datas=${anoInicio}-2023/instituto=${instituto}`);
         console.log(response);
         const data = await response.json();
-        if(tipoProducao === "Artigo"){
+        if (tipoProducao === "Artigo") {
           const filteredProducoes = data.content.filter(item => item.tipo === "ARTIGO");
           setProducoes(filteredProducoes);
         }
-        else if(tipoProducao === "Livro"){
+        else if (tipoProducao === "Livro") {
           const filteredProducoes = data.content.filter(item => item.tipo === "LIVRO");
           setProducoes(filteredProducoes);
         }
-        else{
+        else {
           const filteredProducoes = data.content
           setProducoes(filteredProducoes);
         }
@@ -136,22 +136,22 @@ function TelaProducoes() {
         console.error('Erro ao buscar produções:', error);
       }
     }
-    else if(anoInicio !="" && instituto == ""){
+    else if (anoInicio != "" && instituto == "") {
       console.log("caso 3")
 
       try {
         const response = await fetch(`http://localhost:8083/producao/datas=${anoInicio}-2023`);
         console.log(response);
         const data = await response.json();
-        if(tipoProducao === "Artigo"){
+        if (tipoProducao === "Artigo") {
           const filteredProducoes = data.content.filter(item => item.tipo === "ARTIGO");
           setProducoes(filteredProducoes);
         }
-        else if(tipoProducao === "Livro"){
+        else if (tipoProducao === "Livro") {
           const filteredProducoes = data.content.filter(item => item.tipo === "LIVRO");
           setProducoes(filteredProducoes);
         }
-        else{
+        else {
           const filteredProducoes = data.content
           setProducoes(filteredProducoes);
         }
@@ -160,20 +160,20 @@ function TelaProducoes() {
         console.error('Erro ao buscar produções:', error);
       }
     }
-    else if(anoInicio =='' && pesquisador =='' && instituto !=''){
+    else if (anoInicio == '' && pesquisador == '' && instituto != '') {
       try {
         const response = await fetch(`http://localhost:8083/producao/instituto=${instituto}`);
         console.log(response);
         const data = await response.json();
-        if(tipoProducao === "Artigo"){
+        if (tipoProducao === "Artigo") {
           const filteredProducoes = data.content.filter(item => item.tipo === "ARTIGO");
           setProducoes(filteredProducoes);
         }
-        else if(tipoProducao === "Livro"){
+        else if (tipoProducao === "Livro") {
           const filteredProducoes = data.content.filter(item => item.tipo === "LIVRO");
           setProducoes(filteredProducoes);
         }
-        else{
+        else {
           const filteredProducoes = data.content
           setProducoes(filteredProducoes);
         }
@@ -182,20 +182,20 @@ function TelaProducoes() {
         console.error('Erro ao buscar produções:', error);
       }
     }
-    else if(anoInicio !='' && pesquisador !='' && instituto !=''){
+    else if (anoInicio != '' && pesquisador != '' && instituto != '') {
       try {
         const response = await fetch(`http://localhost:8083/producao/instituto=${instituto}`);
         console.log(response);
         const data = await response.json();
-        if(tipoProducao === "Artigo"){
+        if (tipoProducao === "Artigo") {
           const filteredProducoes = data.content.filter(item => item.tipo === "ARTIGO");
           setProducoes(filteredProducoes);
         }
-        else if(tipoProducao === "Livro"){
+        else if (tipoProducao === "Livro") {
           const filteredProducoes = data.content.filter(item => item.tipo === "LIVRO");
           setProducoes(filteredProducoes);
         }
-        else{
+        else {
           const filteredProducoes = data.content
           setProducoes(filteredProducoes);
         }
@@ -292,15 +292,11 @@ function TelaProducoes() {
       </table>
       <div className='pagination'>
         <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 0}>
-          Anterior
+          {"<<"}
         </button>
-        {[...Array(pageCount)].map((_, index) => (
-          <button key={index} onClick={() => setCurrentPage(index)} disabled={currentPage === index}>
-            {index + 1}
-          </button>
-        ))}
+        <span>{currentPage + 1}</span>
         <button onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === pageCount - 1}>
-          Próximo
+          {">>"}
         </button>
       </div>
       <div className="seletor">
