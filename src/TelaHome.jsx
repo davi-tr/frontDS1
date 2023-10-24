@@ -24,8 +24,9 @@ function Home() {
             <p className='tabs'>Home</p>
           </li>
           <li className={currentScreen === 'pesquisador' ? 'active' : ''} onClick={() => handleNavigate('pesquisador')}>
-            <p className='tabs'>Pesquisadores</p>
+            <p className='tabs'>Pesquisador</p>
           </li>
+
           <li className={currentScreen === 'instituto' ? 'active' : ''} onClick={() => handleNavigate('instituto')}>
             <p className='tabs'>Institutos</p>
           </li>
