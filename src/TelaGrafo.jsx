@@ -69,17 +69,42 @@ function TelaGrafo() {
   const handleRegraChange = (index, field, value) => {
     const updatedRegras = [...regrasNP];
     updatedRegras[index][field] = value;
-
-    // Verifique se a cor já foi selecionada em outra regra
-    const selectedColors = updatedRegras.map((regra) => regra.cor);
-    if (selectedColors.filter((color) => color === value).length > 1) {
-      alert('Essa cor já foi selecionada em outra regra. Escolha outra cor.');
-      return;
+  
+    if (field === 'inicio') {
+      // Aplique o mesmo ajuste para todas as linhas seguintes
+      for (let i = index; i <= updatedRegras.length; i++) {
+        if (i === 0) {
+          updatedRegras[i]['fim'] = (parseInt(updatedRegras[i]['inicio']) + 1).toString();
+        } else {
+          const currentInicio = parseInt(updatedRegras[i]['inicio']);
+          const previousFim = parseInt(updatedRegras[i - 1]['fim']);
+          if (currentInicio <= previousFim) {
+            updatedRegras[i]['inicio'] = (previousFim + 1).toString();
+            updatedRegras[i]['fim'] = (previousFim + 1).toString();
+          }
+        }
+      }
     }
-
+  
+    if (field === 'fim') {
+      const inicioValue = parseInt(updatedRegras[index]['inicio']);
+      const fimValue = parseInt(value);
+  
+      if (fimValue < inicioValue) {
+        updatedRegras[index]['fim'] = (inicioValue + 1).toString();
+      }
+  
+      // Aplique o mesmo ajuste para todas as linhas seguintes
+      for (let i = index + 1; i < updatedRegras.length; i++) {
+        const currentInicio = parseInt(updatedRegras[i]['inicio']);
+        const previousFim = parseInt(updatedRegras[i - 1]['fim']);
+        updatedRegras[i]['inicio'] = (previousFim + 1).toString();
+        updatedRegras[i]['fim'] = (previousFim + 1).toString();
+      }
+    }
+  
     setRegrasNP(updatedRegras);
   };
-
   // const [grafoElements, setGrafoElements] = useState([]);
   const handleGerarGrafo = () => {
     //nodes é uma array vazia que será usada para armazenar os nós (ou vértices) do grafo
@@ -186,14 +211,8 @@ function TelaGrafo() {
             {regrasNP.map((regra, index) => (
               <tr key={index}>
                 <td>
-                  <select
-                    value={regra.cor}
-                    onChange={(e) => handleRegraChange(index, 'cor', e.target.value)}
-                  >
-                    <option value="Verde">Verde</option>
-                    <option value="Vermelho">Vermelho</option>
-                    <option value="Amarelo">Amarelo</option>
-                  </select>
+                <div className={`color-box ${regra.cor.toLowerCase()}`}></div>
+        <span className="color-label">{regra.cor}</span>
                 </td>
                 <td>
                   <input
