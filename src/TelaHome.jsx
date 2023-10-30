@@ -37,14 +37,13 @@ function Home() {
             <p className='tabs'>Gerador de grafo</p>
           </li>
           <li className={currentScreen === 'novoPesquisador' ? 'active' : ''} onClick={() => handleNavigate('novoPesquisador')}>
-            <p className='tabs'>Nova Tela Pesquisador</p>
           </li>
         </ul>
       </div>
       <div className="content">
         {currentScreen === 'pesquisador' && <TelaPrincipal />}
         {currentScreen === 'grafo' && <TelaGrafo />}
-        {currentScreen === 'novoPesquisador' && <TelaPesquisador />}
+        {/*currentScreen === 'novoPesquisador' && <TelaPesquisador />*/}
         {currentScreen === 'instituto' && <DataTable />}
         {currentScreen === 'home' && (
           <div>

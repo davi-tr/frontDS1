@@ -9,6 +9,7 @@ function TelaProducoes() {
   const [anoFim, setAnoFim] = useState(new Date().getFullYear().toString());
   const [instituto, setInstituto] = useState('');
   const [pesquisador, setPesquisador] = useState('');
+  const [autoresComplementares, setAutoresComplementares] = useState('');
   const [tipoProducao, setTipoProducao] = useState('');
   const [listaDeInstitutos, setListaDeInstitutos] = useState([]);
   const apiUrl = "http://localhost:8083/instituto";
@@ -19,30 +20,32 @@ function TelaProducoes() {
   const [novosPesquisadores, setNovosPesquisadores] = useState([]);
   const pagesVisited = currentPage * itemsPerPage;
 
-  const autoresComplementares = [];
-
-  /*if (producao.tipo === 'Artigo') {
-    const tituloEspecifico = producao.titulo; // Use o título do artigo atual
-    autoresComplementares = autoresComplementares.filter((autor) =>
-      autor.includes(tituloEspecifico)
-    );
-  }*/
-
 
   const displayProducoes = [...producoes, ...novosPesquisadores]
     .slice(pagesVisited, pagesVisited + itemsPerPage)
-    .map((producao, index) => (
+    .map((producao, index) => {
+      let autoresComplementaresTexto = "";
 
-      <tr key={index}>
-        <td>{producao.tipo}</td>
-        <td>
-          {producao.id} - {producao.tipo} : {producao.titulo} . De {producao.ano}
-          <br />
-          Autores: {producao.pesquisador.map(pesquisador => pesquisador.nome).join(', ')} |
-          Autores Complementares: {autoresComplementares.join(', ')}
-        </td>
-      </tr>
-    ));
+      if (producao.tipo === 'Artigo') {
+        const tituloEspecifico = producao.titulo;
+        autoresComplementaresTexto = autoresComplementares
+          .filter((autor) => autor.titulo.includes(tituloEspecifico))
+          .map((autor) => autor.nomeCita)
+          .join(', ');
+      }
+
+      return (
+        <tr key={index}>
+          <td>{producao.tipo}</td>
+          <td>
+            {producao.id} - {producao.tipo} : {producao.titulo} . De {producao.ano}
+            <br />
+            Autores: {producao.pesquisador.map(pesquisador => pesquisador.nome).join(', ')} |
+            Autores Complementares: {autoresComplementaresTexto}
+          </td>
+        </tr>
+      );
+    });
 
 
 
