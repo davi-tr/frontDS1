@@ -17,21 +17,34 @@ function TelaProducoes() {
   const [itemsPerPage, setItemsPerPage] = useState(3);
   const [currentPage, setCurrentPage] = useState(0);
   const [novosPesquisadores, setNovosPesquisadores] = useState([]);
-
   const pagesVisited = currentPage * itemsPerPage;
+
+  const autoresComplementares = [];
+
+  /*if (producao.tipo === 'Artigo') {
+    const tituloEspecifico = producao.titulo; // Use o título do artigo atual
+    autoresComplementares = autoresComplementares.filter((autor) =>
+      autor.includes(tituloEspecifico)
+    );
+  }*/
+
 
   const displayProducoes = [...producoes, ...novosPesquisadores]
     .slice(pagesVisited, pagesVisited + itemsPerPage)
     .map((producao, index) => (
+
       <tr key={index}>
         <td>{producao.tipo}</td>
         <td>
           {producao.id} - {producao.tipo} : {producao.titulo} . De {producao.ano}
           <br />
           Autores: {producao.pesquisador.map(pesquisador => pesquisador.nome).join(', ')} |
+          Autores Complementares: {autoresComplementares.join(', ')}
         </td>
       </tr>
     ));
+
+
 
   const pageCount = Math.ceil(producoes.length / itemsPerPage) + Math.ceil(novosPesquisadores.length / itemsPerPage);
 
