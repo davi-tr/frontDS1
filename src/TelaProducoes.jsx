@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './TelaProducao.css';
 import './TelaPrincipal.css';
+import Home from './TelaHome.jsx'
+
 
 function TelaProducoes() {
   const [producoes, setProducoes] = useState([]);
@@ -9,7 +11,7 @@ function TelaProducoes() {
   const [anoFim, setAnoFim] = useState(new Date().getFullYear().toString());
   const [instituto, setInstituto] = useState('');
   const [pesquisador, setPesquisador] = useState('');
-  const [autoresComplementares, setAutoresComplementares] = useState('');
+  const [autoresComplementares, setAutoresComplementares] = useState([]);
   const [tipoProducao, setTipoProducao] = useState('');
   const [listaDeInstitutos, setListaDeInstitutos] = useState([]);
   const apiUrl = "http://localhost:8083/instituto";
@@ -18,21 +20,15 @@ function TelaProducoes() {
   const [itemsPerPage, setItemsPerPage] = useState(3);
   const [currentPage, setCurrentPage] = useState(0);
   const [novosPesquisadores, setNovosPesquisadores] = useState([]);
+  const [currentScreen, setCurrentScreen] = useState('')
   const pagesVisited = currentPage * itemsPerPage;
 
 
   const displayProducoes = [...producoes, ...novosPesquisadores]
     .slice(pagesVisited, pagesVisited + itemsPerPage)
     .map((producao, index) => {
-      let autoresComplementaresTexto = "";
-
-      if (producao.tipo === 'Artigo') {
-        const tituloEspecifico = producao.titulo;
-        autoresComplementaresTexto = autoresComplementares
-          .filter((autor) => autor.titulo.includes(tituloEspecifico))
-          .map((autor) => autor.nomeCita)
-          .join(', ');
-      }
+      const autoresComplementares = producao.autorComplementar.id
+      console.log(autoresComplementares)
 
       return (
         <tr key={index}>
@@ -41,7 +37,7 @@ function TelaProducoes() {
             {producao.id} - {producao.tipo} : {producao.titulo} . De {producao.ano}
             <br />
             Autores: {producao.pesquisador.map(pesquisador => pesquisador.nome).join(', ')} |
-            Autores Complementares: {autoresComplementaresTexto}
+            Autores Complementares: {producao.autorComplementar.map(autorComplementar => autorComplementar.nomeCita).join(', ')}
           </td>
         </tr>
       );
@@ -103,6 +99,8 @@ function TelaProducoes() {
       console.error('Erro ao buscar produções:', error);
     }
   };
+
+
 
   const handleBusca = async () => {
     console.log("instituto:", instituto, "anoInicial: ", anoInicio, "pesquisador:", pesquisador, "tipo de producao:", tipoProducao)
@@ -176,6 +174,32 @@ function TelaProducoes() {
         console.error('Erro ao buscar produções:', error);
       }
     }
+
+    else if (anoInicio == "" && instituto == "" && tipoProducao != "") {
+      console.log("caso 6")
+
+      try {
+        const response = await fetch(`http://localhost:8083/producao`);
+        console.log(response);
+        const data = await response.json();
+        if (tipoProducao === "Artigo") {
+          const filteredProducoes = data.content.filter(item => item.tipo === "ARTIGO");
+          setProducoes(filteredProducoes);
+        }
+        else if (tipoProducao === "Livro") {
+          const filteredProducoes = data.content.filter(item => item.tipo === "LIVRO");
+          setProducoes(filteredProducoes);
+        }
+        else {
+          const filteredProducoes = data.content
+          setProducoes(filteredProducoes);
+        }
+       
+      } catch (error) {
+        console.error('Erro ao buscar produções:', error);
+      }
+    }
+
     else if (anoInicio == '' && pesquisador == '' && instituto != '') {
       try {
         const response = await fetch(`http://localhost:8083/producao/instituto=${instituto}`);
@@ -193,7 +217,6 @@ function TelaProducoes() {
           const filteredProducoes = data.content
           setProducoes(filteredProducoes);
         }
-        setProducoes(filteredProducoes);
       } catch (error) {
         console.error('Erro ao buscar produções:', error);
       }
@@ -215,7 +238,7 @@ function TelaProducoes() {
           const filteredProducoes = data.content
           setProducoes(filteredProducoes);
         }
-        setProducoes(filteredProducoes);
+    
       } catch (error) {
         console.error('Erro ao buscar produções:', error);
       }
@@ -294,6 +317,7 @@ function TelaProducoes() {
       <button onClick={handleBusca} className="add-button">
         Aplicar
       </button>
+
 
       <table className="data-table-pesquisadores">
         <thead>
