@@ -134,6 +134,13 @@
   border-color: #28a745; 
 }
 
+.pagination button.active {
+  font-weight: bold;
+  background-color: #28a745;
+  color: white !important; 
+  border-color: #28a745; 
+}
+
 /* CSS para o seletor de quantidade por página */
 .seletor {
   display: flex;

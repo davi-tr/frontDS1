@@ -6,7 +6,7 @@
 
 
 .pagination{
-  padding-bottom: 5rem;
+  
 }
 @keyframes fadeInSelector {
   from {
@@ -17,6 +17,12 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.pagination button.active {
+  font-weight: bold;
+
+  color: antiquewhite;
 }
 
 .custom-input {
