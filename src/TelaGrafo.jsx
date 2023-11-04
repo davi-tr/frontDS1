@@ -44,6 +44,13 @@ function TelaGrafo() {
     fetchPesquisadores();
   }, [apiUrlP]);
 
+  const [selectedPesquisadores, setSelectedPesquisadores] = useState([]);
+  const [isListOpen, setIsListOpen] = useState(false);
+
+  const toggleList = () => {
+    setIsListOpen(!isListOpen);
+  };
+
   // useEffect para buscar a lista de institutos
   useEffect(() => {
     async function fetchInstitutos() {
@@ -151,12 +158,7 @@ function TelaGrafo() {
 
   };
 
-  const [selectedPesquisadores, setSelectedPesquisadores] = useState([]);
-  const [isListOpen, setIsListOpen] = useState(false);
 
-  const toggleList = () => {
-    setIsListOpen(!isListOpen);
-  };
   return (
     <div className="grafo-generator">
       <h2 className="titulo">Gerador de Grafos</h2>
