@@ -2,141 +2,150 @@
 
 /* Estilos gerais */
 .grafo-generator {
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Estilos para o container principal */
+.container {
+  animation: fadeInContainer 0.5s ease;
+}
+
+@keyframes fadeInContainer {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  /* Estilos para o container principal */
-  .container {
-    animation: fadeInContainer 0.5s ease;
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  @keyframes fadeInContainer {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+}
+
+.titulo {
+  animation: fadeInTitle 0.8s ease;
+}
+
+@keyframes fadeInTitle {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
   }
-  
-  .titulo {
-    animation: fadeInTitle 0.8s ease;
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  @keyframes fadeInTitle {
-    from {
-      opacity: 0;
-      transform: translateY(40px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+}
+
+/* Estilos para as configurações */
+.configuracoes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.combo-box {
+  margin-right: 20px;
+}
+
+/* Estilos para os selects */
+.combo-box select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Estilos para o botão de gerar grafo */
+.gerar-button {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.gerar-button:hover {
+  background-color: #0056b3;
+}
+
+/* Estilos para as regras de plotagem */
+.regras-plotagem {
+  margin-top: 20px;
+}
+
+.config-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+  margin-top: 20px;
+  animation: fadeInTable 0.5s ease;
+}
+
+@keyframes fadeInTable {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  /* Estilos para as configurações */
-  .configuracoes {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .combo-box {
-    margin-right: 20px;
-  }
-  
-  /* Estilos para os selects */
-  .combo-box select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-  }
-  
-  /* Estilos para o botão de gerar grafo */
-  .gerar-button {
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .gerar-button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Estilos para as regras de plotagem */
-  .regras-plotagem {
-    margin-top: 20px;
-  }
-  
-  .config-table {
-    width: 100%;
-    border-collapse: collapse;
-    border: 1px solid #ddd;
-    margin-top: 20px;
-    animation: fadeInTable 0.5s ease;
-  }
-  
-  @keyframes fadeInTable {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  .config-table th, .config-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-  
-  /* Estilos para os inputs e selects nas regras de plotagem */
-  .config-table select, .config-table input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-  }
-  
-  /* Estilos para o botão de gerar grafo */
-  .gerar-button {
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .gerar-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .config-table {
-    width: 100%; /* Define a largura da tabela como 100% */
-  }
-  
-  .config-table select,
-  .config-table input {
-    max-width: 100%; /* Define o tamanho máximo dos selects e inputs para 100% */
-    width: 100%; /* Define a largura para 100% para preencher a célula da tabela */
-    box-sizing: border-box; /* Inclui a largura e a borda na largura total */
-  }
+}
+
+.config-table th,
+.config-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+/* Estilos para os inputs e selects nas regras de plotagem */
+.config-table select,
+.config-table input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Estilos para o botão de gerar grafo */
+.gerar-button {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.gerar-button:hover {
+  background-color: #0056b3;
+}
+
+.config-table {
+  width: 100%;
+  /* Define a largura da tabela como 100% */
+}
+
+.config-table select,
+.config-table input {
+  max-width: 100%;
+  /* Define o tamanho máximo dos selects e inputs para 100% */
+  width: 100%;
+  /* Define a largura para 100% para preencher a célula da tabela */
+  box-sizing: border-box;
+  /* Inclui a largura e a borda na largura total */
+}
