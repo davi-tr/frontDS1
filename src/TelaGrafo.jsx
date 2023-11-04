@@ -20,7 +20,16 @@ function TelaGrafo() {
     { cor: 'Vermelho', inicio: '', fim: '0' },
     { cor: 'Amarelo', inicio: '', fim: '0' },
   ]);
-
+  const handlePesquisadorSelection = (e, pesquisadorId) => {
+    const isChecked = e.target.checked;
+    setSelectedPesquisadores((prevSelectedPesquisadores) => {
+      if (isChecked) {
+        return [...prevSelectedPesquisadores, pesquisadorId];
+      } else {
+        return prevSelectedPesquisadores.filter((id) => id !== pesquisadorId);
+      }
+    });
+  };
   // useEffect para buscar a lista de pesquisadores
   useEffect(() => {
     async function fetchPesquisadores() {
@@ -69,7 +78,7 @@ function TelaGrafo() {
   const handleRegraChange = (index, field, value) => {
     const updatedRegras = [...regrasNP];
     updatedRegras[index][field] = value;
-  
+
     if (field === 'inicio') {
       // Aplique o mesmo ajuste para todas as linhas seguintes
       for (let i = index; i <= updatedRegras.length; i++) {
@@ -85,15 +94,15 @@ function TelaGrafo() {
         }
       }
     }
-  
+
     if (field === 'fim') {
       const inicioValue = parseInt(updatedRegras[index]['inicio']);
       const fimValue = parseInt(value);
-  
+
       if (fimValue < inicioValue) {
         updatedRegras[index]['fim'] = (inicioValue + 1).toString();
       }
-  
+
       // Aplique o mesmo ajuste para todas as linhas seguintes
       for (let i = index + 1; i < updatedRegras.length; i++) {
         const currentInicio = parseInt(updatedRegras[i]['inicio']);
@@ -102,7 +111,7 @@ function TelaGrafo() {
         updatedRegras[i]['fim'] = (previousFim + 1).toString();
       }
     }
-  
+
     setRegrasNP(updatedRegras);
   };
   // const [grafoElements, setGrafoElements] = useState([]);
@@ -142,6 +151,12 @@ function TelaGrafo() {
 
   };
 
+  const [selectedPesquisadores, setSelectedPesquisadores] = useState([]);
+  const [isListOpen, setIsListOpen] = useState(false);
+
+  const toggleList = () => {
+    setIsListOpen(!isListOpen);
+  };
   return (
     <div className="grafo-generator">
       <h2 className="titulo">Gerador de Grafos</h2>
@@ -170,19 +185,26 @@ function TelaGrafo() {
             {/* Outras opções de produções aqui */}
           </select>
         </div>
-        <div className="combo-box">
-          <select
-            value={pesquisador}
-            onChange={(e) => setPesquisador(e.target.value)}
-            className="custom-input"
-          >
-            <option value="">Selecione o Pesquisador</option>
-            {listaDePesquisadores.map((pesquisador) => (
-              <option key={pesquisador.idXML} value={pesquisador.idXML}>
-                {pesquisador.nome}
-              </option>
-            ))}
-          </select>
+        <div className="combo-box" style={{ maxWidth: '200px', border: '1px solid #ccc', borderRadius: '5px', padding: '10px', position: 'relative' }}>
+          <button onClick={toggleList} style={{ position: 'absolute', top: '10px', right: '5px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px', padding: '5px 10px', cursor: 'pointer' }}>
+            {isListOpen ? 'Fechar' : 'abrir lista'}
+          </button>
+          {isListOpen && (
+            <div style={{ maxHeight: '150px', overflowY: 'auto' }}>
+              {listaDePesquisadores.map((pesquisador) => (
+                <div key={pesquisador.idXML} style={{ marginBottom: '5px', display: 'flex', alignItems: 'center' }}>
+                  <input
+                    type="checkbox"
+                    value={pesquisador.idXML}
+                    checked={selectedPesquisadores.includes(pesquisador.idXML)}
+                    onChange={(e) => handlePesquisadorSelection(e, pesquisador.idXML)}
+                    style={{ marginRight: '5px' }}
+                  />
+                  <label style={{ fontSize: '14px' }}>{pesquisador.nome}</label>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <div className="combo-box">
           <select
@@ -211,8 +233,8 @@ function TelaGrafo() {
             {regrasNP.map((regra, index) => (
               <tr key={index}>
                 <td>
-                <div className={`color-box ${regra.cor.toLowerCase()}`}></div>
-        <span className="color-label">{regra.cor}</span>
+                  <div className={`color-box ${regra.cor.toLowerCase()}`}></div>
+                  <span className="color-label">{regra.cor}</span>
                 </td>
                 <td>
                   <input
