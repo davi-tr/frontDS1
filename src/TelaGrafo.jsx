@@ -243,7 +243,7 @@ function TelaGrafo() {
             onChange={(e) => setSelectedProducao(e.target.value)}
           >
             <option value="">Todas</option>
-            {/* Outras opções de produções aqui */}
+
           </select>
         </div>
         <div className="combo-box">
