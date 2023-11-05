@@ -44,6 +44,13 @@ function TelaGrafo() {
     fetchPesquisadores();
   }, [apiUrlP]);
 
+  const [selectedPesquisadores, setSelectedPesquisadores] = useState([]);
+  const [isListOpen, setIsListOpen] = useState(false);
+
+  const toggleList = () => {
+    setIsListOpen(!isListOpen);
+  };
+
   // useEffect para buscar a lista de institutos
   useEffect(() => {
     async function fetchInstitutos() {
@@ -74,7 +81,8 @@ function TelaGrafo() {
     }
   };
 
-  // Função para lidar com a alteração das regras
+
+  // lidar com a alteração das regras
   const handleRegraChange = (index, field, value) => {
     const updatedRegras = [...regrasNP];
     updatedRegras[index][field] = value;
@@ -114,49 +122,74 @@ function TelaGrafo() {
 
     setRegrasNP(updatedRegras);
   };
-  // const [grafoElements, setGrafoElements] = useState([]);
+
+  ///////////////////lógica inicial para gerar grafo
   const handleGerarGrafo = () => {
-    //nodes é uma array vazia que será usada para armazenar os nós (ou vértices) do grafo
-    //edges é outra array vazia que será usada para armazenar as arestas (ou conexões) entre os nós do grafo.
-    //const nodes = [];
-    //const edges = [];
+    const nodes = [];
+    const edges = [];
+    const nodeMap = {};
 
-    // Adicione nós com base nas seleções
-    //  if (selectedTipoVertice === 'Pesquisador') {
+    // nós com base nas seleções
+    if (selectedTipoVertice === 'Pesquisador') {
+      addNode(nodes, pesquisador, pesquisador, 'Pesquisador');
+    } else if (selectedTipoVertice === 'Instituto') {
+      addNode(nodes, instituto, instituto, 'Instituto');
+    } else if (selectedTipoVertice === 'Producao') {
+      producoes.forEach((producao) => {
+        addNode(nodes, producao.id, producao.titulo, 'Producao');
+      });
+    }
 
-    // Adicione os nós dos pesquisadores selecionados
-    //nodes.push({ data: { id: pesquisador, label: pesquisador, type: 'Pesquisador' } });
-    //  } else if (selectedTipoVertice === 'Instituto') {
+    // objeto para mapear conexões com base nas regras
+    const connections = {};
+    regrasNP.forEach((regra) => {
+      if (!connections[regra.inicio]) {
+        connections[regra.inicio] = [];
+      }
+      connections[regra.inicio].push(regra.fim);
+    });
 
-    // Adicione os nós dos institutos selecionados
-    // nodes.push({ data: { id: instituto, label: instituto, type: 'Instituto' } });
-    //  } else if (selectedTipoVertice === 'Producao') {
-
-    // Adicione os nós das produções selecionadas
-    //   producoes.forEach((producao) => {
-    //   nodes.push({ data: { id: producao.id, label: producao.titulo, type: 'Producao' } });
-    //  });
-    //  }
-
-    // Adicione arestas com base nas regras
-    // regrasNP.forEach((regra, index) => {
-    //if (index < regrasNP.length - 1) {
-    //  const startNode = nodes.find((node) => node.data.id === regra.inicio);
-    //  const endNode = nodes.find((node) => node.data.id === regra.fim);
-    //  if (startNode && endNode) {
-    //     edges.push({ data: { source: startNode.data.id, target: endNode.data.id, color: regra.cor } });
-    //  }
-    //  }
-    //});
+    // arestas com base nas conexões mapeadas
+    Object.keys(connections).forEach((startNodeId) => {
+      const startNode = nodes.find((node) => node.data.id === startNodeId);
+      if (startNode) {
+        connections[startNodeId].forEach((endNodeId) => {
+          const endNode = nodes.find((node) => node.data.id === endNodeId);
+          if (endNode) {
+            const edgeColor = getColorBasedOnProductions(startNodeId, endNodeId); //a cor com base nas produções
+            addEdge(edges, startNode, endNode, edgeColor);
+          }
+        });
+      }
+    });
 
   };
 
-  const [selectedPesquisadores, setSelectedPesquisadores] = useState([]);
-  const [isListOpen, setIsListOpen] = useState(false);
+  // Função para definir a cor com base na quantidade de produções
+  const getColorBasedOnProductions = (startNodeId, endNodeId) => {
 
-  const toggleList = () => {
-    setIsListOpen(!isListOpen);
+    const producoesInicio = countProductions(startNodeId);
+    const producoesFim = countProductions(endNodeId);
+    if (producoesInicio > producoesFim) {
+      return 'verde';
+    } else if (producoesInicio < producoesFim) {
+      return 'vermelho';
+    } else {
+      return 'amarelo';
+    }
   };
+
+  // Função para contar as produções com base no nó
+  const countProductions = (nodeId) => {
+    const pesquisador = pesquisadores.find((pesquidador) => pesquisador.idXML === nodeId);
+    if (pesquisador) {
+      return pesquisador.producoes.length;
+    } else {
+      return 0; // Nenhum pesquisador encontrado ou nenhuma produção associada
+    }
+  };
+  /////////////////final da logica de gerar grafo
+
   return (
     <div className="grafo-generator">
       <h2 className="titulo">Gerador de Grafos</h2>
@@ -176,6 +209,34 @@ function TelaGrafo() {
           </select>
         </div>
 
+        {/* Lista de pesquisadores com base na seleção do instituto */}
+        {instituto && (
+          <div className="combo-box" style={{ maxWidth: '200px', border: '1px solid #ccc', borderRadius: '5px', padding: '10px', position: 'relative' }}>
+            <button onClick={toggleList} style={{ position: 'absolute', top: '10px', right: '5px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px', padding: '5px 10px', cursor: 'pointer' }}>
+              {isListOpen ? 'Fechar' : 'Abrir Lista'}
+            </button>
+            {isListOpen && (
+              <div style={{ maxHeight: '150px', overflowY: 'auto' }}>
+                {listaDePesquisadores
+                  .filter((pesquisador) => pesquisador.institutoId === instituto.id) // Filtra pesquisadores pelo instituto selecionado
+                  .map((pesquisador) => (
+                    <div key={pesquisador.idXML} style={{ marginBottom: '5px', display: 'flex', alignItems: 'center' }}>
+                      <input
+                        type="checkbox"
+                        value={pesquisador.idXML}
+                        checked={selectedPesquisadores.includes(pesquisador.idXML)}
+                        onChange={(e) => handlePesquisadorSelection(e, pesquisador.idXML)}
+                        style={{ marginRight: '5px' }}
+                      />
+                      <label style={{ fontSize: '14px' }}>{pesquisador.nome}</label>
+                    </div>
+                  ))
+                }
+              </div>
+            )}
+          </div>
+        )}
+
         <div className="combo-box">
           <select
             value={selectedProducao}
@@ -184,27 +245,6 @@ function TelaGrafo() {
             <option value="">Todas</option>
             {/* Outras opções de produções aqui */}
           </select>
-        </div>
-        <div className="combo-box" style={{ maxWidth: '200px', border: '1px solid #ccc', borderRadius: '5px', padding: '10px', position: 'relative' }}>
-          <button onClick={toggleList} style={{ position: 'absolute', top: '10px', right: '5px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px', padding: '5px 10px', cursor: 'pointer' }}>
-            {isListOpen ? 'Fechar' : 'abrir lista'}
-          </button>
-          {isListOpen && (
-            <div style={{ maxHeight: '150px', overflowY: 'auto' }}>
-              {listaDePesquisadores.map((pesquisador) => (
-                <div key={pesquisador.idXML} style={{ marginBottom: '5px', display: 'flex', alignItems: 'center' }}>
-                  <input
-                    type="checkbox"
-                    value={pesquisador.idXML}
-                    checked={selectedPesquisadores.includes(pesquisador.idXML)}
-                    onChange={(e) => handlePesquisadorSelection(e, pesquisador.idXML)}
-                    style={{ marginRight: '5px' }}
-                  />
-                  <label style={{ fontSize: '14px' }}>{pesquisador.nome}</label>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
         <div className="combo-box">
           <select
