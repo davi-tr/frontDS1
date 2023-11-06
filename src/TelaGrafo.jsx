@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './TelaPrincipal.css';
-import './Telagrafo.css';
+import './TelaGrafo.css';
 
 function TelaGrafo() {
   const [selectedProducao, setSelectedProducao] = useState('');
@@ -11,15 +10,71 @@ function TelaGrafo() {
   const [producoes, setProducoes] = useState('');
   const [listaDeInstitutos, setListaDeInstitutos] = useState([]);
   const apiUrl = "http://localhost:8083/instituto";
-  const [listaDePesquisadores, setListaDePesquisadores] = useState([]);
+  const [pesquisadoresData, setPesquisadoresData] = useState([]);
   const apiUrlP = "http://localhost:8083/pesquisador";
   const [regrasNP, setRegrasNP] = useState([
-
-
     { cor: 'Verde', inicio: '1', fim: '0' },
     { cor: 'Vermelho', inicio: '', fim: '0' },
     { cor: 'Amarelo', inicio: '', fim: '0' },
   ]);
+  const [selectedInstituto, setSelectedInstituto] = useState('');
+
+// Declaração da função para atualizar a lista de pesquisadores
+const updatePesquisadoresBasedOnInstituto = async (institutoId) => {
+  try {
+    const response = await axios.get(apiUrlP);
+    const pesquisadoresData = response.data.content;
+
+    // Filtra os pesquisadores com base no instituto selecionado
+    const filteredPesquisadores = pesquisadoresData.filter((pesquisador) => {
+      return pesquisador.institutoId === institutoId;
+    });
+
+    setPesquisadoresData(filteredPesquisadores);
+  } catch (error) {
+    console.error("Erro ao atualizar a lista de pesquisadores:", error);
+  }
+};
+
+useEffect(() => {
+  async function fetchInstitutos() {
+    try {
+      const response = await axios.get(apiUrl);
+      setListaDeInstitutos(response.data.content);
+    } catch (error) {
+      console.error("Erro ao buscar a lista de institutos:", error);
+    }
+  }
+
+  fetchInstitutos();
+}, []);
+
+useEffect(() => {
+  // Aplique a filtragem dos pesquisadores com base no instituto selecionado
+  const filteredPesquisadores = pesquisadoresData.filter((pesquisador) => {
+    return pesquisador.institutoId === selectedInstituto;
+  });
+
+  setPesquisadoresData(filteredPesquisadores);
+}, [selectedInstituto]);
+
+const fetchPesquisadoresByInstituto = async (institutoId) => {
+  try {
+    const response = await axios.get(`${apiUrlP}?institutoId=${institutoId}`);
+    const pesquisadoresData = response.data.content;
+    setPesquisadoresData(pesquisadoresData);
+  } catch (error) {
+    console.error("Erro ao buscar pesquisadores:", error);
+  }
+};
+
+useEffect(() => {
+  async function fetchInstitutos() {
+    try {
+      const response = await axios.get(apiUrl);
+      setListaDeInstitutos(response.data.content);
+    } catch (error) {
+      console.error("Erro ao buscar a lista de institutos:", error);
   const handlePesquisadorSelection = (e, pesquisadorId) => {
     const isChecked = e.target.checked;
     setSelectedPesquisadores((prevSelectedPesquisadores) => {
@@ -61,15 +116,23 @@ function TelaGrafo() {
         console.error("Erro ao buscar a lista de institutos:", error);
       }
     }
+  }
 
-    fetchInstitutos();
-  }, [apiUrl]);
+  fetchInstitutos();
+}, []);
 
-  // useEffect para buscar a lista de produções
-  useEffect(() => {
-    fetchProducoes();
-  }, []);
+const handleInstitutoChange = (e) => {
+  const selectedOption = e.target.value;
+  setSelectedInstituto(selectedOption);
 
+  if (selectedOption) {
+    // Chame a função para buscar pesquisadores com base no instituto selecionado
+    fetchPesquisadoresByInstituto(selectedOption);
+  } else {
+    // Se nenhum instituto for selecionado, limpe a lista de pesquisadores
+    setPesquisadoresData([]);
+  }
+};
   // Função para buscar as produções
   const fetchProducoes = async () => {
     try {
@@ -89,7 +152,7 @@ function TelaGrafo() {
 
     if (field === 'inicio') {
       // Aplique o mesmo ajuste para todas as linhas seguintes
-      for (let i = index; i <= updatedRegras.length; i++) {
+      for (let i = index; i < updatedRegras.length; i++) {
         if (i === 0) {
           updatedRegras[i]['fim'] = (parseInt(updatedRegras[i]['inicio']) + 1).toString();
         } else {
@@ -122,6 +185,7 @@ function TelaGrafo() {
 
     setRegrasNP(updatedRegras);
   };
+
 
   ///////////////////lógica inicial para gerar grafo
   const handleGerarGrafo = () => {
@@ -194,13 +258,12 @@ function TelaGrafo() {
     <div className="grafo-generator">
       <h2 className="titulo">Gerador de Grafos</h2>
       <div className="configuracoes">
-        <div className="combo-box">
+      <div className="combo-box">
           <select
-            value={instituto}
-            onChange={(e) => setInstituto(e.target.value)}
-            className="custom-input"
+            value={selectedInstituto}
+            onChange={handleInstitutoChange}
           >
-            <option value="">Selecione o Instituto</option>
+            <option value="">Selecione o(s) Instituto(s)</option>
             {listaDeInstitutos.map((instituto) => (
               <option key={instituto.id} value={instituto.id}>
                 {instituto.nome}
@@ -243,9 +306,32 @@ function TelaGrafo() {
             onChange={(e) => setSelectedProducao(e.target.value)}
           >
             <option value="">Todas</option>
-            {/* Outras opções de produções aqui */}
           </select>
         </div>
+        <div className="combo-box">
+  {pesquisadoresData.length > 0 ? (
+    <>
+      <button className="close-button" onClick={handlePesquisadorButtonClick}>
+        Fechar
+      </button>
+      <select
+        value={pesquisador}
+        onChange={(e) => setPesquisador(e.target.value)}
+      >
+        <option value="">Selecione o Pesquisador</option>
+        {pesquisadoresData.map((pesquisador) => (
+          <option key={pesquisador.idXML} value={pesquisador.idXML}>
+            {pesquisador.nome}
+          </option>
+        ))}
+      </select>
+    </>
+  ) : (
+    <button className="open-button" onClick={handlePesquisadorButtonClick}>
+      Abrir Lista
+    </button>
+  )}
+</div>
         <div className="combo-box">
           <select
             value={selectedTipoVertice}
@@ -256,9 +342,10 @@ function TelaGrafo() {
             <option value="Producao">Produção</option>
           </select>
         </div>
-        <button onClick={handleGerarGrafo} className="gerar-button">Gerar Grafo</button>
+        <button onClick={handleGerarGrafo} className="gerar-button">
+          Gerar Grafo
+        </button>
       </div>
-
       <div className="regras-plotagem">
         <h2 className="titulo">Regras de Plotagem (Número de Produção - NP)</h2>
         <table className="config-table">
@@ -294,10 +381,10 @@ function TelaGrafo() {
               </tr>
             ))}
           </tbody>
-
         </table>
       </div>
     </div>
   );
 }
+
 export default TelaGrafo;
