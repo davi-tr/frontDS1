@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './TelaProducao.css';
-import './TelaPrincipal.css';
+import Home from './TelaHome.jsx'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function TelaProducoes() {
   const [producoes, setProducoes] = useState([]);
@@ -9,6 +12,7 @@ function TelaProducoes() {
   const [anoFim, setAnoFim] = useState(new Date().getFullYear().toString());
   const [instituto, setInstituto] = useState('');
   const [pesquisador, setPesquisador] = useState('');
+  const [autoresComplementares, setAutoresComplementares] = useState([]);
   const [tipoProducao, setTipoProducao] = useState('');
   const [listaDeInstitutos, setListaDeInstitutos] = useState([]);
   const apiUrl = "http://localhost:8083/instituto";
@@ -17,21 +21,30 @@ function TelaProducoes() {
   const [itemsPerPage, setItemsPerPage] = useState(3);
   const [currentPage, setCurrentPage] = useState(0);
   const [novosPesquisadores, setNovosPesquisadores] = useState([]);
-
+  const [currentScreen, setCurrentScreen] = useState('')
   const pagesVisited = currentPage * itemsPerPage;
+
 
   const displayProducoes = [...producoes, ...novosPesquisadores]
     .slice(pagesVisited, pagesVisited + itemsPerPage)
-    .map((producao, index) => (
-      <tr key={index}>
-        <td>{producao.tipo}</td>
-        <td>
-          {producao.id} - {producao.tipo} : {producao.titulo} . De {producao.ano}
-          <br />
-          Autores: {producao.pesquisador.map(pesquisador => pesquisador.nome).join(', ')} |
-        </td>
-      </tr>
-    ));
+    .map((producao, index) => {
+      const autoresComplementares = producao.autorComplementar.id
+      console.log(autoresComplementares)
+
+      return (
+        <tr key={index}>
+          <td>{producao.tipo}</td>
+          <td>
+            {producao.id} - {producao.tipo} : {producao.titulo} . De {producao.ano}
+            <br />
+            Autores: {producao.pesquisador.map(pesquisador => pesquisador.nome).join(', ')} |
+            Autores Complementares: {producao.autorComplementar.map(autorComplementar => autorComplementar.nomeCita).join(', ')}
+          </td>
+        </tr>
+      );
+    });
+
+
 
   const pageCount = Math.ceil(producoes.length / itemsPerPage) + Math.ceil(novosPesquisadores.length / itemsPerPage);
 
@@ -87,6 +100,8 @@ function TelaProducoes() {
       console.error('Erro ao buscar produções:', error);
     }
   };
+
+
 
   const handleBusca = async () => {
     console.log("instituto:", instituto, "anoInicial: ", anoInicio, "pesquisador:", pesquisador, "tipo de producao:", tipoProducao)
@@ -160,6 +175,32 @@ function TelaProducoes() {
         console.error('Erro ao buscar produções:', error);
       }
     }
+
+    else if (anoInicio == "" && instituto == "" && tipoProducao != "") {
+      console.log("caso 6")
+
+      try {
+        const response = await fetch(`http://localhost:8083/producao`);
+        console.log(response);
+        const data = await response.json();
+        if (tipoProducao === "Artigo") {
+          const filteredProducoes = data.content.filter(item => item.tipo === "ARTIGO");
+          setProducoes(filteredProducoes);
+        }
+        else if (tipoProducao === "Livro") {
+          const filteredProducoes = data.content.filter(item => item.tipo === "LIVRO");
+          setProducoes(filteredProducoes);
+        }
+        else {
+          const filteredProducoes = data.content
+          setProducoes(filteredProducoes);
+        }
+       
+      } catch (error) {
+        console.error('Erro ao buscar produções:', error);
+      }
+    }
+
     else if (anoInicio == '' && pesquisador == '' && instituto != '') {
       try {
         const response = await fetch(`http://localhost:8083/producao/instituto=${instituto}`);
@@ -177,7 +218,6 @@ function TelaProducoes() {
           const filteredProducoes = data.content
           setProducoes(filteredProducoes);
         }
-        setProducoes(filteredProducoes);
       } catch (error) {
         console.error('Erro ao buscar produções:', error);
       }
@@ -199,13 +239,50 @@ function TelaProducoes() {
           const filteredProducoes = data.content
           setProducoes(filteredProducoes);
         }
-        setProducoes(filteredProducoes);
+    
       } catch (error) {
         console.error('Erro ao buscar produções:', error);
       }
     }
+    else if (anoInicio == '' && pesquisador != '' && instituto != '') {
+      try {
+        const response = await fetch(`http://localhost:8083/producao/pesquisador=${pesquisador}&instituto=${instituto}`);
+        console.log(response);
+        const data = await response.json();
+        if (tipoProducao === "Artigo") {
+          const filteredProducoes = data.content.filter(item => item.tipo === "ARTIGO");
+          setProducoes(filteredProducoes);
+        }
+        else if (tipoProducao === "Livro") {
+          const filteredProducoes = data.content.filter(item => item.tipo === "LIVRO");
+          setProducoes(filteredProducoes);
+        }
+        else {
+          const filteredProducoes = data.content
+          setProducoes(filteredProducoes);
+        }
+    
+      } catch (error) {
+        console.error('Erro ao buscar produções:', error);
+      }
+    }
+    else {
+      toast.error("Preencha algum campo para realizar a busca");
+    }
   };
 
+
+
+  const getPaginationGroup = () => {
+    let start = Math.max(0, currentPage - 2);
+    let end = Math.min(start + 4, pageCount - 1);
+    start = Math.max(0, end - 4);
+    
+    return new Array(end - start + 1).fill().map((_, idx) => start + idx);
+    
+  };
+
+  
   return (
     <div className="tela-producoes">
       <h2 className="titulo">Itens de produção</h2>
@@ -233,7 +310,12 @@ function TelaProducoes() {
         <div className="column">
           <select
             value={instituto}
-            onChange={(e) => setInstituto(e.target.value)}
+            onChange={(e) => {
+              const selectedInstituto = e.target.value;
+              setInstituto(selectedInstituto);
+              setPesquisador("");
+               // Limpar a seleção de pesquisador ao selecionar um instituto
+            }}
             className="custom-input"
           >
             <option value="">Selecione o Instituto</option>
@@ -244,21 +326,24 @@ function TelaProducoes() {
             ))}
           </select>
         </div>
+       
+    <div className="column">
+  <select
+    value={pesquisador}
+    onChange={(e) => setPesquisador(e.target.value)}
+    className="custom-input"
+  >
+    <option value="">Selecione o Pesquisador</option>
+    {listaDePesquisadores
+  .filter(item => !instituto || item.instituto && item.instituto.id === parseInt(instituto))
+  .map(item => (
+    <option key={item.id} value={item.idXML}>
+      {item.nome}
+    </option>
+  ))}
+  </select>
+</div>
 
-        <div className="column">
-          <select
-            value={pesquisador}
-            onChange={(e) => setPesquisador(e.target.value)}
-            className="custom-input"
-          >
-            <option value="">Selecione o Pesquisador</option>
-            {listaDePesquisadores.map((pesquisador) => (
-              <option key={pesquisador.idXML} value={pesquisador.idXML}>
-                {pesquisador.nome}
-              </option>
-            ))}
-          </select>
-        </div>
 
         <div className="column"></div>
 
@@ -279,6 +364,7 @@ function TelaProducoes() {
         Aplicar
       </button>
 
+
       <table className="data-table-pesquisadores">
         <thead>
           <tr>
@@ -291,12 +377,26 @@ function TelaProducoes() {
         </tbody>
       </table>
       <div className='pagination'>
-        <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 0}>
-          {"<<"}
+        <button onClick={() => setCurrentPage(0)} disabled={currentPage === 0}>
+          {"|<"}
         </button>
-        <span>{currentPage + 1}</span>
+        <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 0}>
+          {"<"}
+        </button>
+        {getPaginationGroup().map((item, idx) => (
+          <button
+            key={idx}
+            onClick={() => setCurrentPage(item)}
+            className={currentPage === item ? 'active' : ''}
+          >
+            {item + 1}
+          </button>
+        ))}
         <button onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === pageCount - 1}>
-          {">>"}
+          {">"}
+        </button>
+        <button onClick={() => setCurrentPage(pageCount - 1)} disabled={currentPage === pageCount - 1}>
+          {">|"}
         </button>
       </div>
       <div className="seletor">

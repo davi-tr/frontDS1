@@ -75,6 +75,46 @@ useEffect(() => {
       setListaDeInstitutos(response.data.content);
     } catch (error) {
       console.error("Erro ao buscar a lista de institutos:", error);
+  const handlePesquisadorSelection = (e, pesquisadorId) => {
+    const isChecked = e.target.checked;
+    setSelectedPesquisadores((prevSelectedPesquisadores) => {
+      if (isChecked) {
+        return [...prevSelectedPesquisadores, pesquisadorId];
+      } else {
+        return prevSelectedPesquisadores.filter((id) => id !== pesquisadorId);
+      }
+    });
+  };
+  // useEffect para buscar a lista de pesquisadores
+  useEffect(() => {
+    async function fetchPesquisadores() {
+      try {
+        const response = await axios.get(apiUrlP);
+        setListaDePesquisadores(response.data.content);
+      } catch (error) {
+        console.error("Erro ao buscar a lista de pesquisadores:", error);
+      }
+    }
+
+    fetchPesquisadores();
+  }, [apiUrlP]);
+
+  const [selectedPesquisadores, setSelectedPesquisadores] = useState([]);
+  const [isListOpen, setIsListOpen] = useState(false);
+
+  const toggleList = () => {
+    setIsListOpen(!isListOpen);
+  };
+
+  // useEffect para buscar a lista de institutos
+  useEffect(() => {
+    async function fetchInstitutos() {
+      try {
+        const response = await axios.get(apiUrl);
+        setListaDeInstitutos(response.data.content);
+      } catch (error) {
+        console.error("Erro ao buscar a lista de institutos:", error);
+      }
     }
   }
 
@@ -104,7 +144,8 @@ const handleInstitutoChange = (e) => {
     }
   };
 
-  // Função para lidar com a alteração das regras
+
+  // lidar com a alteração das regras
   const handleRegraChange = (index, field, value) => {
     const updatedRegras = [...regrasNP];
     updatedRegras[index][field] = value;
@@ -145,7 +186,73 @@ const handleInstitutoChange = (e) => {
     setRegrasNP(updatedRegras);
   };
 
-  
+
+  ///////////////////lógica inicial para gerar grafo
+  const handleGerarGrafo = () => {
+    const nodes = [];
+    const edges = [];
+    const nodeMap = {};
+
+    // nós com base nas seleções
+    if (selectedTipoVertice === 'Pesquisador') {
+      addNode(nodes, pesquisador, pesquisador, 'Pesquisador');
+    } else if (selectedTipoVertice === 'Instituto') {
+      addNode(nodes, instituto, instituto, 'Instituto');
+    } else if (selectedTipoVertice === 'Producao') {
+      producoes.forEach((producao) => {
+        addNode(nodes, producao.id, producao.titulo, 'Producao');
+      });
+    }
+
+    // objeto para mapear conexões com base nas regras
+    const connections = {};
+    regrasNP.forEach((regra) => {
+      if (!connections[regra.inicio]) {
+        connections[regra.inicio] = [];
+      }
+      connections[regra.inicio].push(regra.fim);
+    });
+
+    // arestas com base nas conexões mapeadas
+    Object.keys(connections).forEach((startNodeId) => {
+      const startNode = nodes.find((node) => node.data.id === startNodeId);
+      if (startNode) {
+        connections[startNodeId].forEach((endNodeId) => {
+          const endNode = nodes.find((node) => node.data.id === endNodeId);
+          if (endNode) {
+            const edgeColor = getColorBasedOnProductions(startNodeId, endNodeId); //a cor com base nas produções
+            addEdge(edges, startNode, endNode, edgeColor);
+          }
+        });
+      }
+    });
+
+  };
+
+  // Função para definir a cor com base na quantidade de produções
+  const getColorBasedOnProductions = (startNodeId, endNodeId) => {
+
+    const producoesInicio = countProductions(startNodeId);
+    const producoesFim = countProductions(endNodeId);
+    if (producoesInicio > producoesFim) {
+      return 'verde';
+    } else if (producoesInicio < producoesFim) {
+      return 'vermelho';
+    } else {
+      return 'amarelo';
+    }
+  };
+
+  // Função para contar as produções com base no nó
+  const countProductions = (nodeId) => {
+    const pesquisador = pesquisadores.find((pesquidador) => pesquisador.idXML === nodeId);
+    if (pesquisador) {
+      return pesquisador.producoes.length;
+    } else {
+      return 0; // Nenhum pesquisador encontrado ou nenhuma produção associada
+    }
+  };
+  /////////////////final da logica de gerar grafo
 
   return (
     <div className="grafo-generator">
@@ -164,6 +271,35 @@ const handleInstitutoChange = (e) => {
             ))}
           </select>
         </div>
+
+        {/* Lista de pesquisadores com base na seleção do instituto */}
+        {instituto && (
+          <div className="combo-box" style={{ maxWidth: '200px', border: '1px solid #ccc', borderRadius: '5px', padding: '10px', position: 'relative' }}>
+            <button onClick={toggleList} style={{ position: 'absolute', top: '10px', right: '5px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px', padding: '5px 10px', cursor: 'pointer' }}>
+              {isListOpen ? 'Fechar' : 'Abrir Lista'}
+            </button>
+            {isListOpen && (
+              <div style={{ maxHeight: '150px', overflowY: 'auto' }}>
+                {listaDePesquisadores
+                  .filter((pesquisador) => pesquisador.institutoId === instituto.id) // Filtra pesquisadores pelo instituto selecionado
+                  .map((pesquisador) => (
+                    <div key={pesquisador.idXML} style={{ marginBottom: '5px', display: 'flex', alignItems: 'center' }}>
+                      <input
+                        type="checkbox"
+                        value={pesquisador.idXML}
+                        checked={selectedPesquisadores.includes(pesquisador.idXML)}
+                        onChange={(e) => handlePesquisadorSelection(e, pesquisador.idXML)}
+                        style={{ marginRight: '5px' }}
+                      />
+                      <label style={{ fontSize: '14px' }}>{pesquisador.nome}</label>
+                    </div>
+                  ))
+                }
+              </div>
+            )}
+          </div>
+        )}
+
         <div className="combo-box">
           <select
             value={selectedProducao}
