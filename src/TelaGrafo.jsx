@@ -20,8 +20,26 @@ function TelaGrafo() {
     { cor: 'Vermelho', inicio: '', fim: '0' },
     { cor: 'Amarelo', inicio: '', fim: '0' },
   ]);
+
+  const updateListaDePesquisadores = (institutoId) => {
+    if (institutoId) {
+      // Filtrar a lista de pesquisadores com base no instituto selecionado
+      const novaListaDePesquisadoresExibidos = listaDePesquisadores.filter(
+        (pesquisador) => pesquisador.institutoId === institutoId
+      );
+      // Atualizar a lista de pesquisadores exibidos com base no novo conjunto filtrado
+      setListaDePesquisadoresExibidos(novaListaDePesquisadoresExibidos);
+    } else {
+      // Se nenhum instituto for selecionado, exibir todos os pesquisadores novamente
+      setListaDePesquisadoresExibidos(listaDePesquisadores);
+    }
+  };
+
+
   const handlePesquisadorSelection = (e, pesquisadorId) => {
     const isChecked = e.target.checked;
+    // Chama a função para atualizar a lista de pesquisadores com base no instituto selecionado
+    updateListaDePesquisadores(instituto);
     setSelectedPesquisadores((prevSelectedPesquisadores) => {
       if (isChecked) {
         return [...prevSelectedPesquisadores, pesquisadorId];
@@ -30,6 +48,9 @@ function TelaGrafo() {
       }
     });
   };
+
+
+
   // useEffect para buscar a lista de pesquisadores
   useEffect(() => {
     async function fetchPesquisadores() {
@@ -179,6 +200,8 @@ function TelaGrafo() {
     }
   };
 
+
+
   // Função para contar as produções com base no nó
   const countProductions = (nodeId) => {
     const pesquisador = pesquisadores.find((pesquidador) => pesquisador.idXML === nodeId);
@@ -197,7 +220,10 @@ function TelaGrafo() {
         <div className="combo-box">
           <select
             value={instituto}
-            onChange={(e) => setInstituto(e.target.value)}
+            onChange={(e) => {
+              setInstituto(e.target.value);
+              updateListaDePesquisadores(e.target.value);
+            }}
             className="custom-input"
           >
             <option value="">Selecione o Instituto</option>
@@ -253,7 +279,6 @@ function TelaGrafo() {
           >
             <option value="Pesquisador">Pesquisador</option>
             <option value="Instituto">Instituto</option>
-            <option value="Producao">Produção</option>
           </select>
         </div>
         <button onClick={handleGerarGrafo} className="gerar-button">Gerar Grafo</button>
