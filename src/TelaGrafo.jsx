@@ -38,16 +38,17 @@ function TelaGrafo() {
 
   const handlePesquisadorSelection = (e, pesquisadorId) => {
     const isChecked = e.target.checked;
-    // Chama a função para atualizar a lista de pesquisadores com base no instituto selecionado
-    updateListaDePesquisadores(instituto);
     setSelectedPesquisadores((prevSelectedPesquisadores) => {
       if (isChecked) {
+        // Adiciona o ID do pesquisador à lista de selecionados
         return [...prevSelectedPesquisadores, pesquisadorId];
       } else {
+        // Remove o ID do pesquisador da lista de selecionados
         return prevSelectedPesquisadores.filter((id) => id !== pesquisadorId);
       }
     });
   };
+  
 
 
 
@@ -237,31 +238,47 @@ function TelaGrafo() {
 
         {/* Lista de pesquisadores com base na seleção do instituto */}
         {instituto && (
-          <div className="combo-box" style={{ maxWidth: '200px', border: '1px solid #ccc', borderRadius: '5px', padding: '10px', position: 'relative' }}>
-            <button onClick={toggleList} style={{ position: 'absolute', top: '10px', right: '5px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px', padding: '5px 10px', cursor: 'pointer' }}>
-              {isListOpen ? 'Fechar' : 'Abrir Lista'}
-            </button>
-            {isListOpen && (
-              <div style={{ maxHeight: '150px', overflowY: 'auto' }}>
-                {listaDePesquisadores
-                  .filter((pesquisador) => pesquisador.institutoId === instituto.id) // Filtra pesquisadores pelo instituto selecionado
-                  .map((pesquisador) => (
-                    <div key={pesquisador.idXML} style={{ marginBottom: '5px', display: 'flex', alignItems: 'center' }}>
-                      <input
-                        type="checkbox"
-                        value={pesquisador.idXML}
-                        checked={selectedPesquisadores.includes(pesquisador.idXML)}
-                        onChange={(e) => handlePesquisadorSelection(e, pesquisador.idXML)}
-                        style={{ marginRight: '5px' }}
-                      />
-                      <label style={{ fontSize: '14px' }}>{pesquisador.nome}</label>
-                    </div>
-                  ))
-                }
-              </div>
-            )}
-          </div>
-        )}
+  <div className="combo-box" style={{ 
+    maxWidth: '200px', 
+    borderRadius: '5px', 
+    padding: '20px', 
+    position: 'relative',
+    border: isListOpen ? '1px solid #ccc' : 'none', // Adiciona borda quando a lista está aberta
+    backgroundColor: isListOpen ? 'white' : 'transparent', // Adiciona fundo branco quando a lista está aberta
+  }}>
+    <button onClick={toggleList} style={{ 
+      display: 'block', 
+      margin: 'auto', 
+      backgroundColor: '#007bff', 
+      color: 'white', 
+      border: 'none', 
+      borderRadius: '5px', 
+      padding: '10px 20px', 
+      cursor: 'pointer' 
+    }}>
+      {isListOpen ? 'Fechar' : 'Abrir Lista'}
+    </button>
+    {isListOpen && (
+      <div style={{ maxHeight: '150px', overflowY: 'auto' }}>
+        {listaDePesquisadores
+          .filter((pesquisador) => pesquisador.institutoId === instituto.id)
+          .map((pesquisador) => (
+            <div key={pesquisador.idXML} style={{ marginBottom: '5px', display: 'flex', alignItems: 'center' }}>
+              <input
+                type="checkbox"
+                value={pesquisador.idXML}
+                checked={selectedPesquisadores.includes(pesquisador.idXML)}
+                onChange={(e) => handlePesquisadorSelection(e, pesquisador.idXML)}
+                style={{ marginRight: '5px' }}
+              />
+              <label style={{ fontSize: '14px' }}>{pesquisador.nome}</label>
+            </div>
+          ))
+        }
+      </div>
+    )}
+  </div>
+)}
 
         <div className="combo-box">
           <select
