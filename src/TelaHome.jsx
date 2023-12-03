@@ -45,7 +45,7 @@ function Home() {
         </ul>
       </div>
       <div className="content">
-        {currentScreen === 'pesquisador' && <TelaPrincipal />}
+        {currentScreen === 'pesquisador' && <TelaPesquisador />}
         {currentScreen === 'grafo' && <TelaGrafo />}
         {/*currentScreen === 'novoPesquisador' && <TelaPesquisador />*/}
         {currentScreen === 'instituto' && <DataTable />}
