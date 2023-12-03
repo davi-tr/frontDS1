@@ -20,7 +20,7 @@ function App() {
         <Route path="/telaprincipal" element={<TelaPrincipal />} />
         <Route path="/telaproducao" element={<TelaProducoes />} />
         <Route path="/telagrafo" element={<TelaGrafo />} />
-        <Route path="/telapesquisador" element={<TelaPesquisador />} />
+        <Route path="/TelaPesquisador" element={<TelaPesquisador />} />
         <Route path="/graphcomponent" element={<GraphComponent />} />
       </Routes>
       <ToastContainer />

@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../src/components/Instituto/AddResearcherForm';
 
 
+
 function TelaPesquisador() {
     const [mostrarDataTable, setMostrarDataTable] = useState(false);
     const [pesquisadores, setPesquisadores] = useState([]);
@@ -32,6 +33,7 @@ function TelaPesquisador() {
 
     const [searchText, setSearchText] = useState('');
     const [searchResults, setSearchResults] = useState([]);
+    const [searchData, setSearchData] = useState(null);
     const [filter, setFilter] = useState('all');
 
     const pages = Math.ceil(totalElements / itensPerPage);
@@ -47,6 +49,8 @@ function TelaPesquisador() {
         fetchPesquisadores();
     }, [currentPage]);
     //
+
+
     useEffect(() => {
         setCurrentPage(0);
         fetchPesquisadores();
@@ -152,18 +156,29 @@ function TelaPesquisador() {
         try {
             let response;
             if (filter === 'all') {
-                response = await axios.get(`http://localhost:8083/pesquisador?search=${searchText}`);
+                response = await axios.get(`http://localhost:8083/pesquisador/search=${searchText}`);
+                setPesquisadores(response.data.content);
             } else if (filter === 'nome') {
-                response = await axios.get(`http://localhost:8083/pesquisador?nome=${searchText}`);
+                response = await axios.get(`http://localhost:8083/pesquisador/nome=${searchText}`);
+                setPesquisadores(response.data.content);
             } else if (filter === 'idXML') {
-                response = await axios.get(`http://localhost:8083/pesquisador?idXML=${searchText}`);
+                response = await axios.get(`http://localhost:8083/pesquisador/XMLid=${searchText}`);
+                setPesquisadores(response.data.content)
+                console.log(searchData)
             }
-
-            setSearchResults(response.data);
+       
+            
         } catch (error) {
             console.error('Erro ao buscar os dados da API:', error);
         }
     };
+    const handleSearchChange = (e) => {
+        const text = e.target.value;
+        setSearchText(text); // Atualiza o estado com o texto digitado
+        searchPesquisadores()
+      };
+
+      
 
     const fetchPesquisadores = async () => {
         try {
@@ -214,11 +229,13 @@ function TelaPesquisador() {
                         <option value="idXML">ID</option>
                     </select>
                     <input
-                        type="text"
-                        placeholder="Pesquisar por nome ou ID"
-                        value={searchText}
-                        onChange={(e) => setSearchText(e.target.value)}
+                    type="text"
+                    placeholder="Pesquisar por nome ou ID"
+                    value={searchText}
+                    onChange={handleSearchChange}
                     />
+
+
                 </div>
                 <div className="edit-delete-buttons">
 
@@ -249,7 +266,7 @@ function TelaPesquisador() {
                         </tr>
                     </thead>
                     <tbody>
-                        {searchResults.length > 0 ? (
+                        {searchData > 0 ? (
                             searchResults.map((pesquisador) => (
                                 <tr
                                     key={pesquisador.id}
@@ -407,18 +424,7 @@ function TelaPesquisador() {
 
 
 
-
-
-
-
-
-
     );
-
-
-
-
-
 
 };
 export default TelaPesquisador;
