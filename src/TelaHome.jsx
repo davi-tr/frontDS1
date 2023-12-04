@@ -5,7 +5,6 @@ import DataTable from './components/Instituto/DataTable';
 import fotofemass from './fotofemass.png';
 import TelaProducoes from './TelaProducoes';
 import TelaGrafo from './TelaGrafo';
-import GraphComponent from './Grafos';
 import './TelaHome.css'; // Importe o arquivo de estilos atualizado
 import TelaPesquisador from './TelaPesquisador';
 
@@ -37,11 +36,6 @@ function Home() {
           <li className={currentScreen === 'grafo' ? 'active' : ''} onClick={() => handleNavigate('grafo')}>
             <p className='tabs'>Gerador de grafo</p>
           </li>
-          <li className={currentScreen === 'GraphComponent' ? 'active' : ''} onClick={() => handleNavigate('GraphComponent')}>
-            <p className='tabs'>Grafos</p>
-          </li>
-          <li className={currentScreen === 'novoPesquisador' ? 'active' : ''} onClick={() => handleNavigate('novoPesquisador')}>
-          </li>
         </ul>
       </div>
       <div className="content">
@@ -49,7 +43,6 @@ function Home() {
         {currentScreen === 'grafo' && <TelaGrafo />}
         {/*currentScreen === 'novoPesquisador' && <TelaPesquisador />*/}
         {currentScreen === 'instituto' && <DataTable />}
-        {currentScreen === 'GraphComponent' && <GraphComponent/>}
         {currentScreen === 'home' && (
           <div>
             <h1 className="home-title">Controle de Trabalho de Pesquisadores</h1>

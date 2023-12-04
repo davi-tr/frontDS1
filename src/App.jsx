@@ -9,7 +9,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import TelaProducoes from './TelaProducoes';
 import TelaGrafo from './TelaGrafo';
 import TelaPesquisador from './TelaPesquisador';
-import GraphComponent from './Grafos';
 
 function App() {
   return (
@@ -21,7 +20,6 @@ function App() {
         <Route path="/telaproducao" element={<TelaProducoes />} />
         <Route path="/telagrafo" element={<TelaGrafo />} />
         <Route path="/TelaPesquisador" element={<TelaPesquisador />} />
-        <Route path="/graphcomponent" element={<GraphComponent />} />
       </Routes>
       <ToastContainer />
     </Router>
