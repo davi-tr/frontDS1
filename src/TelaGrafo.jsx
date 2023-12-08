@@ -48,7 +48,7 @@ function TelaGrafo() {
       }
     });
   };
-  
+
 
 
 
@@ -238,57 +238,47 @@ function TelaGrafo() {
 
         {/* Lista de pesquisadores com base na seleção do instituto */}
         {instituto && (
-  <div className="combo-box" style={{ 
-    maxWidth: '200px', 
-    borderRadius: '5px', 
-    padding: '20px', 
-    position: 'relative',
-    border: isListOpen ? '1px solid #ccc' : 'none', // Adiciona borda quando a lista está aberta
-    backgroundColor: isListOpen ? 'white' : 'transparent', // Adiciona fundo branco quando a lista está aberta
-  }}>
-    <button onClick={toggleList} style={{ 
-      display: 'block', 
-      margin: 'auto', 
-      backgroundColor: '#007bff', 
-      color: 'white', 
-      border: 'none', 
-      borderRadius: '5px', 
-      padding: '10px 20px', 
-      cursor: 'pointer' 
-    }}>
-      {isListOpen ? 'Fechar' : 'Abrir Lista'}
-    </button>
-    {isListOpen && (
-      <div style={{ maxHeight: '150px', overflowY: 'auto' }}>
-        {listaDePesquisadores
-          .filter((pesquisador) => pesquisador.institutoId === instituto.id)
-          .map((pesquisador) => (
-            <div key={pesquisador.idXML} style={{ marginBottom: '5px', display: 'flex', alignItems: 'center' }}>
-              <input
-                type="checkbox"
-                value={pesquisador.idXML}
-                checked={selectedPesquisadores.includes(pesquisador.idXML)}
-                onChange={(e) => handlePesquisadorSelection(e, pesquisador.idXML)}
-                style={{ marginRight: '5px' }}
-              />
-              <label style={{ fontSize: '14px' }}>{pesquisador.nome}</label>
-            </div>
-          ))
-        }
-      </div>
-    )}
-  </div>
-)}
-
-        <div className="combo-box">
-          <select
-            value={selectedProducao}
-            onChange={(e) => setSelectedProducao(e.target.value)}
-          >
-            <option value="">Todas</option>
-
-          </select>
-        </div>
+          <div className="combo-box" style={{
+            maxWidth: '200px',
+            borderRadius: '5px',
+            padding: '20px',
+            position: 'relative',
+            border: isListOpen ? '1px solid #ccc' : 'none', // Adiciona borda quando a lista está aberta
+            backgroundColor: isListOpen ? 'white' : 'transparent', // Adiciona fundo branco quando a lista está aberta
+          }}>
+            <button onClick={toggleList} style={{
+              display: 'block',
+              margin: 'auto',
+              backgroundColor: '#007bff',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              padding: '10px 20px',
+              cursor: 'pointer'
+            }}>
+              {isListOpen ? 'Fechar' : 'Abrir Lista'}
+            </button>
+            {isListOpen && (
+              <div style={{ maxHeight: '150px', overflowY: 'auto' }}>
+                {listaDePesquisadores
+                  .filter((pesquisador) => pesquisador.institutoId === instituto.id)
+                  .map((pesquisador) => (
+                    <div key={pesquisador.idXML} style={{ marginBottom: '5px', display: 'flex', alignItems: 'center' }}>
+                      <input
+                        type="checkbox"
+                        value={pesquisador.idXML}
+                        checked={selectedPesquisadores.includes(pesquisador.idXML)}
+                        onChange={(e) => handlePesquisadorSelection(e, pesquisador.idXML)}
+                        style={{ marginRight: '5px' }}
+                      />
+                      <label style={{ fontSize: '14px' }}>{pesquisador.nome}</label>
+                    </div>
+                  ))
+                }
+              </div>
+            )}
+          </div>
+        )}
         <div className="combo-box">
           <select
             value={selectedTipoVertice}
@@ -298,6 +288,18 @@ function TelaGrafo() {
             <option value="Instituto">Instituto</option>
           </select>
         </div>
+        <div className="combo-box">
+          <select
+            value={selectedProducao}
+            onChange={(e) => setSelectedProducao(e.target.value)}
+          >
+            <option value="">Todas</option>
+            <option value="Artigo">Artigo</option>
+            <option value="Livro">Livro</option>
+
+          </select>
+        </div>
+
         <button onClick={handleGerarGrafo} className="gerar-button">Gerar Grafo</button>
       </div>
 
