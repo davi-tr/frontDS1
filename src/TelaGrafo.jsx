@@ -195,7 +195,7 @@ function TelaGrafo() {
 
         </table>
         <button onClick={handleGerarGrafo} className="gerar-button">Gerar Grafo</button>
-        {showGraph && <GraphComponent colorRanges={regrasNP} edgeType={selectedProducao} vertexType={selectedTipoVertice} />}
+        {showGraph && <GraphComponent/>}
         
       </div>
     </div>
