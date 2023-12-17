@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './TelaPrincipal.css';
 import './Telagrafo.css';
+import GraphComponent from './Grafos'; // Ajuste o caminho de importação conforme necessário
 
 function TelaGrafo() {
   const [selectedProducao, setSelectedProducao] = useState('');
@@ -12,59 +13,17 @@ function TelaGrafo() {
   const [listaDeInstitutos, setListaDeInstitutos] = useState([]);
   const apiUrl = "http://localhost:8083/instituto";
   const [listaDePesquisadores, setListaDePesquisadores] = useState([]);
+  const [showGraph, setShowGraph] = useState(false);
   const apiUrlP = "http://localhost:8083/pesquisador";
   const [regrasNP, setRegrasNP] = useState([
 
 
-    { cor: 'Verde', inicio: '1', fim: '0' },
-    { cor: 'Vermelho', inicio: '', fim: '0' },
-    { cor: 'Amarelo', inicio: '', fim: '0' },
+    { color: 'green', start: '1', end: '0' },
+    { color: 'red', start: '', end: '0' },
+    { color: 'yellow', start: '', end: '0' },
   ]);
 
-  const updateListaDePesquisadores = (institutoId) => {
-    if (institutoId) {
-      // Filtrar a lista de pesquisadores com base no instituto selecionado
-      const novaListaDePesquisadoresExibidos = listaDePesquisadores.filter(
-        (pesquisador) => pesquisador.institutoId === institutoId
-      );
-      // Atualizar a lista de pesquisadores exibidos com base no novo conjunto filtrado
-      setListaDePesquisadoresExibidos(novaListaDePesquisadoresExibidos);
-    } else {
-      // Se nenhum instituto for selecionado, exibir todos os pesquisadores novamente
-      setListaDePesquisadoresExibidos(listaDePesquisadores);
-    }
-  };
-
-
-  const handlePesquisadorSelection = (e, pesquisadorId) => {
-    const isChecked = e.target.checked;
-    setSelectedPesquisadores((prevSelectedPesquisadores) => {
-      if (isChecked) {
-        // Adiciona o ID do pesquisador à lista de selecionados
-        return [...prevSelectedPesquisadores, pesquisadorId];
-      } else {
-        // Remove o ID do pesquisador da lista de selecionados
-        return prevSelectedPesquisadores.filter((id) => id !== pesquisadorId);
-      }
-    });
-  };
-
-
-
-
-  // useEffect para buscar a lista de pesquisadores
-  useEffect(() => {
-    async function fetchPesquisadores() {
-      try {
-        const response = await axios.get(apiUrlP);
-        setListaDePesquisadores(response.data.content);
-      } catch (error) {
-        console.error("Erro ao buscar a lista de pesquisadores:", error);
-      }
-    }
-
-    fetchPesquisadores();
-  }, [apiUrlP]);
+ 
 
   const [selectedPesquisadores, setSelectedPesquisadores] = useState([]);
   const [isListOpen, setIsListOpen] = useState(false);
@@ -87,21 +46,7 @@ function TelaGrafo() {
     fetchInstitutos();
   }, [apiUrl]);
 
-  // useEffect para buscar a lista de produções
-  useEffect(() => {
-    fetchProducoes();
-  }, []);
 
-  // Função para buscar as produções
-  const fetchProducoes = async () => {
-    try {
-      const response = await axios.get('http://localhost:8083/producao');
-      const producoesData = response.data.content;
-      setProducoes(producoesData);
-    } catch (error) {
-      console.error('Erro ao buscar produções:', error);
-    }
-  };
 
 
   // lidar com a alteração das regras
@@ -109,36 +54,36 @@ function TelaGrafo() {
     const updatedRegras = [...regrasNP];
     updatedRegras[index][field] = value;
 
-    if (field === 'inicio') {
+    if (field === 'start') {
       // Aplique o mesmo ajuste para todas as linhas seguintes
       for (let i = index; i <= updatedRegras.length; i++) {
         if (i === 0) {
-          updatedRegras[i]['fim'] = (parseInt(updatedRegras[i]['inicio']) + 1).toString();
+          updatedRegras[i]['end'] = (parseInt(updatedRegras[i]['start']) + 1).toString();
         } else {
-          const currentInicio = parseInt(updatedRegras[i]['inicio']);
-          const previousFim = parseInt(updatedRegras[i - 1]['fim']);
-          if (currentInicio <= previousFim) {
-            updatedRegras[i]['inicio'] = (previousFim + 1).toString();
-            updatedRegras[i]['fim'] = (previousFim + 1).toString();
+          const currentstart = parseInt(updatedRegras[i]['start']);
+          const previousend = parseInt(updatedRegras[i - 1]['end']);
+          if (currentstart <= previousend) {
+            updatedRegras[i]['start'] = (previousend + 1).toString();
+            updatedRegras[i]['end'] = (previousend + 1).toString();
           }
         }
       }
     }
 
-    if (field === 'fim') {
-      const inicioValue = parseInt(updatedRegras[index]['inicio']);
-      const fimValue = parseInt(value);
+    if (field === 'end') {
+      const startValue = parseInt(updatedRegras[index]['start']);
+      const endValue = parseInt(value);
 
-      if (fimValue < inicioValue) {
-        updatedRegras[index]['fim'] = (inicioValue + 1).toString();
+      if (endValue < startValue) {
+        updatedRegras[index]['end'] = (startValue + 1).toString();
       }
 
       // Aplique o mesmo ajuste para todas as linhas seguintes
       for (let i = index + 1; i < updatedRegras.length; i++) {
-        const currentInicio = parseInt(updatedRegras[i]['inicio']);
-        const previousFim = parseInt(updatedRegras[i - 1]['fim']);
-        updatedRegras[i]['inicio'] = (previousFim + 1).toString();
-        updatedRegras[i]['fim'] = (previousFim + 1).toString();
+        const currentstart = parseInt(updatedRegras[i]['start']);
+        const previousend = parseInt(updatedRegras[i - 1]['end']);
+        updatedRegras[i]['start'] = (previousend + 1).toString();
+        updatedRegras[i]['end'] = (previousend + 1).toString();
       }
     }
 
@@ -147,72 +92,24 @@ function TelaGrafo() {
 
   ///////////////////lógica inicial para gerar grafo
   const handleGerarGrafo = () => {
-    const nodes = [];
-    const edges = [];
-    const nodeMap = {};
-
-    // nós com base nas seleções
-    if (selectedTipoVertice === 'Pesquisador') {
-      addNode(nodes, pesquisador, pesquisador, 'Pesquisador');
-    } else if (selectedTipoVertice === 'Instituto') {
-      addNode(nodes, instituto, instituto, 'Instituto');
-    } else if (selectedTipoVertice === 'Producao') {
-      producoes.forEach((producao) => {
-        addNode(nodes, producao.id, producao.titulo, 'Producao');
-      });
-    }
-
-    // objeto para mapear conexões com base nas regras
-    const connections = {};
-    regrasNP.forEach((regra) => {
-      if (!connections[regra.inicio]) {
-        connections[regra.inicio] = [];
-      }
-      connections[regra.inicio].push(regra.fim);
-    });
-
-    // arestas com base nas conexões mapeadas
-    Object.keys(connections).forEach((startNodeId) => {
-      const startNode = nodes.find((node) => node.data.id === startNodeId);
-      if (startNode) {
-        connections[startNodeId].forEach((endNodeId) => {
-          const endNode = nodes.find((node) => node.data.id === endNodeId);
-          if (endNode) {
-            const edgeColor = getColorBasedOnProductions(startNodeId, endNodeId); //a cor com base nas produções
-            addEdge(edges, startNode, endNode, edgeColor);
-          }
-        });
-      }
-    });
-
+    setShowGraph(true);
+    const translatedRegras = translateColors(regrasNP);
+    console.log(translatedRegras)
   };
 
-  // Função para definir a cor com base na quantidade de produções
-  const getColorBasedOnProductions = (startNodeId, endNodeId) => {
+  function translateColors(regras) {
+    const colorMap = {
+      'vermelho': 'red',
+      'verde': 'green',
+      'azul': 'blue',
+        };
+  
+    return regras.map(regra => ({
+      ...regra,
+      color: colorMap[regra.color] || regra.color, // use a cor mapeada, ou a cor original se não houver mapeamento
+    }));
+  }
 
-    const producoesInicio = countProductions(startNodeId);
-    const producoesFim = countProductions(endNodeId);
-    if (producoesInicio > producoesFim) {
-      return 'verde';
-    } else if (producoesInicio < producoesFim) {
-      return 'vermelho';
-    } else {
-      return 'amarelo';
-    }
-  };
-
-
-
-  // Função para contar as produções com base no nó
-  const countProductions = (nodeId) => {
-    const pesquisador = pesquisadores.find((pesquidador) => pesquisador.idXML === nodeId);
-    if (pesquisador) {
-      return pesquisador.producoes.length;
-    } else {
-      return 0; // Nenhum pesquisador encontrado ou nenhuma produção associada
-    }
-  };
-  /////////////////final da logica de gerar grafo
 
   return (
     <div className="grafo-generator">
@@ -223,7 +120,6 @@ function TelaGrafo() {
             value={instituto}
             onChange={(e) => {
               setInstituto(e.target.value);
-              updateListaDePesquisadores(e.target.value);
             }}
             className="custom-input"
           >
@@ -236,49 +132,6 @@ function TelaGrafo() {
           </select>
         </div>
 
-        {/* Lista de pesquisadores com base na seleção do instituto */}
-        {instituto && (
-          <div className="combo-box" style={{
-            maxWidth: '200px',
-            borderRadius: '5px',
-            padding: '20px',
-            position: 'relative',
-            border: isListOpen ? '1px solid #ccc' : 'none', // Adiciona borda quando a lista está aberta
-            backgroundColor: isListOpen ? 'white' : 'transparent', // Adiciona fundo branco quando a lista está aberta
-          }}>
-            <button onClick={toggleList} style={{
-              display: 'block',
-              margin: 'auto',
-              backgroundColor: '#007bff',
-              color: 'white',
-              border: 'none',
-              borderRadius: '5px',
-              padding: '10px 20px',
-              cursor: 'pointer'
-            }}>
-              {isListOpen ? 'Fechar' : 'Abrir Lista'}
-            </button>
-            {isListOpen && (
-              <div style={{ maxHeight: '150px', overflowY: 'auto' }}>
-                {listaDePesquisadores
-                  .filter((pesquisador) => pesquisador.institutoId === instituto.id)
-                  .map((pesquisador) => (
-                    <div key={pesquisador.idXML} style={{ marginBottom: '5px', display: 'flex', alignItems: 'center' }}>
-                      <input
-                        type="checkbox"
-                        value={pesquisador.idXML}
-                        checked={selectedPesquisadores.includes(pesquisador.idXML)}
-                        onChange={(e) => handlePesquisadorSelection(e, pesquisador.idXML)}
-                        style={{ marginRight: '5px' }}
-                      />
-                      <label style={{ fontSize: '14px' }}>{pesquisador.nome}</label>
-                    </div>
-                  ))
-                }
-              </div>
-            )}
-          </div>
-        )}
         <div className="combo-box">
           <select
             value={selectedTipoVertice}
@@ -301,6 +154,7 @@ function TelaGrafo() {
         </div>
 
         <button onClick={handleGerarGrafo} className="gerar-button">Gerar Grafo</button>
+
       </div>
 
       <div className="regras-plotagem">
@@ -308,31 +162,31 @@ function TelaGrafo() {
         <table className="config-table">
           <thead>
             <tr>
-              <th>Vértice (Cor)</th>
+              <th>Vértice (color)</th>
               <th>Valor NP (Início)</th>
-              <th>Valor NP (Fim)</th>
+              <th>Valor NP (end)</th>
             </tr>
           </thead>
           <tbody>
             {regrasNP.map((regra, index) => (
               <tr key={index}>
                 <td>
-                  <div className={`color-box ${regra.cor.toLowerCase()}`}></div>
-                  <span className="color-label">{regra.cor}</span>
+                  <div className={`color-box ${regra.color.toLowerCase()}`}></div>
+                  <span className="color-label">{regra.color}</span>
                 </td>
                 <td>
                   <input
                     type="number"
-                    value={index === 0 ? '1' : regrasNP[index - 1].fim}
-                    onChange={(e) => handleRegraChange(index, 'inicio', e.target.value)}
+                    value={index === 0 ? '1' : regrasNP[index - 1].end}
+                    onChange={(e) => handleRegraChange(index, 'start', e.target.value)}
                     disabled={index !== 0}
                   />
                 </td>
                 <td>
                   <input
                     type="number"
-                    value={regra.fim}
-                    onChange={(e) => handleRegraChange(index, 'fim', e.target.value)}
+                    value={regra.end}
+                    onChange={(e) => handleRegraChange(index, 'end', e.target.value)}
                   />
                 </td>
               </tr>
@@ -340,6 +194,9 @@ function TelaGrafo() {
           </tbody>
 
         </table>
+        <button onClick={handleGerarGrafo} className="gerar-button">Gerar Grafo</button>
+        {showGraph && <GraphComponent colorRanges={regrasNP} edgeType={selectedProducao} vertexType={selectedTipoVertice} />}
+        
       </div>
     </div>
   );
